@@ -1,23 +1,12 @@
 import React from 'react';
-import { Box, Card as MantineCard, Group, Title } from '@mantine/core';
+import { Card as MantineCard, Group, Title } from '@mantine/core';
 import Image from 'next/image';
-
+import '../styles/Card.module.css';
 interface CardProps {
   title: string;
   value: number;
   imageSrc: string;
 }
-
-const xxlStyle = {
-  width: '27%',
-  height: '200px',
-  backgroundColor: 'lightcoral',
-  marginLeft: '3%',
-  color: 'white',
-  borderRadius: '24px',
-  paddingLeft: '50px',
-  paddingRight: '50px',
-};
 
 export default function Card({ title, value, imageSrc }: CardProps) {
   return (
@@ -29,6 +18,13 @@ export default function Card({ title, value, imageSrc }: CardProps) {
         backgroundColor: 'lightcoral',
         borderRadius: '24px',
         color: 'white',
+        transition: '0.5s all',
+      }}
+      className="mantine-card"
+      sx={{
+        ':hover': {
+          transform: 'scale(1.05)',
+        },
       }}
     >
       <Group>
