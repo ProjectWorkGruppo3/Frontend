@@ -15,10 +15,15 @@ export default function Dashboard() {
   const [steps, setSteps] = useState(0);
   const [heartPulse, setHeartPulse] = useState(0);
   const [dummy, setDummy] = useState(0);
+
   useEffect(() => {
-    setSteps(getRandomInt(10000));
-    setHeartPulse(getRandomInt(100));
-    setDummy(getRandomInt(10000));
+    const interval = setInterval(() => {
+      setSteps(getRandomInt(10000));
+      setHeartPulse(getRandomInt(100));
+      setDummy(getRandomInt(10000));
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -37,9 +42,14 @@ export default function Dashboard() {
             }}
             p={20}
           >
-            <Group dir="column" position="center" style={{ color: 'white' }}>
+            <Group
+              direction="column"
+              position="center"
+              style={{ color: 'white', height: '100%' }}
+            >
               <p>Primo</p>
-              <p>Secondo</p>
+              <p style={{ flexGrow: 1 }}>Secondo</p>
+              <p>Logout</p>
             </Group>
           </Navbar>
         }
@@ -61,16 +71,6 @@ export default function Dashboard() {
           <Grid.Col xs={12} sm={6} md={6} lg={4} xl={4}>
             <Card title="Dummy" value={dummy} imageSrc="/assets/steps.svg" />
           </Grid.Col>
-          {/* <Card
-              title="Heart pulse"
-              value={heartPulse}
-              imageSrc="/assets/heart-pulse.svg"
-            />
-            <Card
-              title="Dummy"
-              value={dummy}
-              imageSrc="/assets/heart-pulse.svg"
-            /> */}
         </Grid>
       </AppShell>
     </>
