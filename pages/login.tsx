@@ -20,6 +20,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import ApiService from '../services/api-service';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 interface FormProps {
   email: string;
@@ -39,7 +40,8 @@ const Login: NextPage = () => {
     validate: {
       email: (value) =>
         validateEmail(value) ? null : 'Please, type a valid email',
-      password: (value) => value.length !== 0 ? null : 'Please, type the password'
+      password: (value) =>
+        value.length !== 0 ? null : 'Please, type the password',
     },
   });
 
@@ -62,69 +64,80 @@ const Login: NextPage = () => {
   };
 
   return (
-    <Container my="xl">
-      <Card radius="md">
-        <Container mt="md">
-          <Title align="center">Sign In</Title>
-        </Container>
+    <>
+      <Head>
+        <title>SerenUp - Sign In</title>
+        <meta name="description" content="Sign In to the Seren Up Web App" />
+        {/* <link rel="icon" href="/assets/logo.png" /> */}
+      </Head>
+      <Container my="xl">
+        <Card radius="md">
+          <Container mt="md">
+            <Title align="center">Sign In</Title>
+          </Container>
 
-        <Center>
-          <Box
-            sx={{
-              width: '60%',
-            }}
-            my="md"
-          >
-            <Image
-              src="/assets/logo.png"
-              width="100%"
-              height="25%"
-              layout="responsive"
-              alt="logo"
+          <Center>
+            <Box
+              sx={{
+                width: '60%',
+              }}
+              my="md"
+            >
+              <Image
+                src="/assets/logo.png"
+                width="100%"
+                height="25%"
+                layout="responsive"
+                alt="logo"
+              />
+            </Box>
+          </Center>
+          <form onSubmit={formHandler.onSubmit(onSubmit)}>
+            <TextInput
+              id="email-input"
+              label="E-mail"
+              description="E-mail you have used to register"
+              placeholder="your@email.com"
+              mb="md"
+              icon={<MdOutlineAlternateEmail size={16} />}
+              {...formHandler.getInputProps('email')}
+              sx={{
+                'input:focus': {
+                  borderColor: 'orange',
+                },
+              }}
             />
-          </Box>
-        </Center>
-        <form onSubmit={formHandler.onSubmit(onSubmit)}>
-          <TextInput
-            id="email-input"
-            label="E-mail"
-            description="E-mail you have used to register"
-            placeholder="your@email.com"
-            mb="md"
-            icon={<MdOutlineAlternateEmail size={16} />}
-            {...formHandler.getInputProps('email')}
-            sx={{
-              'input:focus': {
-                borderColor: 'orange',
-              },
-            }}
-          />
 
-          <PasswordInput
-            id="pwd-input"
-            label="Password"
-            description="Password you have used to register"
-            placeholder="yoursecretpassword"
-            mb="sm"
-            icon={<MdPassword size={16} />}
-            {...formHandler.getInputProps('password')}
-            sx={{
-              'div:focus-within': {
-                borderColor: 'orange',
-              },
-            }}
-          />
+            <PasswordInput
+              id="pwd-input"
+              label="Password"
+              description="Password you have used to register"
+              placeholder="yoursecretpassword"
+              mb="sm"
+              icon={<MdPassword size={16} />}
+              {...formHandler.getInputProps('password')}
+              sx={{
+                'div:focus-within': {
+                  borderColor: 'orange',
+                },
+              }}
+            />
 
-          {error && <Alert color="red" mb='sm'>{error}</Alert>}
+            {error && (
+              <Alert color="red" mb="sm">
+                {error}
+              </Alert>
+            )}
 
-          <Group position="center">
-            <Button type="submit" color="orange" loading={loading}>
-              Sign In
-            </Button>
-          </Group>
-        </form>
-      </Card>
-    </Container>
+            <Group position="center">
+              <Button type="submit" color="orange" loading={loading}>
+                Sign In
+              </Button>
+            </Group>
+          </form>
+        </Card>
+      </Container>
+    </>
   );
 };
 
