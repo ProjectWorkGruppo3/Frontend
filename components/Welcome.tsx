@@ -7,7 +7,7 @@ interface WelcomeProps {
 
 export default function Welcome({ username }: WelcomeProps) {
   return (
-    <Box m={0} p={20}>
+    <Box mb={40}>
       <h1>Welcome back {username}!</h1>
     </Box>
   );
