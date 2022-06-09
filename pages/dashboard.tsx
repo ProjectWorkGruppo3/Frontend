@@ -1,4 +1,4 @@
-import { AppShell, Grid, Group, Navbar } from '@mantine/core';
+import { AppShell, Box, Grid, Group, Navbar } from '@mantine/core';
 import React from 'react';
 import Main from '@components/Main';
 import Sidebar from '@components/Sidebar';
@@ -10,6 +10,8 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import Head from 'next/head';
 import Card from '@components/Card';
+import Image from 'next/image';
+import { Logout as LogoutIcon } from 'tabler-icons-react';
 
 export default function Dashboard() {
   const [steps, setSteps] = useState(0);
@@ -27,7 +29,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <>
+    <Box>
       <Head>
         <title>📊 Dashboard | Seren-Up</title>
       </Head>
@@ -40,16 +42,20 @@ export default function Dashboard() {
               border: 'none',
               backgroundColor: 'lightcoral',
             }}
-            p={20}
           >
             <Group
               direction="column"
               position="center"
               style={{ color: 'white', height: '100%' }}
             >
-              <p>Primo</p>
-              <p style={{ flexGrow: 1 }}>Secondo</p>
-              <p>Logout</p>
+              <Image
+                src="/assets/logo.png"
+                width={200}
+                height="50%"
+                alt="Seren-up logo"
+              />
+              <p>Secondo</p>
+              <LogoutIcon />
             </Group>
           </Navbar>
         }
@@ -65,7 +71,7 @@ export default function Dashboard() {
             <Card
               title="Heart pulse"
               value={heartPulse}
-              imageSrc="/assets/steps.svg"
+              imageSrc="/assets/heart-pulse.svg"
             />
           </Grid.Col>
           <Grid.Col xs={12} sm={6} md={6} lg={4} xl={4}>
@@ -73,6 +79,6 @@ export default function Dashboard() {
           </Grid.Col>
         </Grid>
       </AppShell>
-    </>
+    </Box>
   );
 }
