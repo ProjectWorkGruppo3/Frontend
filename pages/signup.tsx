@@ -71,15 +71,27 @@ const SignUp: NextPage = () => {
 
   const onSubmit = async (props: FormProps) => {
     console.log(props);
-    // setLoading(true);
+    setLoading(true);
 
-    // try {
-    //   return router.replace('/');
-    // } catch (error) {
-    //   setError('Sorry, but something wrong happened. Retry later');
-    // } finally {
-    //   setLoading(false);
-    // }
+    try {
+      const result = await ApiService.signup({
+        email: props.email,
+        password: props.password,
+        deviceCode: props.deviceCode,
+        birthday: props.birthday,
+        height: props.height,
+        weight: props.weight,
+      });
+
+      if (!result) {
+        return setError('Sorry, but cannot sign up. Retry Later');
+      }
+      return router.replace('/');
+    } catch (error) {
+      setError('Sorry, but something wrong happened. Retry later');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -127,12 +139,14 @@ const SignUp: NextPage = () => {
                     },
                   }}
                   rightSection={
-                      <ActionIcon onClick={() => {
-                          // TODO qr reader
-                          console.log('Open QR Reader');
-                      }}>
-                          <AiOutlineQrcode />
-                      </ActionIcon>
+                    <ActionIcon
+                      onClick={() => {
+                        // TODO qr reader
+                        console.log('Open QR Reader');
+                      }}
+                    >
+                      <AiOutlineQrcode />
+                    </ActionIcon>
                   }
                 />
               </Grid.Col>
@@ -186,37 +200,37 @@ const SignUp: NextPage = () => {
                 />
               </Grid.Col>
               <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                    <DatePicker 
-                        id='birthday-input'
-                        label='Date of birth'
-                        description='Select your birthday'
-                        mb='sm'
-                        icon={<BsCalendarDate size={16} />}
-                        {...formHandler.getInputProps('birthday')}
-                    />
-                </Grid.Col>
-                <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                    <NumberInput 
-                        id='weight-input'
-                        label='Weight (kg)'
-                        description="What's your weigth?"
-                        mb='sm'
-                        icon={<FaWeight size={16} />}
-                        {...formHandler.getInputProps('weight')}
-                        hideControls
-                    />
-                </Grid.Col>
-                <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                    <NumberInput 
-                        id='height-input'
-                        label='Height (cm)'
-                        description="What's your weigth?"
-                        mb='sm'
-                        icon={<GiBodyHeight size={16} />}
-                        {...formHandler.getInputProps('height')}
-                        hideControls
-                    />
-                </Grid.Col>
+                <DatePicker
+                  id="birthday-input"
+                  label="Date of birth"
+                  description="Select your birthday"
+                  mb="sm"
+                  icon={<BsCalendarDate size={16} />}
+                  {...formHandler.getInputProps('birthday')}
+                />
+              </Grid.Col>
+              <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                <NumberInput
+                  id="weight-input"
+                  label="Weight (kg)"
+                  description="What's your weigth?"
+                  mb="sm"
+                  icon={<FaWeight size={16} />}
+                  {...formHandler.getInputProps('weight')}
+                  hideControls
+                />
+              </Grid.Col>
+              <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                <NumberInput
+                  id="height-input"
+                  label="Height (cm)"
+                  description="What's your weigth?"
+                  mb="sm"
+                  icon={<GiBodyHeight size={16} />}
+                  {...formHandler.getInputProps('height')}
+                  hideControls
+                />
+              </Grid.Col>
             </Grid>
 
             {error && (
