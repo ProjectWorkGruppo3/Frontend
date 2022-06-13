@@ -21,6 +21,7 @@ import { useState } from 'react';
 import ApiService from '../services/api-service';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import { useAuth } from '../context/auth-context';
 
 interface FormProps {
   email: string;
@@ -31,6 +32,7 @@ const Login: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const authContext = useAuth();
 
   const formHandler = useForm<FormProps>({
     initialValues: {
@@ -54,8 +56,15 @@ const Login: NextPage = () => {
       if (!logged) {
         return setError('Username or/and password are not correct');
       }
+      if(authContext) {
+        authContext.setAuthState({
+          user: logged.user,
+          expiration: logged.expiration,
+          token: logged.token
+        });
 
-      return router.replace('/');
+        return router.replace('/');
+      }
     } catch (error) {
       setError('Sorry, but something wrong happened. Retry later');
     } finally {
@@ -68,7 +77,7 @@ const Login: NextPage = () => {
       <Head>
         <title>SerenUp - Sign In</title>
         <meta name="description" content="Sign In to the Seren Up Web App" />
-        {/* <link rel="icon" href="/assets/logo.png" /> */}
+        <link rel="icon" href="/assets/logo.png" />
       </Head>
       <Container my="xl">
         <Card radius="md">
