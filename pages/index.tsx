@@ -9,26 +9,23 @@ import { useAuth } from '../context/auth-context';
 import styles from '../styles/Home.module.css';
 
 const Home: NextPage = () => {
-
   const auth = useAuth();
   const router = useRouter();
 
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-
-    if(auth && auth.isAuthenticated()) {
+    if (auth && auth.isAuthenticated()) {
       router.push('/');
 
       setLoading(false);
     } else {
       router.push('/login');
     }
+  }, [auth, router]);
 
-  }, []);
-
-  if(loading) {
-    return <Loader />
+  if (loading) {
+    return <Loader />;
   }
 
   return (

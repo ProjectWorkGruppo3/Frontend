@@ -1,39 +1,43 @@
-import { User } from "../types/user";
+import { User } from '../types/user';
+import axios from 'axios';
+import config from '../utils/config';
 
 interface LoginProps {
-  email: string,
-  password: string
+  email: string;
+  password: string;
 }
 
 type LoginResult = {
-  user: User,
-  token: string,
-  expiration: Date
+  user: User;
+  token: string;
+  expiration: Date;
 } | null;
 
 const ApiService = () => {
-  const login = async ({ email, password,}: LoginProps) : Promise<LoginResult> => {
-    // TODO connect to API
-    // FIXME delete mock
-
-    if (email === 'test@test.it' && password === '12345678') {
-      const now = new Date()
-      return {
-        token: 'sdadasas',
-        user: {
-          birthday: new Date(),
-          email: 'test@test.it',
-          deviceCode: 'sdadadasas',
-          name: 'test',
-          surname: 'test',
-          height: 180,
-          weight: 80
+  const login = async ({
+    email,
+    password,
+  }: LoginProps): Promise<LoginResult> => {
+    const result = await axios.post(
+      `${config.API_URL}/Users/login`,
+      {
+        email: email,
+        password: password,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
         },
-        expiration: new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours()+1)
       }
+    );
+
+    if (result.status === 401) {
+      return null;
     }
 
-    return null;
+    const loginResult = result.data as LoginResult;
+
+    return loginResult;
   };
 
   return {

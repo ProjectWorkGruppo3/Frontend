@@ -56,16 +56,18 @@ const Login: NextPage = () => {
       if (!logged) {
         return setError('Username or/and password are not correct');
       }
-      if(authContext) {
+
+      if (authContext) {
         authContext.setAuthState({
           user: logged.user,
           expiration: logged.expiration,
-          token: logged.token
+          token: logged.token,
         });
 
         return router.replace('/');
       }
     } catch (error) {
+      console.log(error);
       setError('Sorry, but something wrong happened. Retry later');
     } finally {
       setLoading(false);
