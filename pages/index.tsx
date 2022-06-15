@@ -1,9 +1,33 @@
+import { Loader } from '@mantine/core';
 import type { NextPage } from 'next';
+import { useRouter } from 'next/dist/client/router';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { useAuth } from '../context/auth-context';
 import styles from '../styles/Home.module.css';
 
 const Home: NextPage = () => {
+  const auth = useAuth();
+  const router = useRouter();
+
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (auth && auth.isAuthenticated()) {
+      router.push('/');
+
+      setLoading(false);
+    } else {
+      router.push('/login');
+    }
+  }, [auth, router]);
+
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <div className={styles.container}>
       <Head>

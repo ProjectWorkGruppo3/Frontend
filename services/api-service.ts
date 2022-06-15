@@ -1,19 +1,43 @@
+import { User } from '../types/user';
+import axios from 'axios';
+import config from '../utils/config';
+
+interface LoginProps {
+  email: string;
+  password: string;
+}
+
+type LoginResult = {
+  user: User;
+  token: string;
+  expiration: Date;
+} | null;
+
 const ApiService = () => {
   const login = async ({
     email,
     password,
-  }: {
-    email: string;
-    password: string;
-  }) => {
-    // TODO connect to API
-    // FIXME delete mock
+  }: LoginProps): Promise<LoginResult> => {
+    const result = await axios.post(
+      `${config.API_URL}/Users/login`,
+      {
+        email: email,
+        password: password,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
-    if (email === 'test@test.it' && password === '12345678') {
-      return true;
+    if (result.status === 401) {
+      return null;
     }
 
-    return false;
+    const loginResult = result.data as LoginResult;
+
+    return loginResult;
   };
 
   interface SignUpProps {
@@ -26,7 +50,30 @@ const ApiService = () => {
   }
 
   const signup = async (props: SignUpProps) => {
-    return true;
+    const result = await axios.post(
+      `${config.API_URL}/Users/register`,
+      {
+        email: props.email,
+        password: props.password,
+        weight: props.weight,
+        height: props.height,
+        dayOfBirth: props.birthday,
+        deviceCode: props.deviceCode,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        validateStatus: () => true
+      },
+      
+    );
+
+    if (result.status >= 400) {
+      console.log(result.data)
+      throw new Error(result.data['message'] ?? 'Somethin wrong happened')
+    }
+
   };
 
   return {

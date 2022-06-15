@@ -17,10 +17,11 @@ import { useForm } from '@mantine/form';
 import { validateEmail } from '../utils/validations';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ApiService from '../services/api-service';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import { useAuth } from '../context/auth-context';
 
 interface FormProps {
   email: string;
@@ -28,9 +29,18 @@ interface FormProps {
 }
 
 const Login: NextPage = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const authContext = useAuth();
+
+  useEffect(() => {
+    if (authContext && authContext.isAuthenticated()) {
+      router.push('/'); 
+    }
+
+    setLoading(false);
+  }, [authContext, router]);
 
   const formHandler = useForm<FormProps>({
     initialValues: {
@@ -55,8 +65,17 @@ const Login: NextPage = () => {
         return setError('Username or/and password are not correct');
       }
 
-      return router.replace('/');
+      if (authContext) {
+        authContext.setAuthState({
+          user: logged.user,
+          expiration: logged.expiration,
+          token: logged.token,
+        });
+
+        return router.replace('/');
+      }
     } catch (error) {
+      console.log(error);
       setError('Sorry, but something wrong happened. Retry later');
     } finally {
       setLoading(false);
@@ -68,7 +87,7 @@ const Login: NextPage = () => {
       <Head>
         <title>SerenUp - Sign In</title>
         <meta name="description" content="Sign In to the Seren Up Web App" />
-        {/* <link rel="icon" href="/assets/logo.png" /> */}
+        <link rel="icon" href="/assets/logo.png" />
       </Head>
       <Container my="xl">
         <Card radius="md">
