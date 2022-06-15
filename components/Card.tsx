@@ -1,7 +1,6 @@
 import React from 'react';
 import { Card as MantineCard, Group, Title } from '@mantine/core';
 import Image from 'next/image';
-import '../styles/Card.module.css';
 interface CardProps {
   title: string;
   value: number;
