@@ -25,35 +25,47 @@ import { useForm } from '@mantine/form';
 import { validateEmail } from '../utils/validations';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ApiService from '../services/api-service';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import { useAuth } from '../context/auth-context';
+import dayjs from 'dayjs';
 
 interface FormProps {
   email: string;
   password: string;
   confirmPassword: string;
   deviceCode: string;
-  weight: number;
-  height: number;
-  birthday: Date;
+  weight: string;
+  height: string;
+  birthday: string;
 }
 
 const SignUp: NextPage = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const authContext = useAuth();
+
+  useEffect(() => {
+    if (authContext && authContext.isAuthenticated()) {
+      router.push('/');
+    }
+
+    setLoading(false);
+
+  }, [authContext, router]);
 
   const formHandler = useForm<FormProps>({
     initialValues: {
       email: '',
       password: '',
       confirmPassword: '',
-      birthday: new Date(),
+      birthday: '',
       deviceCode: '',
-      height: 177,
-      weight: 66,
+      height: '',
+      weight: '66',
     },
     validate: {
       email: (value) =>
@@ -62,8 +74,14 @@ const SignUp: NextPage = () => {
         value.length !== 0 ? null : 'Please, type the password',
       confirmPassword: (value, values) =>
         value === values.password ? null : 'Passwords not coincide',
-      height: (value) => (value !== 0 ? null : 'Please, insert a valid height'),
-      weight: (value) => (value !== 0 ? null : 'Please, insert a valid weight'),
+      height: (value) => {
+        console.log(parseInt(value))
+        return !isNaN(parseInt(value)) && parseInt(value) !== 0 ? null : 'Please, insert a valid height'
+      },
+      weight: (value) => {
+        console.log(parseInt(value))
+        return !isNaN(parseInt(value)) && parseInt(value) !== 0 ? null : 'Please, insert a valid weight';
+      },
       deviceCode: (value) =>
         value.length !== 0 ? null : 'Please, insert the device code',
     },
@@ -74,21 +92,20 @@ const SignUp: NextPage = () => {
     setLoading(true);
 
     try {
-      const result = await ApiService.signup({
+      await ApiService.signup({
         email: props.email,
         password: props.password,
         deviceCode: props.deviceCode,
-        birthday: props.birthday,
-        height: props.height,
-        weight: props.weight,
+        birthday: new Date(props.birthday),
+        height: parseInt(props.height),
+        weight: parseInt(props.weight),
       });
 
-      if (!result) {
-        return setError('Sorry, but cannot sign up. Retry Later');
-      }
+
       return router.replace('/');
-    } catch (error) {
-      setError('Sorry, but something wrong happened. Retry later');
+    } catch (error: any) {
+      console.log(error)
+      setError(error['message'] ?? 'Sorry, but something wrong happened. Retry later');
     } finally {
       setLoading(false);
     }
@@ -205,6 +222,7 @@ const SignUp: NextPage = () => {
                   label="Date of birth"
                   description="Select your birthday"
                   mb="sm"
+                  maxDate={new Date()}
                   icon={<BsCalendarDate size={16} />}
                   {...formHandler.getInputProps('birthday')}
                 />

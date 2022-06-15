@@ -17,7 +17,7 @@ import { useForm } from '@mantine/form';
 import { validateEmail } from '../utils/validations';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ApiService from '../services/api-service';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
@@ -29,10 +29,18 @@ interface FormProps {
 }
 
 const Login: NextPage = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const authContext = useAuth();
+
+  useEffect(() => {
+    if (authContext && authContext.isAuthenticated()) {
+      router.push('/'); 
+    }
+
+    setLoading(false);
+  }, [authContext, router]);
 
   const formHandler = useForm<FormProps>({
     initialValues: {

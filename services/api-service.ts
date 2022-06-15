@@ -50,7 +50,30 @@ const ApiService = () => {
   }
 
   const signup = async (props: SignUpProps) => {
-    return true;
+    const result = await axios.post(
+      `${config.API_URL}/Users/register`,
+      {
+        email: props.email,
+        password: props.password,
+        weight: props.weight,
+        height: props.height,
+        dayOfBirth: props.birthday,
+        deviceCode: props.deviceCode,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        validateStatus: () => true
+      },
+      
+    );
+
+    if (result.status >= 400) {
+      console.log(result.data)
+      throw new Error(result.data['message'] ?? 'Somethin wrong happened')
+    }
+
   };
 
   return {
