@@ -40,8 +40,22 @@ const ApiService = () => {
     return loginResult;
   };
 
+  interface SignUpProps {
+    email: string;
+    password: string;
+    birthday: Date;
+    deviceCode: string;
+    height: number;
+    weight: number;
+  }
+
+  const signup = async (props: SignUpProps) => {
+    return true;
+  };
+
   return {
     login,
+    signup,
   };
 };
 
