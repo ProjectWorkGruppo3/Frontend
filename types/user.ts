@@ -1,20 +1,9 @@
-/*
-{
-    "email": "string",
-    "password": "string",
-    "name": "string",
-    "surname": "string",
-    "deviceCode": "string",
-    "birthday": "datetime",
-    "height": "number",
-    "weight": "number"
-}
-*/
+// FIXME add name and surname to BE
 export type User = {
   email: string;
-  name: string;
-  surname: string;
-  deviceCode: string;
+  // name: string;
+  // surname: string;
+  // deviceCode: string;
   birthday: Date;
   height: number;
   weight: number;
