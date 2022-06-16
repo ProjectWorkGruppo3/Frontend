@@ -32,6 +32,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const setUser = (state: AuthState | null) => {
     if (state !== null) {
+      // FIXME 
       localStorage.setItem(TOKEN_KEY, state.token);
     } else {
       localStorage.removeItem(TOKEN_KEY);

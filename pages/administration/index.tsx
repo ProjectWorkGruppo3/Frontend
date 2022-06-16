@@ -4,13 +4,48 @@ import {
   StatCard,
   TitleLink,
   AlarmCard,
+  AlarmCardProps,
 } from '../../components/administration/index';
 
 import { BsSmartwatch } from 'react-icons/bs';
 import { IoBody } from 'react-icons/io5';
 import { AiOutlinePercentage } from 'react-icons/ai'
 
-const Administration: NextPage = () => {
+const AdministrationPage: NextPage = () => {
+
+  const testData : AlarmCardProps[] = [
+    {
+      date: new Date(2022),
+      sended: false,
+      type: 'fall'
+    },
+    {
+      date: new Date(2022),
+      sended: true,
+      type: 'heartbeat'
+    },
+    {
+      date: new Date(2022),
+      sended: false,
+      type: 'low-battery'
+    },
+    {
+      date: new Date(2022),
+      sended: false,
+      type: 'other'
+    },
+    {
+      date: new Date(2022),
+      sended: false,
+      type: 'low-battery'
+    },
+    {
+      date: new Date(2022),
+      sended: false,
+      type: 'fall'
+    }
+  ]
+
   return (
     <Box p="xl">
       <Grid gutter="sm" mb="md">
@@ -19,24 +54,13 @@ const Administration: NextPage = () => {
             <TitleLink title="Last alarms saved" link="/administration/alarms" />
           </Box>
           <Grid align="center">
-            <Grid.Col span={4}>
-              <AlarmCard sended date={new Date()} type="fall" />
-            </Grid.Col>
-            <Grid.Col span={4}>
-              <AlarmCard sended={false} date={new Date()} type="heartbeat" />
-            </Grid.Col>
-            <Grid.Col span={4}>
-              <AlarmCard sended={false} date={new Date()} type="low-battery" />
-            </Grid.Col>
-            <Grid.Col span={4}>
-              <AlarmCard sended date={new Date()} type="other" />
-            </Grid.Col>
-            <Grid.Col span={4}>
-              <AlarmCard sended={false} date={new Date()} type="heartbeat" />
-            </Grid.Col>
-            <Grid.Col span={4}>
-              <AlarmCard sended={false} date={new Date()} type="low-battery" />
-            </Grid.Col>
+            {
+              testData.map((el, index) => (
+                <Grid.Col span={4} key={index}>
+                  <AlarmCard sended={el.sended} date={el.date} type={el.type} />
+                </Grid.Col>
+              ))
+            }
           </Grid>
         </Grid.Col>
         <Grid.Col span={3}>
@@ -94,4 +118,4 @@ const Administration: NextPage = () => {
   );
 };
 
-export default Administration;
+export default AdministrationPage;
