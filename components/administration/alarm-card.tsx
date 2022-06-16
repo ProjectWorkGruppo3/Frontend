@@ -11,6 +11,7 @@ import {
 } from 'react-icons/gi';
 import { RiAlarmWarningLine } from 'react-icons/ri';
 import { TbHeartbeat } from 'react-icons/tb';
+import dayjs from "dayjs";
 
 type AlarmType = 'fall' | 'heartbeat' | 'low-battery' | 'other'
 
@@ -36,9 +37,11 @@ export const AlarmCard = (props: AlarmCardProps) => {
         
     }
 
+    const formatDate = (date: Date) => dayjs(date).format('DD/MM  h:mm:ss')
+
     return (
         <Card shadow='xl' radius='sm'>
-             <Grid>
+             <Grid align='center'>
                 <Grid.Col span={1}>
                     {
                         props.sended
@@ -48,15 +51,15 @@ export const AlarmCard = (props: AlarmCardProps) => {
                         <MdError size={28} color='red' />
                     }
                 </Grid.Col>
-                <Grid.Col span={1}>
+                <Grid.Col span={1} mx='xs'>
                     <Tooltip
                         label={<Text>{props.type}</Text>}
                     >
                         {getIconAlarmType(props.type)}
                     </Tooltip>
                 </Grid.Col>
-                <Grid.Col span={10}>
-                    <Text>{props.date.toISOString()}</Text>
+                <Grid.Col span={9}>
+                    <Text>{formatDate(props.date)}</Text>
                 </Grid.Col>
              </Grid>
         </Card>

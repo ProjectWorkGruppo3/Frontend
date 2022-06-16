@@ -4,7 +4,7 @@ import {
   StatCard,
   TitleLink,
   AlarmCard,
-} from '../components/administration/index';
+} from '../../components/administration/index';
 
 import { BsSmartwatch } from 'react-icons/bs';
 import { IoBody } from 'react-icons/io5';
@@ -16,7 +16,7 @@ const Administration: NextPage = () => {
       <Grid gutter="sm" mb="md">
         <Grid.Col span={9}>
           <Box mb="md">
-            <TitleLink title="Last alarms saved" link="#" />
+            <TitleLink title="Last alarms saved" link="/administration/alarms" />
           </Box>
           <Grid align="center">
             <Grid.Col span={4}>
@@ -45,7 +45,7 @@ const Administration: NextPage = () => {
               logo={<IoBody size={64} color="green" />}
               statName="Admin Users"
               value={10}
-              link='#'
+              link='/administration/admins'
             />
           </Box>
           <Box px="xl" mx="md">
@@ -53,13 +53,14 @@ const Administration: NextPage = () => {
               logo={<BsSmartwatch size={64} color="grey" />}
               statName="Bracelet"
               value={10}
+              link='/administration/bracelets'
             />
           </Box>
         </Grid.Col>
       </Grid>
       <Box mb="md">
         <Box>
-          <TitleLink link="#" title="Report" />
+          <TitleLink link="/administration/reports" title="Report" />
         </Box>
         <Text>Chart</Text>
       </Box>
@@ -67,7 +68,7 @@ const Administration: NextPage = () => {
         <Grid>
           <Grid.Col span={9}>
             <Box mb="md">
-              <TitleLink title="Analysis" link="#" />
+              <TitleLink title="Analysis" link="/administration/analysis" />
             </Box>
             <Text>Chart</Text>
           </Grid.Col>
