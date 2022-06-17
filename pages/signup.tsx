@@ -54,7 +54,6 @@ const SignUp: NextPage = () => {
     }
 
     setLoading(false);
-
   }, [authContext, router]);
 
   const formHandler = useForm<FormProps>({
@@ -75,12 +74,16 @@ const SignUp: NextPage = () => {
       confirmPassword: (value, values) =>
         value === values.password ? null : 'Passwords not coincide',
       height: (value) => {
-        console.log(parseInt(value))
-        return !isNaN(parseInt(value)) && parseInt(value) !== 0 ? null : 'Please, insert a valid height'
+        console.log(parseInt(value));
+        return !isNaN(parseInt(value)) && parseInt(value) !== 0
+          ? null
+          : 'Please, insert a valid height';
       },
       weight: (value) => {
-        console.log(parseInt(value))
-        return !isNaN(parseInt(value)) && parseInt(value) !== 0 ? null : 'Please, insert a valid weight';
+        console.log(parseInt(value));
+        return !isNaN(parseInt(value)) && parseInt(value) !== 0
+          ? null
+          : 'Please, insert a valid weight';
       },
       deviceCode: (value) =>
         value.length !== 0 ? null : 'Please, insert the device code',
@@ -101,11 +104,12 @@ const SignUp: NextPage = () => {
         weight: parseInt(props.weight),
       });
 
-
       return router.replace('/');
     } catch (error: any) {
-      console.log(error)
-      setError(error['message'] ?? 'Sorry, but something wrong happened. Retry later');
+      console.log(error);
+      setError(
+        error['message'] ?? 'Sorry, but something wrong happened. Retry later'
+      );
     } finally {
       setLoading(false);
     }

@@ -1,4 +1,4 @@
 export type Device = {
-    name: string;
-    deviceId: string;
-}
+  name: string;
+  deviceId: string;
+};

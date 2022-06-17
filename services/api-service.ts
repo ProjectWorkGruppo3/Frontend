@@ -1,6 +1,7 @@
 import { User } from '../types/user';
 import axios from 'axios';
 import config from '../utils/config';
+import { Device } from '../models';
 
 interface LoginProps {
   email: string;
@@ -64,21 +65,71 @@ const ApiService = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        validateStatus: () => true
-      },
-      
+        validateStatus: () => true,
+      }
     );
 
     if (result.status >= 400) {
-      console.log(result.data)
-      throw new Error(result.data['message'] ?? 'Somethin wrong happened')
+      console.log(result.data);
+      throw new Error(result.data['message'] ?? 'Somethin wrong happened');
+    }
+  };
+
+  interface GetDevicesProps {
+    userId: string;
+    token: string;
+  }
+
+  const getDevices = async (props: GetDevicesProps): Promise<Device[]> => {
+    const result = await axios.get(
+      `${config.API_URL}/users/${props.userId}/devices`, //FIXME
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: props.token,
+        },
+        validateStatus: () => true,
+      }
+    );
+
+    if (result.status >= 400) {
+      console.log(result.data);
+      throw new Error(result.data['message'] ?? 'Somethin wrong happened');
     }
 
+    const data = result.data as Device[];
+
+    return data;
+  };
+
+  interface GetDeviceData {
+    userId: string;
+    deviceId: string;
+    token: string;
+  }
+
+  const getDeviceData = async (props: GetDeviceData) => {
+    const result = await axios.get(
+      `${config.API_URL}/users/${props.userId}/devices/${props.deviceId}`, //FIXME
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: props.token,
+        },
+        validateStatus: () => true,
+      }
+    );
+
+    if (result.status >= 400) {
+      console.log(result.data);
+      throw new Error(result.data['message'] ?? 'Somethin wrong happened');
+    }
   };
 
   return {
     login,
     signup,
+    getDevices,
   };
 };
 
