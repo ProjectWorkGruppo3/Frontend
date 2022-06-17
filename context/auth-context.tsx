@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { useContext } from 'react';
 import { User } from '../types/user';
 
@@ -22,7 +22,32 @@ const AuthContext = createContext<authContext>(null);
 const TOKEN_KEY = 'serenup-auth';
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+
   const [authState, setAuthState] = useState<AuthState | null>(null);
+
+  useEffect(() => {
+    const authStateSaved = getSavedAuthState();
+
+    setAuthState(authStateSaved);
+  }, [])
+  const getSavedAuthState = () => {
+    const data = localStorage.getItem(TOKEN_KEY);
+
+    if(!data) {
+      return null;
+    }
+
+    const authStateRetrieved  = JSON.parse(data) as AuthState;
+    authStateRetrieved.expiration = new Date(authStateRetrieved.expiration);
+
+    if(authStateRetrieved.expiration.getTime() < new Date().getTime()) {
+      localStorage.removeItem(TOKEN_KEY);
+      return null;
+    }
+
+    return authStateRetrieved;
+  }
+
 
   const isAuthenticated = (): boolean => {
     const token = localStorage.getItem(TOKEN_KEY);
@@ -30,9 +55,14 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return token !== null;
   };
 
+  const saveData = (state: AuthState) => {
+
+    localStorage.setItem(TOKEN_KEY, JSON.stringify(state));
+  }
+
   const setUser = (state: AuthState | null) => {
     if (state !== null) {
-      localStorage.setItem(TOKEN_KEY, state.token);
+      saveData(state);
     } else {
       localStorage.removeItem(TOKEN_KEY);
     }

@@ -36,10 +36,10 @@ const Login: NextPage = () => {
 
   useEffect(() => {
     if (authContext && authContext.isAuthenticated()) {
-      router.push('/');
+      router.push('/').then(_ => setLoading(false));
+    } else {
+      setLoading(false);
     }
-
-    setLoading(false);
   }, [authContext, router]);
 
   const formHandler = useForm<FormProps>({
