@@ -1,40 +1,56 @@
-import { Box, Card, Center, Container, Grid, Stack, Text } from '@mantine/core';
+import { ActionIcon, Box, Card, Grid, Text } from '@mantine/core';
 import Image from 'next/image';
+import { Device } from '../../models';
+import { MdArrowForwardIos } from 'react-icons/md'
+import { useState } from 'react';
 
 export interface DeviceCardProps {
-  deviceId: string;
+  device: Device
 }
 
 export const DeviceCard = (props: DeviceCardProps) => {
+
+  const [isHover, setIsHover] = useState<boolean>(false);
+
+	const onMouseOver = () => setIsHover(true);
+	const onMouseOut = () => setIsHover(false);
+
+
   return (
-    <Card shadow="lg" radius="md" withBorder>
+    <Card shadow="lg" radius="md" withBorder sx={{
+      backgroundColor: isHover ? '#d3d3d3' : 'white',
+      borderColor: isHover ? '#bebebe' : 'white',
+      cursor: isHover ? 'pointer' : 'default'
+    }}
+      onMouseOver={onMouseOver}
+      onMouseOut={onMouseOut}
+    >
       <Grid align="center">
-        <Grid.Col xs={4} sm={12} md={4} lg={4} xl={4}>
+        <Grid.Col px='0' xs={4} sm={12} md={4} lg={4} xl={3}>
           <Box
             sx={{
-                // width: '50%'
+                width: '70%'
             }}
           >
             <Image
-              src="/assets/smartwatch-image.png"
+              src="/assets/device.png"
               width="100%"
               height="100%"
               layout="responsive"
-              alt="smartwatch-image"
+              alt="device-image"
             />
           </Box>
         </Grid.Col>
-        <Grid.Col xs={8} sm={12} md={8} lg={8} xl={8}>
-          <Text align="center" size="md">
-            Device{' '}
-            <strong
-              style={{
-                textOverflow: 'ellipsis',
-                overflow: 'hidden',
-              }}
-            >
-              {props.deviceId}
-            </strong>
+        <Grid.Col px='0' xs={7} sm={11} md={6} lg={7} xl={8}>
+          <Text align="left" size="md" weight='bold'>
+              {props.device.name}
+          </Text>
+        </Grid.Col>
+        <Grid.Col px='0' xs={1} sm={1} md={1} lg={1} xl={1}>
+          <Text align="left" size="md" weight='bold'>
+            <ActionIcon>
+              <MdArrowForwardIos />
+            </ActionIcon>
           </Text>
         </Grid.Col>
       </Grid>

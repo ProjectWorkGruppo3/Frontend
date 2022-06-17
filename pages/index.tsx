@@ -8,7 +8,8 @@ import { useEffect } from 'react';
 import { useAuth } from '../context/auth-context';
 import {
   DeviceCard,
-  DeviceCardProps
+  DeviceCardProps,
+  NewDeviceCard
 } from '../components/home/index'
 
 const Home: NextPage = () => {
@@ -32,12 +33,9 @@ const Home: NextPage = () => {
   }
 
   const testDevice : DeviceCardProps[] = [
-    { deviceId: '3f7f795e-773e-44a4-a52e-9bdac7b0540f' },
-    { deviceId: '343fcdf2-fe6e-4615-9f4b-a69e3b6fee8e' },
-    { deviceId: 'd3d47010-a79c-45db-a1d1-43aba3e60188' },
-    { deviceId: '75e32fd1-e3f2-421a-a26d-58c3d1a7865f' },
-    { deviceId: 'f0adbd7e-d2aa-4f66-a1e5-3f6c7489329b' },
-    { deviceId: '5d1c0537-8cf3-4ca2-b33a-63f3fff65d5c' },
+    { device: { name: 'Device 1', deviceId: '3f7f795e-773e-44a4-a52e-9bdac7b0540f' } },
+    { device: { name: 'Device 2', deviceId: 'd3d47010-a79c-45db-a1d1-43aba3e60188' } },
+    { device: { name: 'Device 3', deviceId: 'f0adbd7e-d2aa-4f66-a1e5-3f6c7489329b' } },
   ]
 
 
@@ -46,7 +44,7 @@ const Home: NextPage = () => {
     <Box
       p='xl'
     >
-      <Title>Welcome, Select the device:</Title>
+      <Title>Welcome User, Select the device:</Title>
       <Divider mb='md' />
       <Grid>
         {
@@ -54,14 +52,23 @@ const Home: NextPage = () => {
             <Grid.Col
               xs={12}
               sm={6}
-              md={6} 
-              lg={3} 
-              xl={3}
+              md={4} 
+              lg={2} 
+              xl={2}
               key={index}>
-              <DeviceCard deviceId={el.deviceId} />
+              <DeviceCard {...el} />
             </Grid.Col>
           ))
         }
+        <Grid.Col
+          xs={12}
+          sm={6}
+          md={4} 
+          lg={2} 
+          xl={2}
+        >
+          <NewDeviceCard onClick={() => console.log('New')} />
+        </Grid.Col>
       </Grid>
     </Box>
   );
