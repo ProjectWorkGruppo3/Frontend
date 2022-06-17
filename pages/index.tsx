@@ -1,4 +1,14 @@
-import { Alert, Box, Center, Container, Divider, Grid, Loader, Text, Title } from '@mantine/core';
+import {
+  Alert,
+  Box,
+  Center,
+  Container,
+  Divider,
+  Grid,
+  Loader,
+  Text,
+  Title,
+} from '@mantine/core';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import Head from 'next/head';
@@ -6,10 +16,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useAuth } from '../context/auth-context';
-import {
-  DeviceCard,
-  NewDeviceCard,
-} from '../components/home/index';
+import { DeviceCard, NewDeviceCard } from '../components/home/index';
 import { AiFillAlert } from 'react-icons/ai';
 
 import { Device } from '../models';
@@ -34,30 +41,27 @@ const Home: NextPage = () => {
   }, [auth, router]);
 
   useEffect(() => {
-
     const fetchDevices = async () => {
-
-      if(auth && auth.authState) {
-
-        
-        
+      if (auth && auth.authState) {
         try {
           const devices = await apiService.getDevices({
             token: auth.authState.token,
-            userId: auth.authState.user.id
+            userId: auth.authState.user.id,
           });
 
           setDevices(devices);
         } catch (error: any) {
-          setError(error['message'] ?? 'Sorry, but something wrong happened. Retry later')
+          setError(
+            error['message'] ??
+              'Sorry, but something wrong happened. Retry later'
+          );
         } finally {
           setLoading(false);
         }
       }
-    } 
+    };
 
     fetchDevices();
-
   }, [auth]);
 
   if (loading) {
@@ -68,17 +72,15 @@ const Home: NextPage = () => {
     <Box p="xl">
       <Title>Welcome {auth!.authState!.user.email}, Select the device:</Title>
       <Divider mb="md" />
-      {
-        error
-        &&
+      {error && (
         <Center>
           <Container>
-            <Alert color='red' icon={<AiFillAlert size={16} />}>
+            <Alert color="red" icon={<AiFillAlert size={16} />}>
               <Text>{error}</Text>
             </Alert>
           </Container>
         </Center>
-      }
+      )}
       <Grid>
         {devices.map((el, index) => (
           <Grid.Col xs={12} sm={6} md={4} lg={2} xl={2} key={index}>

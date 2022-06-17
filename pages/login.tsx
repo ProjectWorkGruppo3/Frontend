@@ -36,7 +36,7 @@ const Login: NextPage = () => {
 
   useEffect(() => {
     if (authContext && authContext.isAuthenticated()) {
-      router.push('/').then(_ => setLoading(false));
+      router.push('/').then((_) => setLoading(false));
     } else {
       setLoading(false);
     }
