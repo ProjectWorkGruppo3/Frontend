@@ -3,8 +3,9 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { MantineProvider } from '@mantine/core';
 import { AuthProvider } from '../context/auth-context';
+import { AnimatePresence } from 'framer-motion';
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps, router }: AppProps) {
   return (
     <MantineProvider
       theme={{
@@ -13,7 +14,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       }}
     >
       <AuthProvider>
-        <Component {...pageProps} />
+        <AnimatePresence exitBeforeEnter>
+          <Component {...pageProps} key={router.route} />
+        </AnimatePresence>
       </AuthProvider>
     </MantineProvider>
   );
