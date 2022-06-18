@@ -20,7 +20,7 @@ import {
 } from '../components/home/index';
 
 import { Device } from '../models';
-import apiService from '../services/api-service';
+import DeviceService from '../services/device-service';
 import { toast, ToastContainer, ToastOptions } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { MdExitToApp } from 'react-icons/md';
@@ -57,7 +57,7 @@ const Home: NextPage = () => {
     const fetchDevices = async () => {
       if (auth && auth.authState) {
         try {
-          const devices = await apiService.getDevices({
+          const devices = await DeviceService.getDevices({
             token: auth.authState.token,
             userId: auth.authState.user.id,
           });
@@ -84,7 +84,7 @@ const Home: NextPage = () => {
     console.log(name, id);
 
     try {
-      await apiService.addNewDevice({
+      await DeviceService.addNewDevice({
         name: name,
         id: id,
         token: auth!.authState!.token,
@@ -124,7 +124,9 @@ const Home: NextPage = () => {
           />
           <FadeInDiv>
             <Header
-              title={`Welcome ${auth!.authState!.user.email}, select the device:`} 
+              title={`Welcome ${
+                auth!.authState!.user.email
+              }, select the device:`}
               onLogout={() => {
                 setLoading(true);
                 auth!.setAuthState(null);

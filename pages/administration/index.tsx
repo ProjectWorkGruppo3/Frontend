@@ -9,7 +9,7 @@ import {
 
 import { BsSmartwatch } from 'react-icons/bs';
 import { IoBody } from 'react-icons/io5';
-import { AiOutlinePercentage } from 'react-icons/ai'
+import { AiOutlinePercentage } from 'react-icons/ai';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../../context/auth-context';
@@ -19,45 +19,44 @@ const AdministrationPage: NextPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
 
-  
   useEffect(() => {
     if (auth && auth.isAuthenticated()) {
-      router.push('/administration/').then((_) => setLoading(false));
+      setLoading(false);
     } else {
       router.push('/login').then((_) => setLoading(false));
     }
   }, [auth, router]);
-  const testData : AlarmCardProps[] = [
+  const testData: AlarmCardProps[] = [
     {
       date: new Date(2022),
       sended: false,
-      type: 'fall'
+      type: 'fall',
     },
     {
       date: new Date(2022),
       sended: true,
-      type: 'heartbeat'
+      type: 'heartbeat',
     },
     {
       date: new Date(2022),
       sended: false,
-      type: 'low-battery'
+      type: 'low-battery',
     },
     {
       date: new Date(2022),
       sended: false,
-      type: 'other'
+      type: 'other',
     },
     {
       date: new Date(2022),
       sended: false,
-      type: 'low-battery'
+      type: 'low-battery',
     },
     {
       date: new Date(2022),
       sended: false,
-      type: 'fall'
-    }
+      type: 'fall',
+    },
   ];
 
   if (loading) {
@@ -69,16 +68,17 @@ const AdministrationPage: NextPage = () => {
       <Grid gutter="sm" mb="md">
         <Grid.Col span={9}>
           <Box mb="md">
-            <TitleLink title="Last alarms saved" link="/administration/alarms" />
+            <TitleLink
+              title="Last alarms saved"
+              link="/administration/alarms"
+            />
           </Box>
           <Grid align="center">
-            {
-              testData.map((el, index) => (
-                <Grid.Col span={4} key={index}>
-                  <AlarmCard sended={el.sended} date={el.date} type={el.type} />
-                </Grid.Col>
-              ))
-            }
+            {testData.map((el, index) => (
+              <Grid.Col span={4} key={index}>
+                <AlarmCard sended={el.sended} date={el.date} type={el.type} />
+              </Grid.Col>
+            ))}
           </Grid>
         </Grid.Col>
         <Grid.Col span={3}>
@@ -87,7 +87,7 @@ const AdministrationPage: NextPage = () => {
               logo={<IoBody size={64} color="green" />}
               statName="Admin Users"
               value={10}
-              link='/administration/admins'
+              link="/administration/admins"
             />
           </Box>
           <Box px="xl" mx="md">
@@ -95,7 +95,7 @@ const AdministrationPage: NextPage = () => {
               logo={<BsSmartwatch size={64} color="grey" />}
               statName="Bracelet"
               value={10}
-              link='/administration/bracelets'
+              link="/administration/bracelets"
             />
           </Box>
         </Grid.Col>

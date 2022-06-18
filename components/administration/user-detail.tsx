@@ -24,7 +24,7 @@ export const UserDetail = (props: UserDetailProps) => {
   return (
     <Card style={{ height: '100%' }}>
       <Box style={{ height: '10%' }}>
-        <Group position='right'>
+        <Group position="right">
           <ActionIcon onClick={() => props.onClose()}>
             <AiOutlineClose />
           </ActionIcon>

@@ -18,7 +18,7 @@ import { validateEmail } from '../utils/validations';
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import ApiService from '../services/api-service';
+import AuthService from '../services/auth-service';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useAuth } from '../context/auth-context';
@@ -65,7 +65,7 @@ const Login: NextPage = () => {
     setLoading(true);
 
     try {
-      const logged = await ApiService.login({ ...props });
+      const logged = await AuthService.login({ ...props });
 
       if (!logged) {
         return notify('Username or/and password are not correct', {

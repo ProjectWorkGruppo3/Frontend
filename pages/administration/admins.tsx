@@ -1,19 +1,21 @@
-import {
-  Box,
-  Grid,
-  Title,
-  Center,
-} from '@mantine/core';
+import { Box, Grid, Title, Center } from '@mantine/core';
 import { NextPage } from 'next';
-import { CardFadeIn, EaseInOutDiv, FadeInDiv, RootAnimationDiv } from '../../animations';
+import {
+  CardFadeIn,
+  EaseInOutDiv,
+  FadeInDiv,
+  RootAnimationDiv,
+} from '../../animations';
 import { Header } from '../../components/common';
 import { UserDetail, UserSidebar } from '../../components/administration';
 import Head from 'next/head';
 import { useState } from 'react';
 import { User } from '../../models/user';
+import { useRouter } from 'next/router';
 
 const AdminUsersPage: NextPage = () => {
   const [selectedUser, setSelectedUser] = useState<User>();
+  const router = useRouter();
 
   return (
     <RootAnimationDiv>
@@ -23,6 +25,7 @@ const AdminUsersPage: NextPage = () => {
       <Box pt="xl" px="2%">
         <FadeInDiv>
           <Header
+            onBack={() => router.back()}
             title="Admins"
             onLogout={() => {
               // FIXME

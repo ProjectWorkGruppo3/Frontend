@@ -25,7 +25,7 @@ import { validateEmail } from '../utils/validations';
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import ApiService from '../services/api-service';
+import AuthService from '../services/auth-service';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useAuth } from '../context/auth-context';
@@ -96,7 +96,7 @@ const SignUp: NextPage = () => {
     setLoading(true);
 
     try {
-      await ApiService.signup({
+      await AuthService.signup({
         email: props.email,
         password: props.password,
         birthday: new Date(props.birthday),

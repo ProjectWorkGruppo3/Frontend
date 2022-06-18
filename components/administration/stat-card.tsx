@@ -9,7 +9,6 @@ export interface StatCardProps {
 }
 
 export const StatCard = (props: StatCardProps) => {
-
   return (
     <Link href={props.link ?? '#'}>
       <Card
