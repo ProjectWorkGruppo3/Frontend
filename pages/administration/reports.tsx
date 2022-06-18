@@ -4,7 +4,7 @@ import { NextPage } from "next";
 const ReportsPage : NextPage = () => {
     return (
         <Center>
-            Reports Page
+            Reports Page. Working in progress 👷🏿‍♀️
         </Center>
     )
 }

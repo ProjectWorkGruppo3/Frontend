@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Text, Title } from '@mantine/core';
+import { Box, Container, Grid, Loader, Text, Title } from '@mantine/core';
 import { NextPage } from 'next';
 import {
   StatCard,
@@ -10,9 +10,23 @@ import {
 import { BsSmartwatch } from 'react-icons/bs';
 import { IoBody } from 'react-icons/io5';
 import { AiOutlinePercentage } from 'react-icons/ai'
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useAuth } from '../../context/auth-context';
 
 const AdministrationPage: NextPage = () => {
+  const auth = useAuth();
+  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(true);
 
+  
+  useEffect(() => {
+    if (auth && auth.isAuthenticated()) {
+      router.push('/administration/').then((_) => setLoading(false));
+    } else {
+      router.push('/login').then((_) => setLoading(false));
+    }
+  }, [auth, router]);
   const testData : AlarmCardProps[] = [
     {
       date: new Date(2022),
@@ -44,7 +58,11 @@ const AdministrationPage: NextPage = () => {
       sended: false,
       type: 'fall'
     }
-  ]
+  ];
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <Box p="xl">
@@ -82,7 +100,7 @@ const AdministrationPage: NextPage = () => {
           </Box>
         </Grid.Col>
       </Grid>
-      <Box mb="md">
+      {/* <Box mb="md">
         <Box>
           <TitleLink link="/administration/reports" title="Report" />
         </Box>
@@ -113,7 +131,7 @@ const AdministrationPage: NextPage = () => {
             </Box>
           </Grid.Col>
         </Grid>
-      </Box>
+      </Box> */}
     </Box>
   );
 };
