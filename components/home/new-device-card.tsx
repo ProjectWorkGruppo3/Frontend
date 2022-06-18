@@ -2,7 +2,7 @@ import { ActionIcon, Card, Grid, Text } from '@mantine/core';
 import { AiOutlinePlus } from 'react-icons/ai';
 
 export interface NewDeviceCardProps {
-  onClick: () => void
+  onClick: () => void;
 }
 
 export const NewDeviceCard = (props: NewDeviceCardProps) => {
@@ -18,9 +18,9 @@ export const NewDeviceCard = (props: NewDeviceCardProps) => {
           </Text>
         </Grid.Col>
         <Grid.Col px="0" xs={1} sm={1} md={1} lg={1} xl={1}>
-            <ActionIcon onClick={props.onClick}>
-              <AiOutlinePlus size={24} />
-            </ActionIcon>
+          <ActionIcon onClick={props.onClick}>
+            <AiOutlinePlus size={16} />
+          </ActionIcon>
         </Grid.Col>
       </Grid>
     </Card>

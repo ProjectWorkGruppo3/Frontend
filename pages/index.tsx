@@ -1,7 +1,9 @@
 import {
+  ActionIcon,
   Box,
   Divider,
   Grid,
+  Group,
   Loader,
   Title,
 } from '@mantine/core';
@@ -20,6 +22,7 @@ import { Device } from '../models';
 import apiService from '../services/api-service';
 import { toast, ToastContainer, ToastOptions } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { GiExitDoor } from 'react-icons/gi';
 
 const Home: NextPage = () => {
   const auth = useAuth();
@@ -39,7 +42,8 @@ const Home: NextPage = () => {
     }
   }, [auth, router]);
 
-  const notify = (message: string, options: ToastOptions) => toast(message, options);
+  const notify = (message: string, options: ToastOptions) =>
+    toast(message, options);
 
   useEffect(() => {
     const fetchDevices = async () => {
@@ -54,9 +58,10 @@ const Home: NextPage = () => {
         } catch (error: any) {
           notify(
             error['message'] ??
-              'Sorry, but something wrong happened. Retry later', {
-                type: 'error'
-              }
+              'Sorry, but something wrong happened. Retry later',
+            {
+              type: 'error',
+            }
           );
         } finally {
           setLoading(false);
@@ -78,12 +83,13 @@ const Home: NextPage = () => {
       });
 
       notify(`Successfully added device (${name}) `, {
-        type: 'success'
+        type: 'success',
       });
     } catch (error: any) {
       notify(
-        error['message'] ?? 'Sorry, but something wrong happened. Retry later', {
-          type: 'error'
+        error['message'] ?? 'Sorry, but something wrong happened. Retry later',
+        {
+          type: 'error',
         }
       );
     } finally {
@@ -103,7 +109,26 @@ const Home: NextPage = () => {
           onSubmit={onNewDeviceSubmit}
           onClose={() => setNewDeviceModalOpened(false)}
         />
-        <Title>Welcome {auth!.authState!.user.email}, Select the device:</Title>
+        <Grid>
+          <Grid.Col span={10}>
+            <Title order={2}>
+              Welcome {auth!.authState!.user.email}, Select the device:
+            </Title>
+          </Grid.Col>
+          <Grid.Col span={2}>
+            <Group position="right">
+              <ActionIcon
+                color="indigo"
+                onClick={() => {
+                  setLoading(true);
+                  auth!.setAuthState(null);
+                }}
+              >
+                <GiExitDoor size={24} />
+              </ActionIcon>
+            </Group>
+          </Grid.Col>
+        </Grid>
         <Divider mb="md" />
         <Grid>
           {devices.map((el, index) => (

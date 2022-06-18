@@ -43,7 +43,8 @@ const Login: NextPage = () => {
     }
   }, [authContext, router]);
 
-  const notify = (message: string, options: ToastOptions) => toast(message, options);
+  const notify = (message: string, options: ToastOptions) =>
+    toast(message, options);
 
   const formHandler = useForm<FormProps>({
     initialValues: {
@@ -65,11 +66,9 @@ const Login: NextPage = () => {
       const logged = await ApiService.login({ ...props });
 
       if (!logged) {
-        return notify(
-          'Username or/and password are not correct', {
-            type: 'error'
-          }
-        );
+        return notify('Username or/and password are not correct', {
+          type: 'error',
+        });
       }
 
       if (authContext) {
@@ -84,7 +83,7 @@ const Login: NextPage = () => {
     } catch (error: any) {
       console.log(error);
       notify('Sorry, but something wrong happened. Retry later', {
-        type: 'error'
+        type: 'error',
       });
     } finally {
       setLoading(false);

@@ -26,8 +26,8 @@ export const DeviceCard = (props: DeviceCardProps) => {
           borderColor: isHover ? '#bebebe' : 'white',
           cursor: isHover ? 'pointer' : 'default',
         }}
-        // onMouseOver={onMouseOver} FIXME
-        // onMouseOut={onMouseOut}
+        onMouseOver={onMouseOver}
+        onMouseOut={onMouseOut}
       >
         <Grid align="center">
           <Grid.Col px="0" xs={4} sm={12} md={4} lg={4} xl={3}>
