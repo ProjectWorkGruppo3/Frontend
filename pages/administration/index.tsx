@@ -85,7 +85,6 @@ const AdministrationPage: NextPage = () => {
                   <StatCard
                     name="Bracelets"
                     value={200}
-                    onClick={() => router.push('/administration/bracelets')}
                   />
                 </CardFadeIn>
               </Grid.Col>
