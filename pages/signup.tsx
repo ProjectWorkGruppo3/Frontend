@@ -9,17 +9,14 @@ import {
   Group,
   Title,
   Box,
-  Alert,
   Grid,
   NumberInput,
-  ActionIcon,
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { MdOutlineAlternateEmail, MdPassword } from 'react-icons/md';
-import { BsSmartwatch, BsCalendarDate } from 'react-icons/bs';
+import { BsCalendarDate } from 'react-icons/bs';
 import { FaWeight } from 'react-icons/fa';
 import { GiBodyHeight } from 'react-icons/gi';
-import { AiOutlineQrcode } from 'react-icons/ai';
 
 import { useForm } from '@mantine/form';
 import { validateEmail } from '../utils/validations';

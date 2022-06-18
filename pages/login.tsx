@@ -9,7 +9,6 @@ import {
   Group,
   Title,
   Box,
-  Alert,
 } from '@mantine/core';
 import { MdOutlineAlternateEmail, MdPassword } from 'react-icons/md';
 

@@ -1,4 +1,3 @@
-import { User } from '../types/user';
 import axios from 'axios';
 import config from '../utils/config';
 import { Device } from '../models';
@@ -64,20 +63,7 @@ const ApiService = () => {
 
   const getDevices = async (props: GetDevicesProps): Promise<Device[]> => {
     // FIXME
-    return [
-      {
-        name: 'Device 1',
-        deviceId: '3f7f795e-773e-44a4-a52e-9bdac7b0540f',
-      },
-      {
-        name: 'Device 2',
-        deviceId: 'd3d47010-a79c-45db-a1d1-43aba3e60188',
-      },
-      {
-        name: 'Device 3',
-        deviceId: 'f0adbd7e-d2aa-4f66-a1e5-3f6c7489329b',
-      },
-    ];
+    return [];
 
     const result = await axios.get(
       `${config.API_URL}/users/${props.userId}/devices`, //FIXME
