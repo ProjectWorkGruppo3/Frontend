@@ -1,36 +1,31 @@
-import { Card, Grid, Title, Text } from '@mantine/core';
+import { Card, Grid, Title, Text, ActionIcon } from '@mantine/core';
 import Link from 'next/link';
+import { IoIosArrowForward } from 'react-icons/io';
 
 export interface StatCardProps {
-  logo: JSX.Element;
-  statName: string;
+  name: string;
   value: number | string;
-  link?: string;
+  onClick?: () => void;
 }
 
 export const StatCard = (props: StatCardProps) => {
   return (
-    <Link href={props.link ?? '#'}>
-      <Card
-        shadow="xl"
-        withBorder
-        radius="md"
-        sx={{
-          ':hover': {
-            cursor: props.link ? 'pointer' : 'default',
-          },
-        }}
-      >
-        <Grid>
-          <Grid.Col span={2}>{props.logo}</Grid.Col>
-          <Grid.Col span={9} offset={1}>
-            <Text size="md">{props.statName}</Text>
-            <Text size="xl" weight="bold">
-              {props.value}
-            </Text>
+    <Card shadow="xl" radius="md">
+      <Grid justify="flex-start" align="center">
+        <Grid.Col span={10}>
+          <Text>{props.name}</Text>
+          <Text style={{ fontSize: '2rem' }} weight="bold">
+            {props.value}
+          </Text>
+        </Grid.Col>
+        {props.onClick && (
+          <Grid.Col span={2}>
+            <ActionIcon onClick={() => props.onClick!()}>
+              <IoIosArrowForward />
+            </ActionIcon>
           </Grid.Col>
-        </Grid>
-      </Card>
-    </Link>
+        )}
+      </Grid>
+    </Card>
   );
 };

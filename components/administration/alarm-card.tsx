@@ -5,6 +5,7 @@ import { GiFalling } from 'react-icons/gi';
 import { RiAlarmWarningLine } from 'react-icons/ri';
 import { TbHeartbeat } from 'react-icons/tb';
 import dayjs from 'dayjs';
+import { fullDatetimeWithoutYear } from '../../utils/date-format';
 
 type AlarmType = 'fall' | 'heartbeat' | 'low-battery' | 'other';
 
@@ -27,9 +28,6 @@ export const AlarmCard = (props: AlarmCardProps) => {
         return <RiAlarmWarningLine size={28} />;
     }
   };
-
-  const formatDate = dayjs(props.date).format('DD/MM  h:mm:ss A');
-
   return (
     <Card shadow="xl" radius="sm">
       <Grid align="center">
@@ -45,8 +43,8 @@ export const AlarmCard = (props: AlarmCardProps) => {
             {getIconAlarmType(props.type)}
           </Tooltip>
         </Grid.Col>
-        <Grid.Col span={9}>
-          <Text>{formatDate}</Text>
+        <Grid.Col span={8}>
+          <Text>{fullDatetimeWithoutYear(props.date)}</Text>
         </Grid.Col>
       </Grid>
     </Card>
