@@ -9,17 +9,14 @@ import {
   Group,
   Title,
   Box,
-  Alert,
   Grid,
   NumberInput,
-  ActionIcon,
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { MdOutlineAlternateEmail, MdPassword } from 'react-icons/md';
-import { BsSmartwatch, BsCalendarDate } from 'react-icons/bs';
+import { BsCalendarDate } from 'react-icons/bs';
 import { FaWeight } from 'react-icons/fa';
 import { GiBodyHeight } from 'react-icons/gi';
-import { AiOutlineQrcode } from 'react-icons/ai';
 
 import { useForm } from '@mantine/form';
 import { validateEmail } from '../utils/validations';
@@ -30,13 +27,13 @@ import ApiService from '../services/api-service';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useAuth } from '../context/auth-context';
-import dayjs from 'dayjs';
+import { toast, ToastContainer, ToastOptions } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface FormProps {
   email: string;
   password: string;
   confirmPassword: string;
-  deviceCode: string;
   weight: string;
   height: string;
   birthday: string;
@@ -44,7 +41,7 @@ interface FormProps {
 
 const SignUp: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const authContext = useAuth();
 
@@ -54,8 +51,10 @@ const SignUp: NextPage = () => {
     }
 
     setLoading(false);
-
   }, [authContext, router]);
+
+  const notify = (message: string, options: ToastOptions) =>
+    toast(message, options);
 
   const formHandler = useForm<FormProps>({
     initialValues: {
@@ -63,7 +62,6 @@ const SignUp: NextPage = () => {
       password: '',
       confirmPassword: '',
       birthday: '',
-      deviceCode: '',
       height: '',
       weight: '66',
     },
@@ -75,15 +73,17 @@ const SignUp: NextPage = () => {
       confirmPassword: (value, values) =>
         value === values.password ? null : 'Passwords not coincide',
       height: (value) => {
-        console.log(parseInt(value))
-        return !isNaN(parseInt(value)) && parseInt(value) !== 0 ? null : 'Please, insert a valid height'
+        console.log(parseInt(value));
+        return !isNaN(parseInt(value)) && parseInt(value) !== 0
+          ? null
+          : 'Please, insert a valid height';
       },
       weight: (value) => {
-        console.log(parseInt(value))
-        return !isNaN(parseInt(value)) && parseInt(value) !== 0 ? null : 'Please, insert a valid weight';
-      },
-      deviceCode: (value) =>
-        value.length !== 0 ? null : 'Please, insert the device code',
+        console.log(parseInt(value));
+        return !isNaN(parseInt(value)) && parseInt(value) !== 0
+          ? null
+          : 'Please, insert a valid weight';
+      }
     },
   });
 
@@ -95,17 +95,20 @@ const SignUp: NextPage = () => {
       await ApiService.signup({
         email: props.email,
         password: props.password,
-        deviceCode: props.deviceCode,
         birthday: new Date(props.birthday),
         height: parseInt(props.height),
         weight: parseInt(props.weight),
       });
 
-
       return router.replace('/');
     } catch (error: any) {
-      console.log(error)
-      setError(error['message'] ?? 'Sorry, but something wrong happened. Retry later');
+      console.log(error);
+      notify(
+        error['message'] ?? 'Sorry, but something wrong happened. Retry later',
+        {
+          type: 'error',
+        }
+      );
     } finally {
       setLoading(false);
     }
@@ -141,33 +144,6 @@ const SignUp: NextPage = () => {
           </Center>
           <form onSubmit={formHandler.onSubmit(onSubmit)}>
             <Grid>
-              <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                <TextInput
-                  id="device-input"
-                  label="Device ID"
-                  description="ID of your smart bracelet"
-                  placeholder="123-32131-31231"
-                  mb="md"
-                  icon={<BsSmartwatch size={16} />}
-                  {...formHandler.getInputProps('deviceCode')}
-                  sx={{
-                    'input:focus': {
-                      borderColor: 'orange',
-                    },
-                  }}
-                  rightSection={
-                    <ActionIcon
-                      onClick={() => {
-                        // TODO qr reader
-                        console.log('Open QR Reader');
-                      }}
-                    >
-                      <AiOutlineQrcode />
-                    </ActionIcon>
-                  }
-                />
-              </Grid.Col>
-
               <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
                 <TextInput
                   id="email-input"
@@ -251,12 +227,6 @@ const SignUp: NextPage = () => {
               </Grid.Col>
             </Grid>
 
-            {error && (
-              <Alert color="red" mb="sm">
-                {error}
-              </Alert>
-            )}
-
             <Group position="center">
               <Button type="submit" color="orange" loading={loading}>
                 Sign Up
@@ -265,6 +235,16 @@ const SignUp: NextPage = () => {
           </form>
         </Card>
       </Container>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+        pauseOnHover
+      />
     </>
   );
 };

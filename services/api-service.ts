@@ -1,17 +1,14 @@
-import { User } from '../types/user';
 import axios from 'axios';
 import config from '../utils/config';
-
-interface LoginProps {
-  email: string;
-  password: string;
-}
-
-type LoginResult = {
-  user: User;
-  token: string;
-  expiration: Date;
-} | null;
+import { Device } from '../models';
+import {
+  AddNewDeviceData,
+  GetDeviceData,
+  GetDevicesProps,
+  LoginProps,
+  LoginResult,
+  SignUpProps,
+} from '../types/services/api-service';
 
 const ApiService = () => {
   const login = async ({
@@ -28,6 +25,7 @@ const ApiService = () => {
         headers: {
           'Content-Type': 'application/json',
         },
+        validateStatus: (status) => status <= 500,
       }
     );
 
@@ -39,16 +37,6 @@ const ApiService = () => {
 
     return loginResult;
   };
-
-  interface SignUpProps {
-    email: string;
-    password: string;
-    birthday: Date;
-    deviceCode: string;
-    height: number;
-    weight: number;
-  }
-
   const signup = async (props: SignUpProps) => {
     const result = await axios.post(
       `${config.API_URL}/Users/register`,
@@ -58,27 +46,93 @@ const ApiService = () => {
         weight: props.weight,
         height: props.height,
         dayOfBirth: props.birthday,
-        deviceCode: props.deviceCode,
       },
       {
         headers: {
           'Content-Type': 'application/json',
         },
-        validateStatus: () => true
-      },
-      
+        validateStatus: () => true,
+      }
     );
 
     if (result.status >= 400) {
-      console.log(result.data)
-      throw new Error(result.data['message'] ?? 'Somethin wrong happened')
+      console.log(result.data);
+      throw new Error(result.data['message'] ?? 'Somethin wrong happened');
+    }
+  };
+
+  const getDevices = async (props: GetDevicesProps): Promise<Device[]> => {
+    // FIXME
+    return [];
+
+    const result = await axios.get(
+      `${config.API_URL}/users/${props.userId}/devices`, //FIXME
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: props.token,
+        },
+        validateStatus: () => true,
+      }
+    );
+
+    if (result.status >= 400) {
+      console.log(result.data);
+      throw new Error(result.data['message'] ?? 'Somethin wrong happened');
     }
 
+    const data = result.data as Device[];
+
+    return data;
+  };
+
+  const getDeviceData = async (props: GetDeviceData) => {
+    const result = await axios.get(
+      `${config.API_URL}/users/${props.userId}/devices/${props.deviceId}`, //FIXME
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: props.token,
+        },
+        validateStatus: () => true,
+      }
+    );
+
+    if (result.status >= 400) {
+      console.log(result.data);
+      throw new Error(result.data['message'] ?? 'Somethin wrong happened');
+    }
+  };
+
+  const addNewDevice = async (props: AddNewDeviceData) => {
+    return;
+    const result = await axios.post(
+      `${config.API_URL}/devices/`, //FIXME
+      {
+        name: props.name,
+        id: props.id,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: props.token,
+        },
+        validateStatus: () => true,
+      }
+    );
+
+    if (result.status >= 400) {
+      console.log(result.data);
+      throw new Error(result.data['message'] ?? 'Somethin wrong happened');
+    }
   };
 
   return {
     login,
     signup,
+    getDevices,
+    getDeviceData,
+    addNewDevice,
   };
 };
 
