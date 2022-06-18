@@ -1,68 +1,71 @@
 import {
-    ActionIcon,
   Box,
-  Card,
-  Center,
-  Divider,
   Grid,
-  Group,
-  Stack,
-  Table,
-  Text,
   Title,
+  Center,
 } from '@mantine/core';
 import { NextPage } from 'next';
-import { FiEdit } from 'react-icons/fi';
-import { AiOutlineUserDelete } from 'react-icons/ai';
-
+import { CardFadeIn, EaseInOutDiv, FadeInDiv, RootAnimationDiv } from '../../animations';
+import { Header } from '../../components/common';
+import { UserDetail, UserSidebar } from '../../components/administration';
+import Head from 'next/head';
+import { useState } from 'react';
+import { User } from '../../models/user';
 
 const AdminUsersPage: NextPage = () => {
+  const [selectedUser, setSelectedUser] = useState<User>();
+
   return (
-    <Box py="xl" px='2%'>
-      <Grid>
-        <Grid.Col span={9}>
-          <Stack>
-            <Box>
-              <Title>Admins</Title>
-              <Divider />
-            </Box>
-            <Box>
-              {Array.from({ length: 20 }, (v, k) => (
-                <Card mb="sm" shadow="md" radius="lg">
-                  <Grid>
-                    <Grid.Col span={1}>
-                      <Text align="left">#1</Text>
-                    </Grid.Col>
-                    <Grid.Col span={5}>
-                      <Text align="left">User</Text>
-                    </Grid.Col>
-                    <Grid.Col span={5}>
-                      <Text align="left">user@user.user</Text>
-                    </Grid.Col>
-                    <Grid.Col span={1}>
-                      <Group>
-                        <ActionIcon color='green'>
-                            <FiEdit size={24} />
-                        </ActionIcon>
-                        <ActionIcon color='red'>
-                            <AiOutlineUserDelete size={24} />
-                        </ActionIcon>
-                      </Group>
-                    </Grid.Col>
-                  </Grid>
-                </Card>
-              ))}
-            </Box>
-          </Stack>
-        </Grid.Col>
-        <Grid.Col span={1}>
-            <Divider orientation='vertical' />
-        </Grid.Col>
-        <Grid.Col span={2}>
-            Cards
-        </Grid.Col>
-      </Grid>
-    </Box>
+    <RootAnimationDiv>
+      <Head>
+        <title>Administration Seren Up</title>
+      </Head>
+      <Box pt="xl" px="2%">
+        <FadeInDiv>
+          <Header
+            title="Admins"
+            onLogout={() => {
+              // FIXME
+            }}
+          />
+        </FadeInDiv>
+        <CardFadeIn>
+          <Grid style={{ height: '90vh' }}>
+            <Grid.Col span={3} style={{ height: '100%' }}>
+              <UserSidebar
+                users={Array.from({ length: 5 }, (v, k) => ({
+                  id: `${k}`,
+                  email: `email ${k}`,
+                  birthday: new Date(Date.now()),
+                  name: `name ${k}`,
+                  surname: `surname ${k}`,
+                  height: k + 100,
+                  weight: k + 50,
+                }))}
+                onClick={(user) => setSelectedUser(user)}
+                onSearch={(value) => console.log(value)}
+              />
+            </Grid.Col>
+            <Grid.Col span={9} style={{ height: '100%' }}>
+              {selectedUser ? (
+                <EaseInOutDiv style={{ height: '100%' }}>
+                  <UserDetail
+                    user={selectedUser}
+                    onClose={() => setSelectedUser(undefined)}
+                    onSave={() => console.log('save')}
+                    onDelete={() => console.log('delete')}
+                  />
+                </EaseInOutDiv>
+              ) : (
+                <Center>
+                  <Title order={5}>Select an user</Title>
+                </Center>
+              )}
+            </Grid.Col>
+          </Grid>
+        </CardFadeIn>
+      </Box>
+    </RootAnimationDiv>
   );
 };
 

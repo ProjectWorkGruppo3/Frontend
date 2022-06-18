@@ -30,6 +30,7 @@ import {
   RootAnimationDiv,
   StaggerDiv,
 } from '../animations';
+import { Header } from '../components/common';
 
 const Home: NextPage = () => {
   const auth = useAuth();
@@ -122,28 +123,13 @@ const Home: NextPage = () => {
             onClose={() => setNewDeviceModalOpened(false)}
           />
           <FadeInDiv>
-            <Grid>
-              <Grid.Col span={10}>
-                <Title order={2}>
-                  Welcome {auth!.authState!.user.email}, select the device:
-                </Title>
-              </Grid.Col>
-              <Grid.Col span={2}>
-                <Group position="right">
-                  <ActionIcon
-                    color="dark"
-                    onClick={() => {
-                      setLoading(true);
-                      auth!.setAuthState(null);
-                    }}
-                  >
-                    <MdExitToApp size={24} />
-                  </ActionIcon>
-                </Group>
-              </Grid.Col>
-            </Grid>
-
-            <Divider mb="md" />
+            <Header
+              title={`Welcome ${auth!.authState!.user.email}, select the device:`} 
+              onLogout={() => {
+                setLoading(true);
+                auth!.setAuthState(null);
+              }}
+            />
           </FadeInDiv>
           <FadeInDiv>
             <Grid align="center">
