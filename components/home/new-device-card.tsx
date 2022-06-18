@@ -7,17 +7,16 @@ export interface NewDeviceCardProps {
 }
 
 export const NewDeviceCard = (props: NewDeviceCardProps) => {
-
   const [isHover, setIsHover] = useState<boolean>(false);
 
-	const onMouseOver = () => setIsHover(true);
-	const onMouseOut = () => setIsHover(false);
+  const onMouseOver = () => setIsHover(true);
+  const onMouseOut = () => setIsHover(false);
 
   return (
-    <Card 
-      shadow={isHover ? "xl" : "sm"} 
-      radius="md" 
-      withBorder 
+    <Card
+      shadow={isHover ? 'xl' : 'sm'}
+      radius="md"
+      withBorder
       onClick={props.onClick}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
@@ -25,8 +24,8 @@ export const NewDeviceCard = (props: NewDeviceCardProps) => {
         ':hover': {
           backgroundColor: isHover ? '#f7f5f5' : 'white',
           cursor: 'pointer',
-          transition: '0.4s'
-        }
+          transition: '0.4s',
+        },
       }}
     >
       <Group position="center" grow>

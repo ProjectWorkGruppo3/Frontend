@@ -24,6 +24,12 @@ import apiService from '../services/api-service';
 import { toast, ToastContainer, ToastOptions } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { MdExitToApp } from 'react-icons/md';
+import {
+  CardFadeIn,
+  FadeInDiv,
+  RootAnimationDiv,
+  StaggerDiv,
+} from '../animations';
 
 const Home: NextPage = () => {
   const auth = useAuth();
@@ -100,63 +106,76 @@ const Home: NextPage = () => {
 
   if (loading) {
     return (
-      <Center>
+      <Center my="xl">
         <Loader />
       </Center>
     );
   }
 
   return (
-    <>
-      <Box p="xl" mb="md">
-        <NewDeviceModal
-          opened={newDeviceModalOpened}
-          onSubmit={onNewDeviceSubmit}
-          onClose={() => setNewDeviceModalOpened(false)}
+    <RootAnimationDiv>
+      <StaggerDiv>
+        <Box p="xl" mb="md">
+          <NewDeviceModal
+            opened={newDeviceModalOpened}
+            onSubmit={onNewDeviceSubmit}
+            onClose={() => setNewDeviceModalOpened(false)}
+          />
+          <FadeInDiv>
+            <Grid>
+              <Grid.Col span={10}>
+                <Title order={2}>
+                  Welcome {auth!.authState!.user.email}, select the device:
+                </Title>
+              </Grid.Col>
+              <Grid.Col span={2}>
+                <Group position="right">
+                  <ActionIcon
+                    color="dark"
+                    onClick={() => {
+                      setLoading(true);
+                      auth!.setAuthState(null);
+                    }}
+                  >
+                    <MdExitToApp size={24} />
+                  </ActionIcon>
+                </Group>
+              </Grid.Col>
+            </Grid>
+
+            <Divider mb="md" />
+          </FadeInDiv>
+          <FadeInDiv>
+            <Grid align="center">
+              {devices.map((el, index) => (
+                <Grid.Col xs={12} sm={6} md={4} lg={2} xl={2} key={index}>
+                  <CardFadeIn>
+                    <DeviceCard device={el} />
+                  </CardFadeIn>
+                </Grid.Col>
+              ))}
+              <Grid.Col xs={12} sm={1} md={1} lg={1} xl={1}>
+                <CardFadeIn>
+                  <NewDeviceCard
+                    onClick={() => setNewDeviceModalOpened(true)}
+                  />
+                </CardFadeIn>
+              </Grid.Col>
+            </Grid>
+          </FadeInDiv>
+        </Box>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          draggable
+          pauseOnHover
         />
-        <Grid>
-          <Grid.Col span={10}>
-            <Title order={2}>
-              Welcome {auth!.authState!.user.email}, select the device:
-            </Title>
-          </Grid.Col>
-          <Grid.Col span={2}>
-            <Group position="right">
-              <ActionIcon
-                color="dark"
-                onClick={() => {
-                  setLoading(true);
-                  auth!.setAuthState(null);
-                }}
-              >
-                <MdExitToApp size={24} />
-              </ActionIcon>
-            </Group>
-          </Grid.Col>
-        </Grid>
-        <Divider mb="md" />
-        <Grid align='center'>
-          {devices.map((el, index) => (
-            <Grid.Col xs={12} sm={6} md={4} lg={2} xl={2} key={index}>
-              <DeviceCard device={el} />
-            </Grid.Col>
-          ))}
-          <Grid.Col xs={12} sm={1} md={1} lg={1} xl={1}>
-            <NewDeviceCard onClick={() => setNewDeviceModalOpened(true)} />
-          </Grid.Col>
-        </Grid>
-      </Box>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        draggable
-        pauseOnHover
-      />
-    </>
+      </StaggerDiv>
+    </RootAnimationDiv>
   );
 };
 

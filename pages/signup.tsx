@@ -11,6 +11,8 @@ import {
   Box,
   Grid,
   NumberInput,
+  Text,
+  Stack,
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { MdOutlineAlternateEmail, MdPassword } from 'react-icons/md';
@@ -29,6 +31,8 @@ import Head from 'next/head';
 import { useAuth } from '../context/auth-context';
 import { toast, ToastContainer, ToastOptions } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FadeInDiv, RootAnimationDiv, StaggerDiv } from '../animations';
+import Link from 'next/link';
 
 interface FormProps {
   email: string;
@@ -83,7 +87,7 @@ const SignUp: NextPage = () => {
         return !isNaN(parseInt(value)) && parseInt(value) !== 0
           ? null
           : 'Please, insert a valid weight';
-      }
+      },
     },
   });
 
@@ -115,126 +119,146 @@ const SignUp: NextPage = () => {
   };
 
   return (
-    <>
+    <RootAnimationDiv>
       <Head>
         <title>SerenUp - Sign Up</title>
         <meta name="description" content="Sign Up to the Seren Up Web App" />
       </Head>
-      <Container my="xl">
-        <Card radius="md">
-          <Container mt="md">
-            <Title align="center">Sign Up</Title>
-          </Container>
+      <StaggerDiv>
+        <Container my="xl">
+          <FadeInDiv>
+            <Card radius="md">
+              <Container mt="md">
+                <Title align="center">Sign Up</Title>
+              </Container>
 
-          <Center>
-            <Box
-              sx={{
-                width: '60%',
-              }}
-              my="md"
-            >
-              <Image
-                src="/assets/logo.png"
-                width="100%"
-                height="25%"
-                layout="responsive"
-                alt="logo"
-              />
-            </Box>
-          </Center>
-          <form onSubmit={formHandler.onSubmit(onSubmit)}>
-            <Grid>
-              <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                <TextInput
-                  id="email-input"
-                  label="E-mail"
-                  description="E-mail you have used to register"
-                  placeholder="your@email.com"
-                  mb="md"
-                  icon={<MdOutlineAlternateEmail size={16} />}
-                  {...formHandler.getInputProps('email')}
+              <Center>
+                <Box
                   sx={{
-                    'input:focus': {
-                      borderColor: 'orange',
-                    },
+                    width: '60%',
                   }}
-                />
-              </Grid.Col>
-              <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                <PasswordInput
-                  id="pwd-input"
-                  label="Password"
-                  description="Write the password"
-                  placeholder="yoursecretpassword"
-                  mb="sm"
-                  icon={<MdPassword size={16} />}
-                  {...formHandler.getInputProps('password')}
-                  sx={{
-                    'div:focus-within': {
-                      borderColor: 'orange',
-                    },
-                  }}
-                />
-              </Grid.Col>
-              <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                <PasswordInput
-                  id="confirm-pwd-input"
-                  label="Confirm Password"
-                  description="Type again the password"
-                  placeholder="yoursecretpassword"
-                  mb="sm"
-                  icon={<MdPassword size={16} />}
-                  {...formHandler.getInputProps('confirmPassword')}
-                  sx={{
-                    'div:focus-within': {
-                      borderColor: 'orange',
-                    },
-                  }}
-                />
-              </Grid.Col>
-              <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                <DatePicker
-                  id="birthday-input"
-                  label="Date of birth"
-                  description="Select your birthday"
-                  mb="sm"
-                  maxDate={new Date()}
-                  icon={<BsCalendarDate size={16} />}
-                  {...formHandler.getInputProps('birthday')}
-                />
-              </Grid.Col>
-              <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                <NumberInput
-                  id="weight-input"
-                  label="Weight (kg)"
-                  description="What's your weigth?"
-                  mb="sm"
-                  icon={<FaWeight size={16} />}
-                  {...formHandler.getInputProps('weight')}
-                  hideControls
-                />
-              </Grid.Col>
-              <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                <NumberInput
-                  id="height-input"
-                  label="Height (cm)"
-                  description="What's your weigth?"
-                  mb="sm"
-                  icon={<GiBodyHeight size={16} />}
-                  {...formHandler.getInputProps('height')}
-                  hideControls
-                />
-              </Grid.Col>
-            </Grid>
+                  my="md"
+                >
+                  <Image
+                    src="/assets/logo.png"
+                    width="100%"
+                    height="25%"
+                    layout="responsive"
+                    alt="logo"
+                  />
+                </Box>
+              </Center>
+              <form onSubmit={formHandler.onSubmit(onSubmit)}>
+                <Grid>
+                  <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                    <TextInput
+                      id="email-input"
+                      label="E-mail"
+                      description="E-mail you have used to register"
+                      placeholder="your@email.com"
+                      mb="md"
+                      icon={<MdOutlineAlternateEmail size={16} />}
+                      {...formHandler.getInputProps('email')}
+                      sx={{
+                        'input:focus': {
+                          borderColor: 'orange',
+                        },
+                      }}
+                    />
+                  </Grid.Col>
+                  <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                    <PasswordInput
+                      id="pwd-input"
+                      label="Password"
+                      description="Write the password"
+                      placeholder="yoursecretpassword"
+                      mb="sm"
+                      icon={<MdPassword size={16} />}
+                      {...formHandler.getInputProps('password')}
+                      sx={{
+                        'div:focus-within': {
+                          borderColor: 'orange',
+                        },
+                      }}
+                    />
+                  </Grid.Col>
+                  <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                    <PasswordInput
+                      id="confirm-pwd-input"
+                      label="Confirm Password"
+                      description="Type again the password"
+                      placeholder="yoursecretpassword"
+                      mb="sm"
+                      icon={<MdPassword size={16} />}
+                      {...formHandler.getInputProps('confirmPassword')}
+                      sx={{
+                        'div:focus-within': {
+                          borderColor: 'orange',
+                        },
+                      }}
+                    />
+                  </Grid.Col>
+                  <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                    <DatePicker
+                      id="birthday-input"
+                      label="Date of birth"
+                      description="Select your birthday"
+                      mb="sm"
+                      maxDate={new Date()}
+                      icon={<BsCalendarDate size={16} />}
+                      {...formHandler.getInputProps('birthday')}
+                    />
+                  </Grid.Col>
+                  <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                    <NumberInput
+                      id="weight-input"
+                      label="Weight (kg)"
+                      description="What's your weigth?"
+                      mb="sm"
+                      icon={<FaWeight size={16} />}
+                      {...formHandler.getInputProps('weight')}
+                      hideControls
+                    />
+                  </Grid.Col>
+                  <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                    <NumberInput
+                      id="height-input"
+                      label="Height (cm)"
+                      description="What's your weigth?"
+                      mb="sm"
+                      icon={<GiBodyHeight size={16} />}
+                      {...formHandler.getInputProps('height')}
+                      hideControls
+                    />
+                  </Grid.Col>
+                </Grid>
 
-            <Group position="center">
-              <Button type="submit" color="orange" loading={loading}>
-                Sign Up
-              </Button>
-            </Group>
-          </form>
-        </Card>
-      </Container>
+                <Stack align="center" spacing="xs">
+                  <Button type="submit" color="orange" loading={loading}>
+                    Sign Up
+                  </Button>
+                  <Link href="/login">
+                    <Text
+                      variant="link"
+                      component="a"
+                      sx={{
+                        color: '#d3d3d3',
+                        ':hover': {
+                          color: 'orange',
+                          transition: '0.6s',
+                          cursor: 'pointer',
+                        },
+                      }}
+                    >
+                      You already have an account? Click here to Sign In
+                    </Text>
+                  </Link>
+                </Stack>
+              </form>
+            </Card>
+          </FadeInDiv>
+        </Container>
+      </StaggerDiv>
       <ToastContainer
         position="bottom-right"
         autoClose={5000}
@@ -245,7 +269,7 @@ const SignUp: NextPage = () => {
         draggable
         pauseOnHover
       />
-    </>
+    </RootAnimationDiv>
   );
 };
 
