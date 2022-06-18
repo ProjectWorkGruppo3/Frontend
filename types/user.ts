@@ -15,7 +15,6 @@ export type User = {
   email: string;
   name: string;
   surname: string;
-  deviceCode: string;
   birthday: Date;
   height: number;
   weight: number;

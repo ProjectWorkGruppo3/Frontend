@@ -37,7 +37,6 @@ interface FormProps {
   email: string;
   password: string;
   confirmPassword: string;
-  deviceCode: string;
   weight: string;
   height: string;
   birthday: string;
@@ -66,7 +65,6 @@ const SignUp: NextPage = () => {
       password: '',
       confirmPassword: '',
       birthday: '',
-      deviceCode: '',
       height: '',
       weight: '66',
     },
@@ -88,9 +86,7 @@ const SignUp: NextPage = () => {
         return !isNaN(parseInt(value)) && parseInt(value) !== 0
           ? null
           : 'Please, insert a valid weight';
-      },
-      deviceCode: (value) =>
-        value.length !== 0 ? null : 'Please, insert the device code',
+      }
     },
   });
 
@@ -102,7 +98,6 @@ const SignUp: NextPage = () => {
       await ApiService.signup({
         email: props.email,
         password: props.password,
-        deviceCode: props.deviceCode,
         birthday: new Date(props.birthday),
         height: parseInt(props.height),
         weight: parseInt(props.weight),
@@ -152,33 +147,6 @@ const SignUp: NextPage = () => {
           </Center>
           <form onSubmit={formHandler.onSubmit(onSubmit)}>
             <Grid>
-              <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                <TextInput
-                  id="device-input"
-                  label="Device ID"
-                  description="ID of your smart bracelet"
-                  placeholder="123-32131-31231"
-                  mb="md"
-                  icon={<BsSmartwatch size={16} />}
-                  {...formHandler.getInputProps('deviceCode')}
-                  sx={{
-                    'input:focus': {
-                      borderColor: 'orange',
-                    },
-                  }}
-                  rightSection={
-                    <ActionIcon
-                      onClick={() => {
-                        // TODO qr reader
-                        console.log('Open QR Reader');
-                      }}
-                    >
-                      <AiOutlineQrcode />
-                    </ActionIcon>
-                  }
-                />
-              </Grid.Col>
-
               <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
                 <TextInput
                   id="email-input"

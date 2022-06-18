@@ -2,7 +2,14 @@ import { User } from '../types/user';
 import axios from 'axios';
 import config from '../utils/config';
 import { Device } from '../models';
-import { AddNewDeviceData, GetDeviceData, GetDevicesProps, LoginProps, LoginResult } from '../types/services/api-service';
+import {
+  AddNewDeviceData,
+  GetDeviceData,
+  GetDevicesProps,
+  LoginProps,
+  LoginResult,
+  SignUpProps,
+} from '../types/services/api-service';
 
 const ApiService = () => {
   const login = async ({
@@ -20,7 +27,7 @@ const ApiService = () => {
           'Content-Type': 'application/json',
         },
         validateStatus: (status) => status <= 500,
-      },
+      }
     );
 
     if (result.status === 401) {
@@ -31,16 +38,6 @@ const ApiService = () => {
 
     return loginResult;
   };
-
-  interface SignUpProps {
-    email: string;
-    password: string;
-    birthday: Date;
-    deviceCode: string;
-    height: number;
-    weight: number;
-  }
-
   const signup = async (props: SignUpProps) => {
     const result = await axios.post(
       `${config.API_URL}/Users/register`,
@@ -50,7 +47,6 @@ const ApiService = () => {
         weight: props.weight,
         height: props.height,
         dayOfBirth: props.birthday,
-        deviceCode: props.deviceCode,
       },
       {
         headers: {
@@ -65,7 +61,6 @@ const ApiService = () => {
       throw new Error(result.data['message'] ?? 'Somethin wrong happened');
     }
   };
-
 
   const getDevices = async (props: GetDevicesProps): Promise<Device[]> => {
     // FIXME
@@ -105,7 +100,6 @@ const ApiService = () => {
     return data;
   };
 
-
   const getDeviceData = async (props: GetDeviceData) => {
     const result = await axios.get(
       `${config.API_URL}/users/${props.userId}/devices/${props.deviceId}`, //FIXME
@@ -124,14 +118,13 @@ const ApiService = () => {
     }
   };
 
-
-  const addNewDevice = async (props: AddNewDeviceData) => {  
-    return;  
+  const addNewDevice = async (props: AddNewDeviceData) => {
+    return;
     const result = await axios.post(
       `${config.API_URL}/devices/`, //FIXME
       {
         name: props.name,
-        id: props.id
+        id: props.id,
       },
       {
         headers: {
@@ -146,15 +139,14 @@ const ApiService = () => {
       console.log(result.data);
       throw new Error(result.data['message'] ?? 'Somethin wrong happened');
     }
-  }
-
+  };
 
   return {
     login,
     signup,
     getDevices,
     getDeviceData,
-    addNewDevice
+    addNewDevice,
   };
 };
 
