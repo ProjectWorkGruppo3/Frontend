@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { useContext } from 'react';
-import { User } from '../types/user';
+import { User } from '../models/user';
 
 type AuthProviderProps = {
   children: JSX.Element;
