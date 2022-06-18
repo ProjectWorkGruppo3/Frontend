@@ -2,17 +2,7 @@ import { User } from '../types/user';
 import axios from 'axios';
 import config from '../utils/config';
 import { Device } from '../models';
-
-interface LoginProps {
-  email: string;
-  password: string;
-}
-
-type LoginResult = {
-  user: User;
-  token: string;
-  expiration: Date;
-} | null;
+import { AddNewDeviceData, GetDeviceData, GetDevicesProps, LoginProps, LoginResult } from '../types/services/api-service';
 
 const ApiService = () => {
   const login = async ({
@@ -29,7 +19,8 @@ const ApiService = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-      }
+        validateStatus: (status) => status <= 500,
+      },
     );
 
     if (result.status === 401) {
@@ -75,10 +66,6 @@ const ApiService = () => {
     }
   };
 
-  interface GetDevicesProps {
-    userId: string;
-    token: string;
-  }
 
   const getDevices = async (props: GetDevicesProps): Promise<Device[]> => {
     // FIXME
@@ -118,11 +105,6 @@ const ApiService = () => {
     return data;
   };
 
-  interface GetDeviceData {
-    userId: string;
-    deviceId: string;
-    token: string;
-  }
 
   const getDeviceData = async (props: GetDeviceData) => {
     const result = await axios.get(
@@ -142,10 +124,37 @@ const ApiService = () => {
     }
   };
 
+
+  const addNewDevice = async (props: AddNewDeviceData) => {  
+    return;  
+    const result = await axios.post(
+      `${config.API_URL}/devices/`, //FIXME
+      {
+        name: props.name,
+        id: props.id
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: props.token,
+        },
+        validateStatus: () => true,
+      }
+    );
+
+    if (result.status >= 400) {
+      console.log(result.data);
+      throw new Error(result.data['message'] ?? 'Somethin wrong happened');
+    }
+  }
+
+
   return {
     login,
     signup,
     getDevices,
+    getDeviceData,
+    addNewDevice
   };
 };
 

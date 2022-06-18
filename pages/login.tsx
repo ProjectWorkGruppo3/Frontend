@@ -22,6 +22,8 @@ import ApiService from '../services/api-service';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useAuth } from '../context/auth-context';
+import { toast, ToastContainer, ToastOptions } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface FormProps {
   email: string;
@@ -30,7 +32,6 @@ interface FormProps {
 
 const Login: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const authContext = useAuth();
 
@@ -41,6 +42,8 @@ const Login: NextPage = () => {
       setLoading(false);
     }
   }, [authContext, router]);
+
+  const notify = (message: string, options: ToastOptions) => toast(message, options);
 
   const formHandler = useForm<FormProps>({
     initialValues: {
@@ -62,7 +65,11 @@ const Login: NextPage = () => {
       const logged = await ApiService.login({ ...props });
 
       if (!logged) {
-        return setError('Username or/and password are not correct');
+        return notify(
+          'Username or/and password are not correct', {
+            type: 'error'
+          }
+        );
       }
 
       if (authContext) {
@@ -74,9 +81,11 @@ const Login: NextPage = () => {
 
         return router.replace('/');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
-      setError('Sorry, but something wrong happened. Retry later');
+      notify('Sorry, but something wrong happened. Retry later', {
+        type: 'error'
+      });
     } finally {
       setLoading(false);
     }
@@ -142,12 +151,6 @@ const Login: NextPage = () => {
               }}
             />
 
-            {error && (
-              <Alert color="red" mb="sm">
-                {error}
-              </Alert>
-            )}
-
             <Group position="center">
               <Button type="submit" color="orange" loading={loading}>
                 Sign In
@@ -155,6 +158,17 @@ const Login: NextPage = () => {
             </Group>
           </form>
         </Card>
+
+        <ToastContainer
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          draggable
+          pauseOnHover
+        />
       </Container>
     </>
   );
