@@ -30,7 +30,8 @@ import ApiService from '../services/api-service';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useAuth } from '../context/auth-context';
-import dayjs from 'dayjs';
+import { toast, ToastContainer, ToastOptions } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface FormProps {
   email: string;
@@ -44,7 +45,7 @@ interface FormProps {
 
 const SignUp: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const authContext = useAuth();
 
@@ -55,6 +56,9 @@ const SignUp: NextPage = () => {
 
     setLoading(false);
   }, [authContext, router]);
+
+  const notify = (message: string, options: ToastOptions) =>
+    toast(message, options);
 
   const formHandler = useForm<FormProps>({
     initialValues: {
@@ -107,8 +111,11 @@ const SignUp: NextPage = () => {
       return router.replace('/');
     } catch (error: any) {
       console.log(error);
-      setError(
-        error['message'] ?? 'Sorry, but something wrong happened. Retry later'
+      notify(
+        error['message'] ?? 'Sorry, but something wrong happened. Retry later',
+        {
+          type: 'error',
+        }
       );
     } finally {
       setLoading(false);
@@ -255,12 +262,6 @@ const SignUp: NextPage = () => {
               </Grid.Col>
             </Grid>
 
-            {error && (
-              <Alert color="red" mb="sm">
-                {error}
-              </Alert>
-            )}
-
             <Group position="center">
               <Button type="submit" color="orange" loading={loading}>
                 Sign Up
@@ -269,6 +270,16 @@ const SignUp: NextPage = () => {
           </form>
         </Card>
       </Container>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+        pauseOnHover
+      />
     </>
   );
 };
