@@ -9,12 +9,13 @@ import {
 } from '@mantine/core';
 import { BiSearchAlt } from 'react-icons/bi';
 import { RiBookOpenLine } from 'react-icons/ri';
+import { AdminUser } from '../../models/admin-user';
 import { User } from '../../models/user';
 
 export interface UserSidebarProps {
-  users: User[];
+  users: AdminUser[];
   onSearch: (value: string) => void;
-  onClick: (user: User) => void;
+  onClick: (user: AdminUser) => void;
 }
 
 export const UserSidebar = (props: UserSidebarProps) => {

@@ -3,4 +3,5 @@ export type AdminUser = {
   email: string;
   name: string;
   surname: string;
+  profilePic?: string;
 };

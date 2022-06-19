@@ -10,11 +10,11 @@ import { Header } from '../../components/common';
 import { UserDetail, UserSidebar } from '../../components/administration';
 import Head from 'next/head';
 import { useState } from 'react';
-import { User } from '../../models/user';
 import { useRouter } from 'next/router';
+import { AdminUser } from '../../models/admin-user';
 
 const AdminUsersPage: NextPage = () => {
-  const [selectedUser, setSelectedUser] = useState<User>();
+  const [selectedUser, setSelectedUser] = useState<AdminUser>();
   const router = useRouter();
 
   return (
@@ -44,6 +44,7 @@ const AdminUsersPage: NextPage = () => {
                   surname: `surname ${k}`,
                   height: k + 100,
                   weight: k + 50,
+                  profilePic: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZSUyMHBpY3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60'
                 }))}
                 onClick={(user) => setSelectedUser(user)}
                 onSearch={(value) => console.log(value)}
