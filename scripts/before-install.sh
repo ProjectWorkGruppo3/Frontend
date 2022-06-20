@@ -2,5 +2,6 @@
 
 cd /home/app
 
-curl -sL https://rpm.nodesource.com/setup_14.x | sudo -E bash -
+curl -sL  https://deb.nodesource.com/setup_14.x | sudo -E bash -
 sudo apt -y install nodejs npm
+sudo npm install npm@latest -g
