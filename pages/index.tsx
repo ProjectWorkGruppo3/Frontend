@@ -23,7 +23,6 @@ import { Device } from '../models';
 import DeviceService from '../services/device-service';
 import { toast, ToastContainer, ToastOptions } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { MdExitToApp } from 'react-icons/md';
 import {
   CardFadeIn,
   FadeInDiv,

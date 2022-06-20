@@ -25,7 +25,7 @@ const AdminUsersPage: NextPage = () => {
       <Box pt="xl" px="2%">
         <FadeInDiv>
           <Header
-            onBack={() => router.back()}
+            onBack={() => router.push('/administration/')}
             title="Admins"
             onLogout={() => {
               // FIXME

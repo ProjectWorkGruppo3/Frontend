@@ -12,23 +12,26 @@ import {
   Title,
 } from '@mantine/core';
 import { NextPage } from 'next';
-import {
-  StatCard,
-  TitleLink,
-  AlarmCard,
-  AlarmCardProps,
-} from '../../components/administration/index';
+import { StatCard, TitleLink } from '../../components/administration/index';
 
-import { BsSmartwatch } from 'react-icons/bs';
-import { IoIosArrowForward } from 'react-icons/io';
-import { AiOutlinePercentage } from 'react-icons/ai';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../../context/auth-context';
 import Head from 'next/head';
-import { CardFadeIn, FadeInDiv, RootAnimationDiv } from '../../animations';
+import { CardFadeIn, EaseInOutDiv, FadeInDiv, RootAnimationDiv } from '../../animations';
 import { Header } from '../../components/common';
-import { fullDatetimeWithoutYear, normalDate } from '../../utils/date-format';
+import { fullDatetimeWithoutYear, normalDate, normalFullTime } from '../../utils/date-format';
+import dynamic from 'next/dynamic';
+import {
+  DensityMapData,
+  DensityMapProps,
+} from '../../components/administration/density-map';
+import { fakeDensityMapData } from '../../utils/fake-data';
+
+const DensityMap = dynamic(
+  () => import('../../components/administration/density-map'),
+  { ssr: false }
+);
 
 const AdministrationPage: NextPage = () => {
   const auth = useAuth();
@@ -52,7 +55,7 @@ const AdministrationPage: NextPage = () => {
       <Head>
         <title>Administration Seren Up</title>
       </Head>
-      <Box pt="xl" px="2%">
+      <Box py="xl" px="1%">
         <FadeInDiv>
           <Header
             // onBack={() => router.back()}
@@ -70,8 +73,14 @@ const AdministrationPage: NextPage = () => {
           </Center>
         ) : (
           <>
-            <Grid justify="center" align="center">
-              <Grid.Col span={2}>
+            <Grid justify="center" align="center" mb='sm'>
+              <Grid.Col 
+                xs={12}
+                sm={12}
+                md={12}
+                lg={2}
+                xl={2}
+              >
                 <CardFadeIn>
                   <StatCard
                     name="Admins"
@@ -80,36 +89,77 @@ const AdministrationPage: NextPage = () => {
                   />
                 </CardFadeIn>
               </Grid.Col>
-              <Grid.Col span={2}>
+              <Grid.Col 
+                xs={12}
+                sm={12}
+                md={12}
+                lg={2}
+                xl={2}
+              >
                 <CardFadeIn>
-                  <StatCard
-                    name="Bracelets"
-                    value={200}
-                  />
+                  <StatCard name="Bracelets" value={200} />
                 </CardFadeIn>
               </Grid.Col>
             </Grid>
             <Grid>
-              <Grid.Col span={10}>
+              <Grid.Col 
+                xs={12}
+                sm={12}
+                md={12}
+                lg={10}
+                xl={10}  
+              >
                 <FadeInDiv>
-                  <Box mb="xs">
+                  <Box mb="sm">
                     <TitleLink
                       link="/administration/analysis"
                       title="Analysis"
                     />
                   </Box>
                   <Card shadow="xl" radius="md">
-                    Charts
+                    <Grid>
+                      <Grid.Col 
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        lg={6}
+                        xl={6}  
+                      >
+                        Stats
+                      </Grid.Col>
+                      <Grid.Col
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        lg={6}
+                        xl={6}  
+                      >
+                        <EaseInOutDiv>
+                          <DensityMap
+                            title={`Last time updpated: ${normalFullTime(new Date())}`}
+                            data={fakeDensityMapData}
+                          />
+                        </EaseInOutDiv>
+                      </Grid.Col>
+                    </Grid>
                   </Card>
                 </FadeInDiv>
               </Grid.Col>
-              <Grid.Col span={2}>
-                <Box mb="xs">
-                  <TitleLink
-                    link="/administration/reports"
-                    title="Last Reports"
-                  />
-                </Box>
+              <Grid.Col 
+                xs={12}
+                sm={12}
+                md={12}
+                lg={2}
+                xl={2}
+              >
+                <FadeInDiv>
+                  <Box mb="xs">
+                    <TitleLink
+                      link="/administration/reports"
+                      title="Last Reports"
+                    />
+                  </Box>
+                </FadeInDiv>
                 {Array.from({ length: 4 }, (v, k) => (
                   <Box mb="xs">
                     <CardFadeIn>
