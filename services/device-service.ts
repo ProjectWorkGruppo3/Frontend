@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Device } from '../models';
-import { AddNewDeviceProps } from '../types/services/api-service';
+import { AddNewDeviceProps } from '../types/services/device-service';
 import {
   GetDevicesProps,
   GetDeviceDataProps,
