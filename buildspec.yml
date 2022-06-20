@@ -18,5 +18,7 @@ phases:
       - ls . -al
 
 artifacts:
+  files:
+    - '**/*'
   exclude-paths:
     - ./node_modules
