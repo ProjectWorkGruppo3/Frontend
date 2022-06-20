@@ -1,21 +1,23 @@
 import { Box, Center, Grid, Title } from '@mantine/core';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { CardFadeIn, FadeInDiv, RootAnimationDiv, StaggerDiv } from '../../animations';
+import {
+  CardFadeIn,
+  FadeInDiv,
+  RootAnimationDiv,
+  StaggerDiv,
+} from '../../animations';
 import { ReportCard } from '../../components/administration';
 import { Header } from '../../components/common';
 import { Report } from '../../models/report';
 
-
-
 const ReportsPage: NextPage = () => {
-
-  const reports : Report[] = [
+  const reports: Report[] = [
     {
       id: '1',
       date: new Date(),
-      downloadLink: '#'
-    }
+      downloadLink: '#',
+    },
   ];
   const router = useRouter();
 
@@ -34,15 +36,13 @@ const ReportsPage: NextPage = () => {
           </FadeInDiv>
           <FadeInDiv>
             <Grid align="center">
-              {
-                reports.length === 0 
-                &&
+              {reports.length === 0 && (
                 <Grid.Col>
                   <Center>
                     <Title order={4}>No Reports</Title>
                   </Center>
                 </Grid.Col>
-              }
+              )}
               {reports.map((el, index) => (
                 <Grid.Col xs={12} sm={6} md={4} lg={2} xl={2} key={index}>
                   <CardFadeIn>

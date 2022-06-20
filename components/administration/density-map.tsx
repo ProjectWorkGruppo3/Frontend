@@ -26,7 +26,9 @@ const DensityMap = (props: DensityMapProps) => {
 
   return (
     <>
-			<Text align='right' mb='xs' color='gray' size='xs'>{props.title}</Text>
+      <Text align="right" mb="xs" color="gray" size="xs">
+        {props.title}
+      </Text>
       <MapContainer
         style={{ width: '100%', minHeight: '500px' }}
         zoom={1}

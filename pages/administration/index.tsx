@@ -18,9 +18,18 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../../context/auth-context';
 import Head from 'next/head';
-import { CardFadeIn, EaseInOutDiv, FadeInDiv, RootAnimationDiv } from '../../animations';
+import {
+  CardFadeIn,
+  EaseInOutDiv,
+  FadeInDiv,
+  RootAnimationDiv,
+} from '../../animations';
 import { Header } from '../../components/common';
-import { fullDatetimeWithoutYear, normalDate, normalFullTime } from '../../utils/date-format';
+import {
+  fullDatetimeWithoutYear,
+  normalDate,
+  normalFullTime,
+} from '../../utils/date-format';
 import dynamic from 'next/dynamic';
 import {
   DensityMapData,
@@ -73,14 +82,8 @@ const AdministrationPage: NextPage = () => {
           </Center>
         ) : (
           <>
-            <Grid justify="center" align="center" mb='sm'>
-              <Grid.Col 
-                xs={12}
-                sm={12}
-                md={12}
-                lg={2}
-                xl={2}
-              >
+            <Grid justify="flex-start" align="center" mb="sm">
+              <Grid.Col xs={12} sm={12} md={12} lg={2} xl={2}>
                 <CardFadeIn>
                   <StatCard
                     name="Admins"
@@ -89,26 +92,14 @@ const AdministrationPage: NextPage = () => {
                   />
                 </CardFadeIn>
               </Grid.Col>
-              <Grid.Col 
-                xs={12}
-                sm={12}
-                md={12}
-                lg={2}
-                xl={2}
-              >
+              <Grid.Col xs={12} sm={12} md={12} lg={2} xl={2}>
                 <CardFadeIn>
                   <StatCard name="Bracelets" value={200} />
                 </CardFadeIn>
               </Grid.Col>
             </Grid>
             <Grid>
-              <Grid.Col 
-                xs={12}
-                sm={12}
-                md={12}
-                lg={10}
-                xl={10}  
-              >
+              <Grid.Col xs={12} sm={12} md={12} lg={10} xl={10}>
                 <FadeInDiv>
                   <Box mb="sm">
                     <TitleLink
@@ -118,25 +109,15 @@ const AdministrationPage: NextPage = () => {
                   </Box>
                   <Card shadow="xl" radius="md">
                     <Grid>
-                      <Grid.Col 
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        lg={6}
-                        xl={6}  
-                      >
+                      <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
                         Stats
                       </Grid.Col>
-                      <Grid.Col
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        lg={6}
-                        xl={6}  
-                      >
+                      <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
                         <EaseInOutDiv>
                           <DensityMap
-                            title={`Last time updpated: ${normalFullTime(new Date())}`}
+                            title={`Last time updpated: ${normalFullTime(
+                              new Date()
+                            )}`}
                             data={fakeDensityMapData}
                           />
                         </EaseInOutDiv>
@@ -145,13 +126,7 @@ const AdministrationPage: NextPage = () => {
                   </Card>
                 </FadeInDiv>
               </Grid.Col>
-              <Grid.Col 
-                xs={12}
-                sm={12}
-                md={12}
-                lg={2}
-                xl={2}
-              >
+              <Grid.Col xs={12} sm={12} md={12} lg={2} xl={2}>
                 <FadeInDiv>
                   <Box mb="xs">
                     <TitleLink

@@ -1,5 +1,5 @@
 export interface Report {
-    date: Date;
-    id: string;
-    downloadLink: string;
+  date: Date;
+  id: string;
+  downloadLink: string;
 }

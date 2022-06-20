@@ -44,7 +44,8 @@ const AdminUsersPage: NextPage = () => {
                   surname: `surname ${k}`,
                   height: k + 100,
                   weight: k + 50,
-                  profilePic: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZSUyMHBpY3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60'
+                  profilePic:
+                    'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZSUyMHBpY3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
                 }))}
                 onClick={(user) => setSelectedUser(user)}
                 onSearch={(value) => console.log(value)}
