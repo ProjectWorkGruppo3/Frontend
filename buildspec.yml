@@ -18,5 +18,4 @@ phases:
 
 artifacts:
   exclude-paths:
-    - ./build
     - ./node_modules
