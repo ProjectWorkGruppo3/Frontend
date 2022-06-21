@@ -1,7 +1,10 @@
 import axios from 'axios';
 import { AdminUser } from '../models/admin-user';
 import {
-  DeleteAdminUserProps, GetAdminUserProps, GetAdminUsersProps, UpdateAdminUserProps
+  DeleteAdminUserProps,
+  GetAdminUserProps,
+  GetAdminUsersProps,
+  UpdateAdminUserProps,
 } from '../types/services/admin-service';
 import { ServiceReturnType } from '../types/services/common-service';
 import config from '../utils/config';
@@ -39,9 +42,10 @@ const AdminService = () => {
     return admins;
   };
 
-  const updateAdminUser = async (props: UpdateAdminUserProps) : Promise<ServiceReturnType<boolean>> => {
+  const updateAdminUser = async (
+    props: UpdateAdminUserProps
+  ): Promise<ServiceReturnType<boolean>> => {
     try {
-
       await axios.put(
         `${config.API_URL}/users/admins/${props.user.id}`, // FIXME
         {
@@ -59,12 +63,12 @@ const AdminService = () => {
 
       return {
         data: true,
-      }
+      };
     } catch (error: any) {
       return {
         data: false,
-        error: error
-      }
+        error: error,
+      };
     }
   };
 

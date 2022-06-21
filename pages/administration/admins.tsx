@@ -7,7 +7,7 @@ import {
   CardFadeIn,
   EaseInOutDiv,
   FadeInDiv,
-  RootAnimationDiv
+  RootAnimationDiv,
 } from '../../animations';
 import { UserDetail, UserSidebar } from '../../components/administration';
 import { Header, NotificationToast } from '../../components/common';
@@ -90,7 +90,7 @@ const AdminUsersPage: NextPage = () => {
                 <UserSidebar
                   users={users}
                   onClick={(user) => setSelectedUser(user)}
-                  onSearch={(value) => console.log(value) } // FIXME
+                  onSearch={(value) => console.log(value)} // FIXME
                 />
               </Grid.Col>
               <Grid.Col span={9} style={{ height: '100%' }}>

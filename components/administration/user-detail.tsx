@@ -13,11 +13,10 @@ import {
   Title,
   Tooltip,
 } from '@mantine/core';
-import { AiOutlineUserDelete } from 'react-icons/ai';
-import { BsSave } from 'react-icons/bs';
-import { AiOutlineClose } from 'react-icons/ai';
-import { AdminUser } from '../../models/admin-user';
 import { useForm } from '@mantine/form';
+import { AiOutlineClose, AiOutlineUserDelete } from 'react-icons/ai';
+import { BsSave } from 'react-icons/bs';
+import { AdminUser } from '../../models/admin-user';
 import { validateEmail } from '../../utils/validations';
 
 export interface UserDetailProps {
@@ -104,6 +103,7 @@ export const UserDetail = (props: UserDetailProps) => {
                         <Text>Test</Text>
                       </Center>
                     }
+                    alt="profile-pic"
                   />
                   <Text align="center">Change photo profile </Text>
                 </Box>
