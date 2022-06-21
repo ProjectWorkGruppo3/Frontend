@@ -1,38 +1,38 @@
-import type { NextPage } from 'next';
 import {
-  Card,
-  Container,
-  Center,
-  TextInput,
-  PasswordInput,
-  Button,
-  Group,
-  Title,
   Box,
+  Button,
+  Card,
+  Center,
+  Container,
   Grid,
   NumberInput,
-  Text,
+  PasswordInput,
   Stack,
+  Text,
+  TextInput,
+  Title,
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
-import { MdOutlineAlternateEmail, MdPassword } from 'react-icons/md';
+import type { NextPage } from 'next';
 import { BsCalendarDate } from 'react-icons/bs';
 import { FaWeight } from 'react-icons/fa';
 import { GiBodyHeight } from 'react-icons/gi';
+import { MdOutlineAlternateEmail, MdPassword } from 'react-icons/md';
 
 import { useForm } from '@mantine/form';
 import { validateEmail } from '../utils/validations';
 
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import AuthService from '../services/auth-service';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../context/auth-context';
-import { toast, ToastContainer, ToastOptions } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { FadeInDiv, RootAnimationDiv, StaggerDiv } from '../animations';
+import AuthService from '../services/auth-service';
+
 import Link from 'next/link';
+import { FadeInDiv, RootAnimationDiv, StaggerDiv } from '../animations';
+import { NotificationToast } from '../components/common';
+import { notifyError } from '../utils/notify-toast';
 
 interface FormProps {
   email: string;
@@ -45,7 +45,6 @@ interface FormProps {
 
 const SignUp: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  // const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const authContext = useAuth();
 
@@ -56,9 +55,6 @@ const SignUp: NextPage = () => {
 
     setLoading(false);
   }, [authContext, router]);
-
-  const notify = (message: string, options: ToastOptions) =>
-    toast(message, options);
 
   const formHandler = useForm<FormProps>({
     initialValues: {
@@ -107,11 +103,8 @@ const SignUp: NextPage = () => {
       return router.replace('/');
     } catch (error: any) {
       console.log(error);
-      notify(
-        error['message'] ?? 'Sorry, but something wrong happened. Retry later',
-        {
-          type: 'error',
-        }
+      notifyError(
+        error['message'] ?? 'Sorry, but something wrong happened. Retry later'
       );
     } finally {
       setLoading(false);
@@ -259,16 +252,8 @@ const SignUp: NextPage = () => {
           </FadeInDiv>
         </Container>
       </StaggerDiv>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        draggable
-        pauseOnHover
-      />
+
+      <NotificationToast />
     </RootAnimationDiv>
   );
 };

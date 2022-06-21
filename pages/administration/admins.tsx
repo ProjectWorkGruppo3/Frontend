@@ -1,21 +1,38 @@
-import { Box, Grid, Title, Center } from '@mantine/core';
+import { Box, Center, Grid, Title } from '@mantine/core';
 import { NextPage } from 'next';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 import {
   CardFadeIn,
   EaseInOutDiv,
   FadeInDiv,
   RootAnimationDiv,
 } from '../../animations';
-import { Header } from '../../components/common';
 import { UserDetail, UserSidebar } from '../../components/administration';
-import Head from 'next/head';
-import { useState } from 'react';
-import { useRouter } from 'next/router';
+import { Header, NotificationToast } from '../../components/common';
 import { AdminUser } from '../../models/admin-user';
+import adminService from '../../services/admin-service';
+import { notifyError, notifySuccess } from '../../utils/notify-toast';
 
 const AdminUsersPage: NextPage = () => {
   const [selectedUser, setSelectedUser] = useState<AdminUser>();
   const router = useRouter();
+
+  const onDeleteUser = async (user: AdminUser) => {
+    const { data: deleted, error } = await adminService.deleteAdminUser({
+      userId: user.id,
+      token: '',
+    });
+
+    if (error) {
+      notifyError(
+        'Sorry, but something went wrong when try to delete the user'
+      );
+    } else {
+      notifySuccess('User deleted successfully');
+    }
+  };
 
   return (
     <RootAnimationDiv>
@@ -58,7 +75,7 @@ const AdminUsersPage: NextPage = () => {
                     user={selectedUser}
                     onClose={() => setSelectedUser(undefined)}
                     onSave={() => console.log('save')}
-                    onDelete={() => console.log('delete')}
+                    onDelete={onDeleteUser}
                   />
                 </EaseInOutDiv>
               ) : (
@@ -70,6 +87,8 @@ const AdminUsersPage: NextPage = () => {
           </Grid>
         </CardFadeIn>
       </Box>
+
+      <NotificationToast />
     </RootAnimationDiv>
   );
 };

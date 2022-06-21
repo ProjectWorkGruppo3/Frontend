@@ -6,6 +6,7 @@ import {
   UpdateAdminUserProps,
   DeleteAdminUserProps,
 } from '../types/services/admin-service';
+import { ServiceReturnType } from '../types/services/common-service';
 import config from '../utils/config';
 
 const AdminService = () => {
@@ -58,16 +59,34 @@ const AdminService = () => {
     );
   };
 
-  const deleteAdminUsers = async (props: DeleteAdminUserProps) => {
-    await axios.delete(
-      `${config.API_URL}/users/admins/${props.userId}`, // FIXME
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: props.token,
-        },
-      }
-    );
+  const deleteAdminUser = async (
+    props: DeleteAdminUserProps
+  ): Promise<ServiceReturnType<boolean>> => {
+    try {
+      await axios.delete(
+        `${config.API_URL}/users/admins/${props.userId}`, // FIXME
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: props.token,
+          },
+        }
+      );
+
+      return { data: true };
+    } catch (error: any) {
+      return {
+        data: false,
+        error: error,
+      };
+    }
+  };
+
+  return {
+    getAdminUsers,
+    getAdminUser,
+    updateAdminUser,
+    deleteAdminUser,
   };
 };
 

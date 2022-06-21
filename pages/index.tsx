@@ -1,27 +1,14 @@
-import {
-  ActionIcon,
-  Box,
-  Center,
-  Divider,
-  Grid,
-  Group,
-  Loader,
-  Title,
-} from '@mantine/core';
+import { Box, Center, Grid, Loader } from '@mantine/core';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/dist/client/router';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import { useAuth } from '../context/auth-context';
+import { useEffect, useState } from 'react';
 import {
   DeviceCard,
   NewDeviceCard,
   NewDeviceModal,
 } from '../components/home/index';
+import { useAuth } from '../context/auth-context';
 
-import { Device } from '../models';
-import DeviceService from '../services/device-service';
-import { toast, ToastContainer, ToastOptions } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
   CardFadeIn,
@@ -29,7 +16,10 @@ import {
   RootAnimationDiv,
   StaggerDiv,
 } from '../animations';
-import { Header } from '../components/common';
+import { Header, NotificationToast } from '../components/common';
+import { Device } from '../models';
+import DeviceService from '../services/device-service';
+import { notifyError, notifySuccess } from '../utils/notify-toast';
 
 const Home: NextPage = () => {
   const auth = useAuth();
@@ -49,9 +39,6 @@ const Home: NextPage = () => {
     }
   }, [auth, router]);
 
-  const notify = (message: string, options: ToastOptions) =>
-    toast(message, options);
-
   useEffect(() => {
     const fetchDevices = async () => {
       if (auth && auth.authState) {
@@ -63,12 +50,9 @@ const Home: NextPage = () => {
 
           setDevices(devices);
         } catch (error: any) {
-          notify(
+          notifyError(
             error['message'] ??
-              'Sorry, but something wrong happened. Retry later',
-            {
-              type: 'error',
-            }
+              'Sorry, but something wrong happened. Retry later'
           );
         } finally {
           setLoading(false);
@@ -89,15 +73,10 @@ const Home: NextPage = () => {
         token: auth!.authState!.token,
       });
 
-      notify(`Successfully added device (${name}) `, {
-        type: 'success',
-      });
+      notifySuccess(`Successfully added device (${name})`);
     } catch (error: any) {
-      notify(
-        error['message'] ?? 'Sorry, but something wrong happened. Retry later',
-        {
-          type: 'error',
-        }
+      notifyError(
+        error['message'] ?? 'Sorry, but something wrong happened. Retry later'
       );
     } finally {
       setNewDeviceModalOpened(false);
@@ -151,16 +130,8 @@ const Home: NextPage = () => {
             </Grid>
           </FadeInDiv>
         </Box>
-        <ToastContainer
-          position="bottom-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          draggable
-          pauseOnHover
-        />
+
+        <NotificationToast />
       </StaggerDiv>
     </RootAnimationDiv>
   );
