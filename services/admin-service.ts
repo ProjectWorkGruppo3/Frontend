@@ -1,10 +1,7 @@
 import axios from 'axios';
 import { AdminUser } from '../models/admin-user';
 import {
-  GetAdminUsersProps,
-  GetAdminUserProps,
-  UpdateAdminUserProps,
-  DeleteAdminUserProps,
+  DeleteAdminUserProps, GetAdminUserProps, GetAdminUsersProps, UpdateAdminUserProps
 } from '../types/services/admin-service';
 import { ServiceReturnType } from '../types/services/common-service';
 import config from '../utils/config';
@@ -42,21 +39,33 @@ const AdminService = () => {
     return admins;
   };
 
-  const updateAdminUser = async (props: UpdateAdminUserProps) => {
-    await axios.put(
-      `${config.API_URL}/users/admins/${props.user.id}`, // FIXME
-      {
-        email: props.user.email,
-        name: props.user.name,
-        surname: props.user.surname,
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: props.token,
+  const updateAdminUser = async (props: UpdateAdminUserProps) : Promise<ServiceReturnType<boolean>> => {
+    try {
+
+      await axios.put(
+        `${config.API_URL}/users/admins/${props.user.id}`, // FIXME
+        {
+          email: props.user.email,
+          name: props.user.name,
+          surname: props.user.surname,
         },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: props.token,
+          },
+        }
+      );
+
+      return {
+        data: true,
       }
-    );
+    } catch (error: any) {
+      return {
+        data: false,
+        error: error
+      }
+    }
   };
 
   const deleteAdminUser = async (

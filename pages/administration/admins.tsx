@@ -1,23 +1,52 @@
-import { Box, Center, Grid, Title } from '@mantine/core';
+import { Box, Center, Grid, Loader, Title } from '@mantine/core';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   CardFadeIn,
   EaseInOutDiv,
   FadeInDiv,
-  RootAnimationDiv,
+  RootAnimationDiv
 } from '../../animations';
 import { UserDetail, UserSidebar } from '../../components/administration';
 import { Header, NotificationToast } from '../../components/common';
 import { AdminUser } from '../../models/admin-user';
 import adminService from '../../services/admin-service';
+import { fakeAdminUsers } from '../../utils/fake-data';
 import { notifyError, notifySuccess } from '../../utils/notify-toast';
 
 const AdminUsersPage: NextPage = () => {
+  const [users, setUsers] = useState<AdminUser[]>([]);
   const [selectedUser, setSelectedUser] = useState<AdminUser>();
+  const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
+
+  useEffect(() => {
+    const fetch = async () => {
+      setLoading(true);
+      setUsers(fakeAdminUsers); // FIXME
+
+      setLoading(false);
+    };
+
+    fetch();
+  }, []);
+
+  const onSaveUser = async (user: AdminUser) => {
+    const { data: updated, error } = await adminService.updateAdminUser({
+      user: user,
+      token: '', // FIXME
+    });
+
+    if (error) {
+      notifyError(
+        'Sorry, but something went wrong when try to update the user'
+      );
+    } else {
+      notifySuccess('User updated successfully');
+    }
+  };
 
   const onDeleteUser = async (user: AdminUser) => {
     const { data: deleted, error } = await adminService.deleteAdminUser({
@@ -49,43 +78,40 @@ const AdminUsersPage: NextPage = () => {
             }}
           />
         </FadeInDiv>
-        <CardFadeIn>
-          <Grid style={{ height: '90vh' }}>
-            <Grid.Col span={3} style={{ height: '100%' }}>
-              <UserSidebar
-                users={Array.from({ length: 5 }, (v, k) => ({
-                  id: `${k}`,
-                  email: `email ${k}`,
-                  birthday: new Date(Date.now()),
-                  name: `name ${k}`,
-                  surname: `surname ${k}`,
-                  height: k + 100,
-                  weight: k + 50,
-                  profilePic:
-                    'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZSUyMHBpY3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-                }))}
-                onClick={(user) => setSelectedUser(user)}
-                onSearch={(value) => console.log(value)}
-              />
-            </Grid.Col>
-            <Grid.Col span={9} style={{ height: '100%' }}>
-              {selectedUser ? (
-                <EaseInOutDiv style={{ height: '100%' }}>
-                  <UserDetail
-                    user={selectedUser}
-                    onClose={() => setSelectedUser(undefined)}
-                    onSave={() => console.log('save')}
-                    onDelete={onDeleteUser}
-                  />
-                </EaseInOutDiv>
-              ) : (
-                <Center>
-                  <Title order={5}>Select an user</Title>
-                </Center>
-              )}
-            </Grid.Col>
-          </Grid>
-        </CardFadeIn>
+
+        {loading ? (
+          <FadeInDiv>
+            <Loader />
+          </FadeInDiv>
+        ) : (
+          <CardFadeIn>
+            <Grid style={{ height: '90vh' }}>
+              <Grid.Col span={3} style={{ height: '100%' }}>
+                <UserSidebar
+                  users={users}
+                  onClick={(user) => setSelectedUser(user)}
+                  onSearch={(value) => console.log(value) } // FIXME
+                />
+              </Grid.Col>
+              <Grid.Col span={9} style={{ height: '100%' }}>
+                {selectedUser ? (
+                  <EaseInOutDiv style={{ height: '100%' }}>
+                    <UserDetail
+                      user={selectedUser}
+                      onClose={() => setSelectedUser(undefined)}
+                      onSave={onSaveUser}
+                      onDelete={onDeleteUser}
+                    />
+                  </EaseInOutDiv>
+                ) : (
+                  <Center>
+                    <Title order={5}>Select an user</Title>
+                  </Center>
+                )}
+              </Grid.Col>
+            </Grid>
+          </CardFadeIn>
+        )}
       </Box>
 
       <NotificationToast />

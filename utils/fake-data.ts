@@ -114,3 +114,17 @@ export const fakeDensityMapData: DensityMapData[] = [
     totalDevices: 13287,
   },
 ];
+
+
+
+export const fakeAdminUsers = Array.from({ length: 5 }, (v, k) => ({
+  id: `${k}`,
+  email: `email ${k}`,
+  birthday: new Date(Date.now()),
+  name: `name ${k}`,
+  surname: `surname ${k}`,
+  height: k + 100,
+  weight: k + 50,
+  profilePic:
+    'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZSUyMHBpY3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
+}))
