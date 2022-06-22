@@ -1,5 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
-import { useContext } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '../models/user';
 
 type AuthProviderProps = {
@@ -39,7 +38,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const authStateRetrieved = JSON.parse(data) as AuthState;
     authStateRetrieved.expiration = new Date(authStateRetrieved.expiration);
 
-    if (authStateRetrieved.expiration.getTime() < new Date().getTime()) {
+    const expired = authStateRetrieved.expiration.getTime() < new Date().getTime();
+
+    if (expired) {
       localStorage.removeItem(TOKEN_KEY);
       return null;
     }
@@ -48,9 +49,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const isAuthenticated = (): boolean => {
-    const token = localStorage.getItem(TOKEN_KEY);
-
-    return token !== null;
+    const authState = getSavedAuthState();
+    
+    return authState !== null;
   };
 
   const saveData = (state: AuthState) => {
@@ -87,3 +88,4 @@ const useAuth = () => {
 };
 
 export { useAuth, AuthProvider };
+

@@ -42,8 +42,6 @@ const Home: NextPage = () => {
   useEffect(() => {
     const fetchDevices = async () => {
       if (auth && auth.authState) {
-
-        console.log("TOKEN", auth.authState.token)
         
           const { data: devices, error } = await DeviceService.getDevices({
             token: auth.authState.token,
