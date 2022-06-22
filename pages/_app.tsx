@@ -1,9 +1,9 @@
+import { MantineProvider } from '@mantine/core';
+import { AnimatePresence } from 'framer-motion';
+import type { AppProps } from 'next/app';
+import { AuthProvider } from '../context/auth-context';
 import '../styles/font.css';
 import '../styles/globals.css';
-import type { AppProps } from 'next/app';
-import { MantineProvider } from '@mantine/core';
-import { AuthProvider } from '../context/auth-context';
-import { AnimatePresence } from 'framer-motion';
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   return (

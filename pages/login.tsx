@@ -1,31 +1,32 @@
-import type { NextPage } from 'next';
 import {
-  Card,
-  Container,
-  Center,
-  TextInput,
-  PasswordInput,
-  Button,
-  Text,
-  Title,
   Box,
+  Button,
+  Card,
+  Center,
+  Container,
+  PasswordInput,
   Stack,
+  Text,
+  TextInput,
+  Title,
 } from '@mantine/core';
+import type { NextPage } from 'next';
 import { MdOutlineAlternateEmail, MdPassword } from 'react-icons/md';
 
 import { useForm } from '@mantine/form';
 import { validateEmail } from '../utils/validations';
 
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import ApiService from '../services/api-service';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { useAuth } from '../context/auth-context';
-import { toast, ToastContainer, ToastOptions } from 'react-toastify';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { FadeInDiv, RootAnimationDiv, StaggerDiv } from '../animations';
-import Link from 'next/link';
+import { NotificationToast } from '../components/common';
+import { useAuth } from '../context/auth-context';
+import AuthService from '../services/auth-service';
+import { notifyError } from '../utils/notify-toast';
 
 interface FormProps {
   email: string;
@@ -45,9 +46,6 @@ const Login: NextPage = () => {
     }
   }, [authContext, router]);
 
-  const notify = (message: string, options: ToastOptions) =>
-    toast(message, options);
-
   const formHandler = useForm<FormProps>({
     initialValues: {
       email: '',
@@ -65,12 +63,10 @@ const Login: NextPage = () => {
     setLoading(true);
 
     try {
-      const logged = await ApiService.login({ ...props });
+      const logged = await AuthService.login({ ...props });
 
       if (!logged) {
-        return notify('Username or/and password are not correct', {
-          type: 'error',
-        });
+        return notifyError('Username or/and password are not correct');
       }
 
       if (authContext) {
@@ -84,9 +80,7 @@ const Login: NextPage = () => {
       }
     } catch (error: any) {
       console.log(error);
-      notify('Sorry, but something wrong happened. Retry later', {
-        type: 'error',
-      });
+      notifyError('Sorry, but something wrong happened. Retry later');
     } finally {
       setLoading(false);
     }
@@ -177,16 +171,7 @@ const Login: NextPage = () => {
               </form>
             </Card>
           </FadeInDiv>
-          <ToastContainer
-            position="bottom-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            draggable
-            pauseOnHover
-          />
+          <NotificationToast />
         </Container>
       </StaggerDiv>
     </RootAnimationDiv>
