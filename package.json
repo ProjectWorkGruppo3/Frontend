@@ -10,11 +10,11 @@
     "format": "npx prettier --write ."
   },
   "dependencies": {
-    "@mantine/core": "4.2.8",
-    "@mantine/dates": "^4.2.9",
+    "@mantine/core": "^4.2.8",
+    "@mantine/dates": "^4.2.8",
     "@mantine/form": "^4.2.8",
-    "@mantine/hooks": "4.2.8",
-    "@mantine/next": "4.2.8",
+    "@mantine/hooks": "^4.2.8",
+    "@mantine/next": "^4.2.8",
     "axios": "^0.27.2",
     "dayjs": "^1.11.3",
     "framer-motion": "^6.3.11",
