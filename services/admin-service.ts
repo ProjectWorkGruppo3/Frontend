@@ -4,42 +4,62 @@ import {
   DeleteAdminUserProps,
   GetAdminUserProps,
   GetAdminUsersProps,
-  UpdateAdminUserProps,
+  UpdateAdminUserProps
 } from '../types/services/admin-service';
 import { ServiceReturnType } from '../types/services/common-service';
 import config from '../utils/config';
 
 const AdminService = () => {
-  const getAdminUsers = async (props: GetAdminUsersProps) => {
-    const result = await axios.get(
-      `${config.API_URL}/users/admins`, // FIXME
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: props.token,
-        },
-      }
-    );
-
-    const admins = result.data as AdminUser[];
-
-    return admins;
+  const getAdminUsers = async (props: GetAdminUsersProps) : Promise<ServiceReturnType<AdminUser[]>> => {
+    try {
+      const result = await axios.get(
+        `${config.API_URL}/users/admins`, // FIXME
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: props.token,
+          },
+        }
+      );
+  
+      const admins = result.data as AdminUser[];
+  
+      return {
+        data: admins,
+        error: undefined
+      };
+    } catch (error: any) {
+      return {
+        data: [],
+        error: error
+      };
+    }
   };
 
-  const getAdminUser = async (props: GetAdminUserProps) => {
-    const result = await axios.get(
-      `${config.API_URL}/users/admins/${props.userId}`, // FIXME
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: props.token,
-        },
-      }
-    );
-
-    const admins = result.data as AdminUser[];
-
-    return admins;
+  const getAdminUser = async (props: GetAdminUserProps) : Promise<ServiceReturnType<AdminUser | undefined>> => {
+    try {
+      const result = await axios.get(
+        `${config.API_URL}/users/admins/${props.userId}`, // FIXME
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: props.token,
+          },
+        }
+      );
+  
+      const admins = result.data as AdminUser;
+  
+      return {
+        data: admins,
+        error: undefined
+      };
+    } catch (error: any) {
+      return {
+        data: undefined,
+        error: error
+      };
+    }
   };
 
   const updateAdminUser = async (
@@ -63,6 +83,7 @@ const AdminService = () => {
 
       return {
         data: true,
+        error: undefined
       };
     } catch (error: any) {
       return {
@@ -86,7 +107,10 @@ const AdminService = () => {
         }
       );
 
-      return { data: true };
+      return { 
+        data: true,
+        error: undefined
+      };
     } catch (error: any) {
       return {
         data: false,

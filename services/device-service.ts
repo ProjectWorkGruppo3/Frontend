@@ -1,38 +1,51 @@
 import axios from 'axios';
+import { ServiceReturnType } from 'types/services/common-service';
 import { Device } from '../models';
-import { AddNewDeviceProps } from '../types/services/device-service';
-import {
-  GetDevicesProps,
-  GetDeviceDataProps,
-} from '../types/services/device-service';
+import { AddNewDeviceProps, GetDeviceDataProps, GetDevicesProps } from '../types/services/device-service';
 import config from '../utils/config';
 
 const DeviceService = () => {
-  const getDevices = async (props: GetDevicesProps): Promise<Device[]> => {
+  const getDevices = async (props: GetDevicesProps): Promise<ServiceReturnType<Device[]>> => {
     // FIXME
-    return [];
+    return {
+      data: [],
+      error: undefined
+    };
 
-    const result = await axios.get(
-      `${config.API_URL}/users/${props.userId}/devices`, //FIXME
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: props.token,
-        },
-        validateStatus: () => true,
+    try {
+      
+      const result = await axios.get(
+        `${config.API_URL}/users/${props.userId}/devices`, //FIXME
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: props.token,
+          },
+          validateStatus: () => true,
+        }
+      );
+  
+      if (result.status >= 400) {
+        console.log(result.data);
+        throw new Error(result.data['message'] ?? 'Somethin wrong happened');
       }
-    );
+  
+      const data = result.data as Device[];
 
-    if (result.status >= 400) {
-      console.log(result.data);
-      throw new Error(result.data['message'] ?? 'Somethin wrong happened');
+      return {
+        data: data,
+        error: undefined
+      }
+
+    } catch (error: any) {
+      return {
+        data: [],
+        error: error
+      }
     }
-
-    const data = result.data as Device[];
-
-    return data;
   };
 
+  // TODO
   const getDeviceData = async (props: GetDeviceDataProps) => {
     const result = await axios.get(
       `${config.API_URL}/users/${props.userId}/devices/${props.deviceId}`, //FIXME
@@ -51,32 +64,48 @@ const DeviceService = () => {
     }
   };
 
-  const addNewDevice = async (props: AddNewDeviceProps) => {
-    return;
-    const result = await axios.post(
-      `${config.API_URL}/devices/`, //FIXME
-      {
-        name: props.name,
-        id: props.id,
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: props.token,
+  const addNewDevice = async (props: AddNewDeviceProps) : Promise<ServiceReturnType<boolean>> => {
+    return {
+      data: true,
+      error: undefined
+    };
+    
+    try {
+      const result = await axios.post(
+        `${config.API_URL}/devices/`, //FIXME
+        {
+          name: props.name,
+          id: props.id,
         },
-        validateStatus: () => true,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: props.token,
+          },
+          validateStatus: () => true,
+        }
+      );
+  
+      if (result.status >= 400) {
+        console.log(result.data);
+        throw new Error(result.data['message'] ?? 'Somethin wrong happened');
       }
-    );
-
-    if (result.status >= 400) {
-      console.log(result.data);
-      throw new Error(result.data['message'] ?? 'Somethin wrong happened');
+  
+      return {
+        data: true,
+        error: undefined
+      }
+    } catch (error: any) {
+      return {
+        data: false,
+        error: error
+      }
     }
   };
 
   return {
     getDevices,
-    getDeviceData,
+    // getDeviceData,
     addNewDevice,
   };
 };

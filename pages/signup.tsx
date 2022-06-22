@@ -10,7 +10,7 @@ import {
   Stack,
   Text,
   TextInput,
-  Title,
+  Title
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import type { NextPage } from 'next';
@@ -32,7 +32,7 @@ import AuthService from '../services/auth-service';
 import Link from 'next/link';
 import { FadeInDiv, RootAnimationDiv, StaggerDiv } from '../animations';
 import { NotificationToast } from '../components/common';
-import { notifyError } from '../utils/notify-toast';
+import { notifyError, notifySuccess } from '../utils/notify-toast';
 
 interface FormProps {
   email: string;
@@ -91,24 +91,24 @@ const SignUp: NextPage = () => {
     console.log(props);
     setLoading(true);
 
-    try {
-      await AuthService.signup({
-        email: props.email,
-        password: props.password,
-        birthday: new Date(props.birthday),
-        height: parseInt(props.height),
-        weight: parseInt(props.weight),
-      });
+    const { data: registered, error } = await AuthService.signup({
+      email: props.email,
+      password: props.password,
+      birthday: new Date(props.birthday),
+      height: parseInt(props.height),
+      weight: parseInt(props.weight),
+    });
 
-      return router.replace('/');
-    } catch (error: any) {
-      console.log(error);
+    if(error) {
       notifyError(
         error['message'] ?? 'Sorry, but something wrong happened. Retry later'
       );
-    } finally {
-      setLoading(false);
+    } else {
+      notifySuccess('Registration completed Successfully');
+      return router.replace('/');
     }
+
+    setLoading(false);
   };
 
   return (
