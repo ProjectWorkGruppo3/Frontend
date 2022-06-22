@@ -10,78 +10,27 @@ import {
   Group,
   Navbar,
   Text,
-  Title as MantineTitle,
+  Title as MantineTitle
 } from '@mantine/core';
-import {
-  CategoryScale,
-  Chart,
-  ChartOptions,
-  LinearScale,
-  LineController,
-  LineElement,
-  PointElement,
-  Title,
-} from 'chart.js';
 import { getRandomInt } from 'lib/utils/getRandomInt';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import { Line } from 'react-chartjs-2';
 import {
   Logout as LogoutIcon,
-  Settings as SettingsIcon,
+  Settings as SettingsIcon
 } from 'tabler-icons-react';
 
-Chart.register(
-  LineController,
-  LineElement,
-  PointElement,
-  LinearScale,
-  Title,
-  CategoryScale
-);
 
 export default function Dashboard() {
   const [steps, setSteps] = useState(0);
   const [heartPulse, setHeartPulse] = useState(0);
   const [dummy, setDummy] = useState(0);
 
-  const [chartData, setChartData] = useState<Number[]>([]);
-
-  const options: ChartOptions = {
-    plugins: {
-      tooltip: {
-        enabled: true,
-        mode: 'index',
-        position: 'nearest',
-      },
-    },
-  };
-
-  const data = {
-    labels: [
-      'Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-    ],
-    datasets: [
-      {
-        data: chartData,
-        backgroundColor: 'rgba(75,192,192,0.2)',
-        borderColor: 'rgba(75,192,192,1)',
-      },
-    ],
-  };
-
   useEffect(() => {
     const interval = setInterval(() => {
       setSteps(getRandomInt(10000));
       setHeartPulse(getRandomInt(100));
       setDummy(getRandomInt(10000));
-      setChartData(Array.from({ length: 7 }, () => getRandomInt(10000)));
     }, 5000);
 
     return () => clearInterval(interval);

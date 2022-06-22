@@ -23,7 +23,7 @@
     "react-chartjs-2": "4.2.0",
     "react-dom": "18.1.0",
     "react-icons": "^4.4.0",
-    "react-toastify": "^9.0.4"
+    "react-toastify": "^9.0.4",
     "tabler-icons-react": "1.48.1"
   },
   "devDependencies": {
