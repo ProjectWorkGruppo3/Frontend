@@ -1,4 +1,4 @@
-import { Box, Group } from '@mantine/core';
+import { Group } from '@mantine/core';
 import React, { useState } from 'react';
 import { DatePicker } from '@mantine/dates';
 import { Calendar, Bell, BellRinging } from 'tabler-icons-react';
