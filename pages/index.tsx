@@ -42,21 +42,23 @@ const Home: NextPage = () => {
   useEffect(() => {
     const fetchDevices = async () => {
       if (auth && auth.authState) {
-        try {
-          const devices = await DeviceService.getDevices({
+        
+          const { data: devices, error } = await DeviceService.getDevices({
             token: auth.authState.token,
             userId: auth.authState.user.id,
           });
 
-          setDevices(devices);
-        } catch (error: any) {
-          notifyError(
-            error['message'] ??
-              'Sorry, but something wrong happened. Retry later'
-          );
-        } finally {
+          if (error) {
+            notifyError(
+              error['message'] ??
+                'Sorry, but something wrong happened. Retry later'
+            );
+          } else {
+            setDevices(devices);
+          }
+        
           setLoading(false);
-        }
+        
       }
     };
 
@@ -66,21 +68,23 @@ const Home: NextPage = () => {
   const onNewDeviceSubmit = async (name: string, id: string) => {
     console.log(name, id);
 
-    try {
-      await DeviceService.addNewDevice({
-        name: name,
-        id: id,
-        token: auth!.authState!.token,
-      });
+    const { data: added, error } = await DeviceService.addNewDevice({
+      name: name,
+      id: id,
+      token: auth!.authState!.token,
+    });
 
-      notifySuccess(`Successfully added device (${name})`);
-    } catch (error: any) {
+    if (error) {
       notifyError(
         error['message'] ?? 'Sorry, but something wrong happened. Retry later'
       );
-    } finally {
-      setNewDeviceModalOpened(false);
+    } else {
+      notifySuccess(`Successfully added device (${name})`);
     }
+
+    
+
+    setNewDeviceModalOpened(false);
   };
 
   if (loading) {

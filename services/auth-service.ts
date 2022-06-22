@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { ServiceReturnType } from 'types/services/common-service';
 import {
   LoginProps,
   LoginResult,
-  SignUpProps,
+  SignUpProps
 } from '../types/services/auth-service';
 import config from '../utils/config';
 
@@ -10,50 +11,71 @@ const AuthService = () => {
   const login = async ({
     email,
     password,
-  }: LoginProps): Promise<LoginResult> => {
-    const result = await axios.post(
-      `${config.API_URL}/Users/login`,
-      {
-        email: email,
-        password: password,
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
+  }: LoginProps): Promise<ServiceReturnType<LoginResult | undefined>> => {
+    try {
+      const result = await axios.post(
+        `${config.API_URL}/Users/login`,
+        {
+          email: email,
+          password: password,
         },
-        validateStatus: (status) => status <= 500,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          validateStatus: (status) => status <= 500,
+        }
+      );
+  
+      if (result.status === 401) {
+        throw new Error('Not Authorized')
       }
-    );
+  
+      const loginResult = result.data as LoginResult;
+  
+      return {
+        data: loginResult,
+        error: undefined
+      };
 
-    if (result.status === 401) {
-      return null;
+    } catch (error) {
+
+      return {
+        error: error,
+        data: undefined
+      }
+      
     }
-
-    const loginResult = result.data as LoginResult;
-
-    return loginResult;
   };
-  const signup = async (props: SignUpProps) => {
-    const result = await axios.post(
-      `${config.API_URL}/Users/register`,
-      {
-        email: props.email,
-        password: props.password,
-        weight: props.weight,
-        height: props.height,
-        dayOfBirth: props.birthday,
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
+  const signup = async (props: SignUpProps) : Promise<ServiceReturnType<boolean>> => {
+    
+    try {
+      const result = await axios.post(
+        `${config.API_URL}/Users/register`,
+        {
+          email: props.email,
+          password: props.password,
+          weight: props.weight,
+          height: props.height,
+          dayOfBirth: props.birthday,
         },
-        validateStatus: () => true,
-      }
-    );
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
-    if (result.status >= 400) {
-      console.log(result.data);
-      throw new Error(result.data['message'] ?? 'Somethin wrong happened');
+      return {
+        data: true,
+        error: undefined
+      }
+  
+    } catch (error: any) {
+      return {
+        data: false,
+        error: error
+      }
     }
   };
 
