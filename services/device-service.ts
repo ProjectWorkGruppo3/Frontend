@@ -6,20 +6,15 @@ import config from '../utils/config';
 
 const DeviceService = () => {
   const getDevices = async (props: GetDevicesProps): Promise<ServiceReturnType<Device[]>> => {
-    // FIXME
-    return {
-      data: [],
-      error: undefined
-    };
 
     try {
       
       const result = await axios.get(
-        `${config.API_URL}/users/${props.userId}/devices`, //FIXME
+        `${config.API_URL}/Device`,
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: props.token,
+            Authorization: `Bearer ${props.token}`,
           },
           validateStatus: () => true,
         }
@@ -65,14 +60,9 @@ const DeviceService = () => {
   };
 
   const addNewDevice = async (props: AddNewDeviceProps) : Promise<ServiceReturnType<boolean>> => {
-    return {
-      data: true,
-      error: undefined
-    };
-    
     try {
       const result = await axios.post(
-        `${config.API_URL}/devices/`, //FIXME
+        `${config.API_URL}/Device`,
         {
           name: props.name,
           id: props.id,
@@ -80,7 +70,7 @@ const DeviceService = () => {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: props.token,
+            Authorization: `Bearer ${props.token}`,
           },
           validateStatus: () => true,
         }
@@ -105,7 +95,6 @@ const DeviceService = () => {
 
   return {
     getDevices,
-    // getDeviceData,
     addNewDevice,
   };
 };

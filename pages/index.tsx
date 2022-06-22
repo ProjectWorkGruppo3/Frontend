@@ -42,6 +42,8 @@ const Home: NextPage = () => {
   useEffect(() => {
     const fetchDevices = async () => {
       if (auth && auth.authState) {
+
+        console.log("TOKEN", auth.authState.token)
         
           const { data: devices, error } = await DeviceService.getDevices({
             token: auth.authState.token,
@@ -63,7 +65,7 @@ const Home: NextPage = () => {
     };
 
     fetchDevices();
-  }, [auth]);
+  }, [auth, devices]);
 
   const onNewDeviceSubmit = async (name: string, id: string) => {
     console.log(name, id);
@@ -79,12 +81,11 @@ const Home: NextPage = () => {
         error['message'] ?? 'Sorry, but something wrong happened. Retry later'
       );
     } else {
-      notifySuccess(`Successfully added device (${name})`);
+      notifySuccess(`(${name}) added`);
     }
 
-    
-
     setNewDeviceModalOpened(false);
+    setDevices([])
   };
 
   if (loading) {
