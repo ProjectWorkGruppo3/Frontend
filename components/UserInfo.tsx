@@ -26,7 +26,8 @@ const PersonalData = ({
     <Grid.Col xs={12} sm={6} md={6} lg={4} xl={4}>
       <Group direction="column" position="center">
         <Title order={4}>{title}</Title>
-        <Box
+        <Group
+          position="center"
           style={{
             backgroundColor: 'lightcoral',
             borderRadius: '16px',
@@ -40,7 +41,7 @@ const PersonalData = ({
             {value}
             {unitOfMeasurement}
           </Text>
-        </Box>
+        </Group>
       </Group>
     </Grid.Col>
   );
