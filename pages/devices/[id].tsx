@@ -10,14 +10,14 @@ import {
   Group,
   Navbar,
   Text,
-  Title as MantineTitle,
+  Title as MantineTitle
 } from '@mantine/core';
 import { getRandomInt } from 'lib/utils/getRandomInt';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import {
   Logout as LogoutIcon,
-  Settings as SettingsIcon,
+  Settings as SettingsIcon
 } from 'tabler-icons-react';
 
 export default function Dashboard() {
