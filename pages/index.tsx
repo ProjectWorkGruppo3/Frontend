@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import {
   DeviceCard,
   NewDeviceCard,
-  NewDeviceModal,
+  NewDeviceModal
 } from '../components/home/index';
 import { useAuth } from '../context/auth-context';
 
@@ -14,7 +14,7 @@ import {
   CardFadeIn,
   FadeInDiv,
   RootAnimationDiv,
-  StaggerDiv,
+  StaggerDiv
 } from '../animations';
 import { Header, NotificationToast } from '../components/common';
 import { Device } from '../models';
@@ -103,7 +103,7 @@ const Home: NextPage = () => {
           <FadeInDiv>
             <Header
               title={`Welcome ${
-                auth!.authState!.user.email
+                auth!.authState!.user.name
               }, select the device:`}
               onLogout={() => {
                 setLoading(true);
