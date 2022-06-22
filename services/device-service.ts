@@ -1,66 +1,13 @@
 import axios from 'axios';
-import config from '../utils/config';
 import { Device } from '../models';
+import { AddNewDeviceProps } from '../types/services/device-service';
 import {
-  AddNewDeviceData,
-  GetDeviceData,
   GetDevicesProps,
-  LoginProps,
-  LoginResult,
-  SignUpProps,
-} from '../types/services/api-service';
+  GetDeviceDataProps,
+} from '../types/services/device-service';
+import config from '../utils/config';
 
-const ApiService = () => {
-  const login = async ({
-    email,
-    password,
-  }: LoginProps): Promise<LoginResult> => {
-    const result = await axios.post(
-      `${config.API_URL}/Users/login`,
-      {
-        email: email,
-        password: password,
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        validateStatus: (status) => status <= 500,
-      }
-    );
-
-    if (result.status === 401) {
-      return null;
-    }
-
-    const loginResult = result.data as LoginResult;
-
-    return loginResult;
-  };
-  const signup = async (props: SignUpProps) => {
-    const result = await axios.post(
-      `${config.API_URL}/Users/register`,
-      {
-        email: props.email,
-        password: props.password,
-        weight: props.weight,
-        height: props.height,
-        dayOfBirth: props.birthday,
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        validateStatus: () => true,
-      }
-    );
-
-    if (result.status >= 400) {
-      console.log(result.data);
-      throw new Error(result.data['message'] ?? 'Somethin wrong happened');
-    }
-  };
-
+const DeviceService = () => {
   const getDevices = async (props: GetDevicesProps): Promise<Device[]> => {
     // FIXME
     return [];
@@ -86,7 +33,7 @@ const ApiService = () => {
     return data;
   };
 
-  const getDeviceData = async (props: GetDeviceData) => {
+  const getDeviceData = async (props: GetDeviceDataProps) => {
     const result = await axios.get(
       `${config.API_URL}/users/${props.userId}/devices/${props.deviceId}`, //FIXME
       {
@@ -104,7 +51,7 @@ const ApiService = () => {
     }
   };
 
-  const addNewDevice = async (props: AddNewDeviceData) => {
+  const addNewDevice = async (props: AddNewDeviceProps) => {
     return;
     const result = await axios.post(
       `${config.API_URL}/devices/`, //FIXME
@@ -128,12 +75,10 @@ const ApiService = () => {
   };
 
   return {
-    login,
-    signup,
     getDevices,
     getDeviceData,
     addNewDevice,
   };
 };
 
-export default ApiService();
+export default DeviceService();
