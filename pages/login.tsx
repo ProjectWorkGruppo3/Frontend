@@ -6,10 +6,10 @@ import {
   TextInput,
   PasswordInput,
   Button,
-  Group,
+  Text,
   Title,
   Box,
-  Alert,
+  Stack,
 } from '@mantine/core';
 import { MdOutlineAlternateEmail, MdPassword } from 'react-icons/md';
 
@@ -17,10 +17,15 @@ import { useForm } from '@mantine/form';
 import { validateEmail } from '../utils/validations';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ApiService from '../services/api-service';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import { useAuth } from '../context/auth-context';
+import { toast, ToastContainer, ToastOptions } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { FadeInDiv, RootAnimationDiv, StaggerDiv } from '../animations';
+import Link from 'next/link';
 
 interface FormProps {
   email: string;
@@ -28,9 +33,20 @@ interface FormProps {
 }
 
 const Login: NextPage = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
+  const authContext = useAuth();
+
+  useEffect(() => {
+    if (authContext && authContext.isAuthenticated()) {
+      router.push('/').then((_) => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, [authContext, router]);
+
+  const notify = (message: string, options: ToastOptions) =>
+    toast(message, options);
 
   const formHandler = useForm<FormProps>({
     initialValues: {
@@ -52,92 +68,128 @@ const Login: NextPage = () => {
       const logged = await ApiService.login({ ...props });
 
       if (!logged) {
-        return setError('Username or/and password are not correct');
+        return notify('Username or/and password are not correct', {
+          type: 'error',
+        });
       }
 
-      return router.replace('/');
-    } catch (error) {
-      setError('Sorry, but something wrong happened. Retry later');
+      if (authContext) {
+        authContext.setAuthState({
+          user: logged.user,
+          expiration: logged.expiration,
+          token: logged.token,
+        });
+
+        return router.replace('/');
+      }
+    } catch (error: any) {
+      console.log(error);
+      notify('Sorry, but something wrong happened. Retry later', {
+        type: 'error',
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <>
+    <RootAnimationDiv>
       <Head>
         <title>SerenUp - Sign In</title>
         <meta name="description" content="Sign In to the Seren Up Web App" />
-        {/* <link rel="icon" href="/assets/logo.png" /> */}
+        <link rel="icon" href="/assets/logo.png" />
       </Head>
-      <Container my="xl">
-        <Card radius="md">
-          <Container mt="md">
-            <Title align="center">Sign In</Title>
-          </Container>
+      <StaggerDiv>
+        <Container my="xl">
+          <FadeInDiv>
+            <Card radius="md">
+              <Container mt="md">
+                <Title align="center">Sign In</Title>
+              </Container>
 
-          <Center>
-            <Box
-              sx={{
-                width: '60%',
-              }}
-              my="md"
-            >
-              <Image
-                src="/assets/logo.png"
-                width="100%"
-                height="25%"
-                layout="responsive"
-                alt="logo"
-              />
-            </Box>
-          </Center>
-          <form onSubmit={formHandler.onSubmit(onSubmit)}>
-            <TextInput
-              id="email-input"
-              label="E-mail"
-              description="E-mail you have used to register"
-              placeholder="your@email.com"
-              mb="md"
-              icon={<MdOutlineAlternateEmail size={16} />}
-              {...formHandler.getInputProps('email')}
-              sx={{
-                'input:focus': {
-                  borderColor: 'orange',
-                },
-              }}
-            />
+              <Center>
+                <Box
+                  sx={{
+                    width: '60%',
+                  }}
+                  my="md"
+                >
+                  <Image
+                    src="/assets/logo.png"
+                    width="100%"
+                    height="25%"
+                    layout="responsive"
+                    alt="logo"
+                  />
+                </Box>
+              </Center>
+              <form onSubmit={formHandler.onSubmit(onSubmit)}>
+                <TextInput
+                  id="email-input"
+                  label="E-mail"
+                  description="E-mail you have used to register"
+                  placeholder="your@email.com"
+                  mb="md"
+                  icon={<MdOutlineAlternateEmail size={16} />}
+                  {...formHandler.getInputProps('email')}
+                  sx={{
+                    'input:focus': {
+                      borderColor: 'orange',
+                    },
+                  }}
+                />
 
-            <PasswordInput
-              id="pwd-input"
-              label="Password"
-              description="Password you have used to register"
-              placeholder="yoursecretpassword"
-              mb="sm"
-              icon={<MdPassword size={16} />}
-              {...formHandler.getInputProps('password')}
-              sx={{
-                'div:focus-within': {
-                  borderColor: 'orange',
-                },
-              }}
-            />
-
-            {error && (
-              <Alert color="red" mb="sm">
-                {error}
-              </Alert>
-            )}
-
-            <Group position="center">
-              <Button type="submit" color="orange" loading={loading}>
-                Sign In
-              </Button>
-            </Group>
-          </form>
-        </Card>
-      </Container>
-    </>
+                <PasswordInput
+                  id="pwd-input"
+                  label="Password"
+                  description="Password you have used to register"
+                  placeholder="yoursecretpassword"
+                  mb="sm"
+                  icon={<MdPassword size={16} />}
+                  {...formHandler.getInputProps('password')}
+                  sx={{
+                    'div:focus-within': {
+                      borderColor: 'orange',
+                    },
+                  }}
+                />
+                <Stack align="center" spacing="xs">
+                  <Button type="submit" color="orange" loading={loading}>
+                    Sign In
+                  </Button>
+                  <Link href="/signup">
+                    <Text
+                      variant="link"
+                      component="a"
+                      sx={{
+                        color: '#d3d3d3',
+                        ':hover': {
+                          color: 'orange',
+                          transition: '0.6s',
+                          cursor: 'pointer',
+                        },
+                      }}
+                    >
+                      Do not have an account? Click here to Sign Up
+                    </Text>
+                  </Link>
+                </Stack>
+              </form>
+            </Card>
+          </FadeInDiv>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            draggable
+            pauseOnHover
+          />
+        </Container>
+      </StaggerDiv>
+    </RootAnimationDiv>
   );
 };
 
