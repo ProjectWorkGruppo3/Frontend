@@ -10,16 +10,15 @@ import {
   Group,
   Navbar,
   Text,
-  Title as MantineTitle
+  Title as MantineTitle,
 } from '@mantine/core';
 import { getRandomInt } from 'lib/utils/getRandomInt';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import {
   Logout as LogoutIcon,
-  Settings as SettingsIcon
+  Settings as SettingsIcon,
 } from 'tabler-icons-react';
-
 
 export default function Dashboard() {
   const [steps, setSteps] = useState(0);
@@ -111,18 +110,6 @@ export default function Dashboard() {
           position="center"
         >
           <MantineTitle order={3}>Your previous location</MantineTitle>
-          {/* <MantineTitle order={3}>Your weekly recap</MantineTitle>
-          <Grid style={{ width: '100%' }}>
-            <Grid.Col xs={12} sm={6} md={6} lg={4} xl={4}>
-              <Line data={data} />
-            </Grid.Col>
-            <Grid.Col xs={12} sm={6} md={6} lg={4} xl={4}>
-              <Line data={data} options={options} />
-            </Grid.Col>
-            <Grid.Col xs={12} sm={6} md={6} lg={4} xl={4}>
-              <Line data={data} />
-            </Grid.Col>
-          </Grid> */}
         </Group>
       </AppShell>
     </Box>
