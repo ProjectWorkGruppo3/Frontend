@@ -1,5 +1,4 @@
 import Card from '@components/Card';
-import Map from '@components/Map';
 import User from '@components/User';
 import UserInfo from '@components/UserInfo';
 import WeeklyGoals from '@components/WeeklyGoals';
@@ -25,8 +24,7 @@ import {
 } from 'chart.js';
 import { getRandomInt } from 'lib/utils/getRandomInt';
 import Head from 'next/head';
-import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import {
   Logout as LogoutIcon,
@@ -163,7 +161,8 @@ export default function Dashboard() {
           direction="column"
           position="center"
         >
-          <MantineTitle order={3}>Your weekly recap</MantineTitle>
+          <MantineTitle order={3}>Your previous location</MantineTitle>
+          {/* <MantineTitle order={3}>Your weekly recap</MantineTitle>
           <Grid style={{ width: '100%' }}>
             <Grid.Col xs={12} sm={6} md={6} lg={4} xl={4}>
               <Line data={data} />
@@ -174,9 +173,8 @@ export default function Dashboard() {
             <Grid.Col xs={12} sm={6} md={6} lg={4} xl={4}>
               <Line data={data} />
             </Grid.Col>
-          </Grid>
+          </Grid> */}
         </Group>
-        <Map />
       </AppShell>
     </Box>
   );
