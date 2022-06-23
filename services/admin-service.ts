@@ -4,13 +4,15 @@ import {
   DeleteAdminUserProps,
   GetAdminUserProps,
   GetAdminUsersProps,
-  UpdateAdminUserProps
+  UpdateAdminUserProps,
 } from '../types/services/admin-service';
 import { ServiceReturnType } from '../types/services/common-service';
 import config from '../utils/config';
 
 const AdminService = () => {
-  const getAdminUsers = async (props: GetAdminUsersProps) : Promise<ServiceReturnType<AdminUser[]>> => {
+  const getAdminUsers = async (
+    props: GetAdminUsersProps
+  ): Promise<ServiceReturnType<AdminUser[]>> => {
     try {
       const result = await axios.get(
         `${config.API_URL}/users/admins`, // FIXME
@@ -21,22 +23,24 @@ const AdminService = () => {
           },
         }
       );
-  
+
       const admins = result.data as AdminUser[];
-  
+
       return {
         data: admins,
-        error: undefined
+        error: undefined,
       };
     } catch (error: any) {
       return {
         data: [],
-        error: error
+        error: error,
       };
     }
   };
 
-  const getAdminUser = async (props: GetAdminUserProps) : Promise<ServiceReturnType<AdminUser | undefined>> => {
+  const getAdminUser = async (
+    props: GetAdminUserProps
+  ): Promise<ServiceReturnType<AdminUser | undefined>> => {
     try {
       const result = await axios.get(
         `${config.API_URL}/users/admins/${props.userId}`, // FIXME
@@ -47,17 +51,17 @@ const AdminService = () => {
           },
         }
       );
-  
+
       const admins = result.data as AdminUser;
-  
+
       return {
         data: admins,
-        error: undefined
+        error: undefined,
       };
     } catch (error: any) {
       return {
         data: undefined,
-        error: error
+        error: error,
       };
     }
   };
@@ -83,7 +87,7 @@ const AdminService = () => {
 
       return {
         data: true,
-        error: undefined
+        error: undefined,
       };
     } catch (error: any) {
       return {
@@ -107,9 +111,9 @@ const AdminService = () => {
         }
       );
 
-      return { 
+      return {
         data: true,
-        error: undefined
+        error: undefined,
       };
     } catch (error: any) {
       return {

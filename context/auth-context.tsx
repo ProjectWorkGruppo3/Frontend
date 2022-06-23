@@ -38,7 +38,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const authStateRetrieved = JSON.parse(data) as AuthState;
     authStateRetrieved.expiration = new Date(authStateRetrieved.expiration);
 
-    const expired = authStateRetrieved.expiration.getTime() < new Date().getTime();
+    const expired =
+      authStateRetrieved.expiration.getTime() < new Date().getTime();
 
     if (expired) {
       localStorage.removeItem(TOKEN_KEY);
@@ -50,7 +51,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const isAuthenticated = (): boolean => {
     const authState = getSavedAuthState();
-    
+
     return authState !== null;
   };
 
@@ -88,4 +89,3 @@ const useAuth = () => {
 };
 
 export { useAuth, AuthProvider };
-

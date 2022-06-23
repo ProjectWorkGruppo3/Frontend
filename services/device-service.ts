@@ -1,42 +1,42 @@
 import axios from 'axios';
 import { ServiceReturnType } from 'types/services/common-service';
 import { Device } from '../models';
-import { AddNewDeviceProps, GetDeviceDataProps, GetDevicesProps } from '../types/services/device-service';
+import {
+  AddNewDeviceProps,
+  GetDeviceDataProps,
+  GetDevicesProps,
+} from '../types/services/device-service';
 import config from '../utils/config';
 
 const DeviceService = () => {
-  const getDevices = async (props: GetDevicesProps): Promise<ServiceReturnType<Device[]>> => {
-
+  const getDevices = async (
+    props: GetDevicesProps
+  ): Promise<ServiceReturnType<Device[]>> => {
     try {
-      
-      const result = await axios.get(
-        `${config.API_URL}/Device`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${props.token}`,
-          },
-          validateStatus: () => true,
-        }
-      );
-  
+      const result = await axios.get(`${config.API_URL}/Device`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${props.token}`,
+        },
+        validateStatus: () => true,
+      });
+
       if (result.status >= 400) {
         console.log(result.data);
         throw new Error(result.data['message'] ?? 'Somethin wrong happened');
       }
-  
+
       const data = result.data as Device[];
 
       return {
         data: data,
-        error: undefined
-      }
-
+        error: undefined,
+      };
     } catch (error: any) {
       return {
         data: [],
-        error: error
-      }
+        error: error,
+      };
     }
   };
 
@@ -59,7 +59,9 @@ const DeviceService = () => {
     }
   };
 
-  const addNewDevice = async (props: AddNewDeviceProps) : Promise<ServiceReturnType<boolean>> => {
+  const addNewDevice = async (
+    props: AddNewDeviceProps
+  ): Promise<ServiceReturnType<boolean>> => {
     try {
       const result = await axios.post(
         `${config.API_URL}/Device`,
@@ -75,21 +77,21 @@ const DeviceService = () => {
           validateStatus: () => true,
         }
       );
-  
+
       if (result.status >= 400) {
         console.log(result.data);
         throw new Error(result.data['message'] ?? 'Somethin wrong happened');
       }
-  
+
       return {
         data: true,
-        error: undefined
-      }
+        error: undefined,
+      };
     } catch (error: any) {
       return {
         data: false,
-        error: error
-      }
+        error: error,
+      };
     }
   };
 

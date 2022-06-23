@@ -3,7 +3,7 @@ import { ServiceReturnType } from 'types/services/common-service';
 import {
   LoginProps,
   LoginResult,
-  SignUpProps
+  SignUpProps,
 } from '../types/services/auth-service';
 import config from '../utils/config';
 
@@ -26,29 +26,27 @@ const AuthService = () => {
           validateStatus: (status) => status <= 500,
         }
       );
-  
+
       if (result.status === 401) {
-        throw new Error('Not Authorized')
+        throw new Error('Not Authorized');
       }
-  
+
       const loginResult = result.data as LoginResult;
-  
+
       return {
         data: loginResult,
-        error: undefined
+        error: undefined,
       };
-
     } catch (error) {
-
       return {
         error: error,
-        data: undefined
-      }
-      
+        data: undefined,
+      };
     }
   };
-  const signup = async (props: SignUpProps) : Promise<ServiceReturnType<boolean>> => {
-    
+  const signup = async (
+    props: SignUpProps
+  ): Promise<ServiceReturnType<boolean>> => {
     try {
       const result = await axios.post(
         `${config.API_URL}/Users/register`,
@@ -68,14 +66,13 @@ const AuthService = () => {
 
       return {
         data: true,
-        error: undefined
-      }
-  
+        error: undefined,
+      };
     } catch (error: any) {
       return {
         data: false,
-        error: error
-      }
+        error: error,
+      };
     }
   };
 

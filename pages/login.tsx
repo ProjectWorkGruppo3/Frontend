@@ -8,7 +8,7 @@ import {
   Stack,
   Text,
   TextInput,
-  Title
+  Title,
 } from '@mantine/core';
 import type { NextPage } from 'next';
 import { MdOutlineAlternateEmail, MdPassword } from 'react-icons/md';

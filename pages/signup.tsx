@@ -10,7 +10,7 @@ import {
   Stack,
   Text,
   TextInput,
-  Title
+  Title,
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import type { NextPage } from 'next';
@@ -99,7 +99,7 @@ const SignUp: NextPage = () => {
       weight: parseInt(props.weight),
     });
 
-    if(error) {
+    if (error) {
       notifyError(
         error['message'] ?? 'Sorry, but something wrong happened. Retry later'
       );
