@@ -14,7 +14,6 @@ import {
 } from '@mantine/core';
 import { getRandomInt } from 'lib/utils/getRandomInt';
 import Head from 'next/head';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import {
   Logout as LogoutIcon,
@@ -44,7 +43,7 @@ export default function Dashboard() {
       <AppShell
         navbar={
           <Navbar
-            width={{ base: '6%' }}
+            width={{ base: '4%' }}
             style={{
               border: 'none',
               backgroundColor: 'lightcoral',
@@ -60,11 +59,9 @@ export default function Dashboard() {
               <Text align="center" py={30}>
                 Dummy logo
               </Text>
-              <Link href="/profile">
-                <SettingsIcon
-                  style={{ marginTop: '20px', marginBottom: '20px' }}
-                />
-              </Link>
+              <SettingsIcon
+                style={{ marginTop: '20px', marginBottom: '20px' }}
+              />
             </Group>
             <Group
               direction="column"
