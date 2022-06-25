@@ -61,29 +61,25 @@ const Login: NextPage = () => {
 
   const onSubmit = async (props: FormProps) => {
     setLoading(true);
+    const { data: logged, error } = await AuthService.login({ ...props });
 
-    try {
-      const logged = await AuthService.login({ ...props });
-
-      if (!logged) {
-        return notifyError('Username or/and password are not correct');
-      }
-
-      if (authContext) {
-        authContext.setAuthState({
-          user: logged.user,
-          expiration: logged.expiration,
-          token: logged.token,
-        });
-
-        return router.replace('/');
-      }
-    } catch (error: any) {
-      console.log(error);
-      notifyError('Sorry, but something wrong happened. Retry later');
-    } finally {
-      setLoading(false);
+    if (error) {
+      return notifyError(
+        error['message'] ?? 'Sorry, but something wrong happened. Retry later'
+      );
     }
+
+    if (logged && authContext) {
+      authContext.setAuthState({
+        user: logged.user,
+        expiration: logged.expiration,
+        token: logged.token,
+      });
+
+      return router.replace('/');
+    }
+
+    setLoading(false);
   };
 
   return (

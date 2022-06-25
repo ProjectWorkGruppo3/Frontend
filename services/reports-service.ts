@@ -11,6 +11,7 @@ const ReportsService = () => {
   ): Promise<ServiceReturnType<Report[]>> => {
     return {
       data: fakeReports,
+      error: undefined,
     };
 
     try {
@@ -28,6 +29,7 @@ const ReportsService = () => {
 
       return {
         data: reports,
+        error: undefined,
       };
     } catch (error) {
       return {

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import {
   DeviceCard,
   NewDeviceCard,
-  NewDeviceModal
+  NewDeviceModal,
 } from '../components/home/index';
 import { useAuth } from '../context/auth-context';
 
@@ -14,7 +14,7 @@ import {
   CardFadeIn,
   FadeInDiv,
   RootAnimationDiv,
-  StaggerDiv
+  StaggerDiv,
 } from '../animations';
 import { Header, NotificationToast } from '../components/common';
 import { Device } from '../models';
@@ -42,45 +42,44 @@ const Home: NextPage = () => {
   useEffect(() => {
     const fetchDevices = async () => {
       if (auth && auth.authState) {
-        try {
-          const devices = await DeviceService.getDevices({
-            token: auth.authState.token,
-            userId: auth.authState.user.id,
-          });
+        const { data: devices, error } = await DeviceService.getDevices({
+          token: auth.authState.token,
+          userId: auth.authState.user.id,
+        });
 
-          setDevices(devices);
-        } catch (error: any) {
+        if (error) {
           notifyError(
             error['message'] ??
               'Sorry, but something wrong happened. Retry later'
           );
-        } finally {
-          setLoading(false);
+        } else {
+          setDevices(devices);
         }
+
+        setLoading(false);
       }
     };
 
     fetchDevices();
-  }, [auth]);
+  }, [loading, auth]);
 
   const onNewDeviceSubmit = async (name: string, id: string) => {
-    console.log(name, id);
+    const { data: added, error } = await DeviceService.addNewDevice({
+      name: name,
+      id: id,
+      token: auth!.authState!.token,
+    });
 
-    try {
-      await DeviceService.addNewDevice({
-        name: name,
-        id: id,
-        token: auth!.authState!.token,
-      });
-
-      notifySuccess(`Successfully added device (${name})`);
-    } catch (error: any) {
+    if (error) {
       notifyError(
         error['message'] ?? 'Sorry, but something wrong happened. Retry later'
       );
-    } finally {
-      setNewDeviceModalOpened(false);
+    } else {
+      notifySuccess(`${name} added`);
+      setDevices((prev) => [...prev, { name: name, deviceId: id }]);
     }
+
+    setNewDeviceModalOpened(false);
   };
 
   if (loading) {
