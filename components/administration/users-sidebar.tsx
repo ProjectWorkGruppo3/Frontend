@@ -1,26 +1,30 @@
 import {
   ActionIcon,
+  Button,
   Card,
   Divider,
-  Grid,
-  ScrollArea,
-  TextInput,
-  Text,
+  Grid, Group, ScrollArea, Text, TextInput
 } from '@mantine/core';
 import { BiSearchAlt } from 'react-icons/bi';
+import { IoMdPersonAdd } from 'react-icons/io';
 import { RiBookOpenLine } from 'react-icons/ri';
 import { AdminUser } from '../../models/admin-user';
-import { User } from '../../models/user';
 
 export interface UserSidebarProps {
   users: AdminUser[];
   onSearch: (value: string) => void;
   onClick: (user: AdminUser) => void;
+  onAdd: () => void;
 }
 
 export const UserSidebar = (props: UserSidebarProps) => {
   return (
     <Card px="xs" style={{ height: '100%' }}>
+      <Group position='right'>
+        <Button color='green' onClick={props.onAdd}>
+          <IoMdPersonAdd size={16}/>
+        </Button>
+      </Group>
       <TextInput
         placeholder="Search"
         label="Search"

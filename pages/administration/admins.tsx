@@ -7,9 +7,13 @@ import {
   CardFadeIn,
   EaseInOutDiv,
   FadeInDiv,
-  RootAnimationDiv,
+  RootAnimationDiv
 } from '../../animations';
-import { UserDetail, UserSidebar } from '../../components/administration';
+import {
+  NewAdminUserModal,
+  UserDetail,
+  UserSidebar
+} from '../../components/administration';
 import { Header, NotificationToast } from '../../components/common';
 import { AdminUser } from '../../models/admin-user';
 import adminService from '../../services/admin-service';
@@ -20,6 +24,8 @@ const AdminUsersPage: NextPage = () => {
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [selectedUser, setSelectedUser] = useState<AdminUser>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [newUserModalOpened, setNewUserModalOpened] = useState<boolean>(false);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -84,33 +90,41 @@ const AdminUsersPage: NextPage = () => {
             <Loader />
           </FadeInDiv>
         ) : (
-          <CardFadeIn>
-            <Grid style={{ height: '90vh' }}>
-              <Grid.Col span={3} style={{ height: '100%' }}>
-                <UserSidebar
-                  users={users}
-                  onClick={(user) => setSelectedUser(user)}
-                  onSearch={(value) => console.log(value)} // FIXME
-                />
-              </Grid.Col>
-              <Grid.Col span={9} style={{ height: '100%' }}>
-                {selectedUser ? (
-                  <EaseInOutDiv style={{ height: '100%' }}>
-                    <UserDetail
-                      user={selectedUser}
-                      onClose={() => setSelectedUser(undefined)}
-                      onSave={onSaveUser}
-                      onDelete={onDeleteUser}
-                    />
-                  </EaseInOutDiv>
-                ) : (
-                  <Center>
-                    <Title order={5}>Select an user</Title>
-                  </Center>
-                )}
-              </Grid.Col>
-            </Grid>
-          </CardFadeIn>
+          <>
+            <NewAdminUserModal
+              opened={newUserModalOpened}
+              onClose={() => setNewUserModalOpened(false)}
+              onSubmit={async (values) => console.log(values)}
+            />
+            <CardFadeIn>
+              <Grid style={{ height: '90vh' }}>
+                <Grid.Col span={3} style={{ height: '100%' }}>
+                  <UserSidebar
+                    users={users}
+                    onAdd={() => setNewUserModalOpened(true)}
+                    onClick={(user) => setSelectedUser(user)}
+                    onSearch={(value) => console.log(value)} // FIXME
+                  />
+                </Grid.Col>
+                <Grid.Col span={9} style={{ height: '100%' }}>
+                  {selectedUser ? (
+                    <EaseInOutDiv style={{ height: '100%' }}>
+                      <UserDetail
+                        user={selectedUser}
+                        onClose={() => setSelectedUser(undefined)}
+                        onSave={onSaveUser}
+                        onDelete={onDeleteUser}
+                      />
+                    </EaseInOutDiv>
+                  ) : (
+                    <Center>
+                      <Title order={5}>Select an user</Title>
+                    </Center>
+                  )}
+                </Grid.Col>
+              </Grid>
+            </CardFadeIn>
+          </>
         )}
       </Box>
 
