@@ -23,16 +23,6 @@ export interface SignUpProps {
   weight: number;
 }
 
-export interface GetDevicesProps extends AuthorizeProps {
-  userId: string;
-}
-
-export interface GetDeviceData extends AuthorizeProps {
-  userId: string;
-  deviceId: string;
-}
-
-export interface AddNewDeviceData extends AuthorizeProps {
-  name: string;
-  id: string;
+export interface ForgotPasswordProps {
+  email: string;
 }
