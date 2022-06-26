@@ -22,3 +22,7 @@ export interface SignUpProps {
   height: number;
   weight: number;
 }
+
+export interface ForgotPasswordProps {
+  email: string;
+}
