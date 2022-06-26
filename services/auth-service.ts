@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ServiceReturnType } from 'types/services/common-service';
 import {
+  ForgotPasswordProps,
   LoginProps,
   LoginResult,
   SignUpProps,
@@ -76,9 +77,38 @@ const AuthService = () => {
     }
   };
 
+  const forgotPassword = async (
+    props: ForgotPasswordProps
+  ): Promise<ServiceReturnType<boolean>> => {
+    try {
+      await axios.post(
+        `${config.API_URL}/Users/password-reset`,
+        {
+          email: props.email,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      return {
+        data: true,
+        error: undefined,
+      };
+    } catch (error: any) {
+      return {
+        data: false,
+        error: error,
+      };
+    }
+  };
+
   return {
     login,
     signup,
+    forgotPassword,
   };
 };
 

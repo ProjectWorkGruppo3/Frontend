@@ -147,6 +147,23 @@ const Login: NextPage = () => {
                   <Button type="submit" color="orange" loading={loading}>
                     Sign In
                   </Button>
+
+                  <Link href="/forgot-password">
+                    <Text
+                      variant="link"
+                      component="a"
+                      sx={{
+                        color: '#d3d3d3',
+                        ':hover': {
+                          color: 'orange',
+                          transition: '0.6s',
+                          cursor: 'pointer',
+                        },
+                      }}
+                    >
+                      Forgot the password?
+                    </Text>
+                  </Link>
                   <Link href="/signup">
                     <Text
                       variant="link"
