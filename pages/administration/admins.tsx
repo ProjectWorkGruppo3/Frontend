@@ -69,6 +69,31 @@ const AdminUsersPage: NextPage = () => {
     }
   };
 
+
+  const onAddUser = async (email: string, name: string, surname: string) => {
+    console.log(email, name, surname);
+
+    const { data: added, error } = await adminService.addAdminUser({
+      user: {
+        id: '-1',
+        name: name,
+        surname: surname,
+        email: email
+      },
+      token: '' // FIXME
+    });
+
+    if (error) {
+      notifyError(
+        'Sorry, but something went wrong when try to add the user'
+      );
+    } else {
+      notifySuccess('User added successfully');
+    }
+
+    setNewUserModalOpened(false);
+  }
+
   return (
     <RootAnimationDiv>
       <Head>
@@ -94,7 +119,7 @@ const AdminUsersPage: NextPage = () => {
             <NewAdminUserModal
               opened={newUserModalOpened}
               onClose={() => setNewUserModalOpened(false)}
-              onSubmit={async (values) => console.log(values)}
+              onSubmit={onAddUser}
             />
             <CardFadeIn>
               <Grid style={{ height: '90vh' }}>

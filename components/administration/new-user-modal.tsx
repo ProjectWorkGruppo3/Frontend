@@ -1,11 +1,11 @@
 import {
-    Button,
-    Card,
-    Divider,
-    Grid,
-    Modal,
-    TextInput,
-    Title
+  Button,
+  Card,
+  Divider,
+  Grid,
+  Modal,
+  TextInput,
+  Title
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
@@ -21,7 +21,7 @@ interface FormProps {
 
 interface NewAdminUserModalProps {
   opened: boolean;
-  onSubmit: (name: string, id: string) => Promise<void>;
+  onSubmit: (email: string, name: string, surname: string ) => Promise<void>;
   onClose: () => void;
 }
 
@@ -43,6 +43,8 @@ export const NewAdminUserModal = (props: NewAdminUserModalProps) => {
 
   const onSubmit = async (values: FormProps) => {
     setLoading(true);
+
+    await props.onSubmit(values.email, values.name, values.surname);
 
     formHandler.reset();
 
@@ -75,7 +77,7 @@ export const NewAdminUserModal = (props: NewAdminUserModalProps) => {
                 placeholder="red"
                 mb="md"
                 icon={<TiSortAlphabetically size={16} />}
-                {...formHandler.getInputProps('name')}
+                {...formHandler.getInputProps('surname')}
               />
 
               <TextInput
