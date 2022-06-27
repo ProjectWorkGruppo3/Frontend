@@ -63,7 +63,7 @@ const ForgotPassword: NextPage = () => {
     <>
       <Head>
         <title>SerenUp</title>
-        <meta name="description" content="Sign In to the Seren Up Web App" />
+        <meta name="description" content="Seren Up Web App" />
         <link rel="icon" href="/assets/logo.png" />
       </Head>
       <StaggerDiv>

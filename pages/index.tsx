@@ -9,6 +9,7 @@ import {
 } from '../components/home/index';
 import { useAuth } from '../context/auth-context';
 
+import Head from 'next/head';
 import 'react-toastify/dist/ReactToastify.css';
 import { CardFadeIn, FadeInDiv, StaggerDiv } from '../animations';
 import { Header, NotificationToast } from '../components/common';
@@ -87,6 +88,11 @@ const Home: NextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>SerenUp</title>
+        <meta name="description" content="Seren Up Web App" />
+        <link rel="icon" href="/assets/logo.png" />
+      </Head>
       <StaggerDiv>
         <Box p="xl" mb="md">
           <NewDeviceModal

@@ -3,6 +3,7 @@ import { Box, Loader } from '@mantine/core';
 import { FadeInDiv, StaggerDiv } from 'animations';
 import { useAuth } from 'context/auth-context';
 import { NextPage } from 'next';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -21,6 +22,11 @@ const AnalysisPage: NextPage = () => {
 
   return (
     <Box pt="xl" px="2%">
+      <Head>
+        <title>Administration Seren Up</title>
+        <meta name="description" content="Seren Up Web App" />
+        <link rel="icon" href="/assets/logo.png" />
+      </Head>
       <StaggerDiv>
         <FadeInDiv>
           <Header

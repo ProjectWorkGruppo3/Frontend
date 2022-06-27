@@ -4,12 +4,7 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import {
-  CardFadeIn,
-  EaseInOutDiv,
-  FadeInDiv,
-  RootAnimationDiv,
-} from '../../animations';
+import { CardFadeIn, EaseInOutDiv, FadeInDiv } from '../../animations';
 import {
   NewAdminUserModal,
   UserDetail,
@@ -40,14 +35,16 @@ const AdminUsersPage: NextPage = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      setLoading(true);
-      setUsers(fakeAdminUsers); // FIXME
+      if (auth && auth.authState) {
+        setLoading(true);
+        setUsers(fakeAdminUsers); // FIXME
 
-      setLoading(false);
+        setLoading(false);
+      }
     };
 
     fetch();
-  }, []);
+  }, [auth]);
 
   const onSaveUser = async (user: AdminUser) => {
     const { data: updated, error } = await adminService.updateAdminUser({
@@ -102,9 +99,11 @@ const AdminUsersPage: NextPage = () => {
   };
 
   return (
-    <RootAnimationDiv>
+    <>
       <Head>
         <title>Administration Seren Up</title>
+        <meta name="description" content="Seren Up Web App" />
+        <link rel="icon" href="/assets/logo.png" />
       </Head>
       <Box pt="xl" px="2%">
         <FadeInDiv>
@@ -162,7 +161,7 @@ const AdminUsersPage: NextPage = () => {
       </Box>
 
       <NotificationToast />
-    </RootAnimationDiv>
+    </>
   );
 };
 

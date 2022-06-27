@@ -6,12 +6,7 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import {
-  CardFadeIn,
-  EaseInOutDiv,
-  FadeInDiv,
-  RootAnimationDiv,
-} from '../../animations';
+import { CardFadeIn, EaseInOutDiv, FadeInDiv } from '../../animations';
 import { Header } from '../../components/common';
 import { useAuth } from '../../context/auth-context';
 import { normalDate, normalFullTime } from '../../utils/date-format';
@@ -40,9 +35,11 @@ const AdministrationPage: NextPage = () => {
   }
 
   return (
-    <RootAnimationDiv>
+    <>
       <Head>
         <title>Administration Seren Up</title>
+        <meta name="description" content="Seren Up Web App" />
+        <link rel="icon" href="/assets/logo.png" />
       </Head>
       <Box py="xl" px="1%">
         <FadeInDiv>
@@ -130,7 +127,7 @@ const AdministrationPage: NextPage = () => {
           </>
         )}
       </Box>
-    </RootAnimationDiv>
+    </>
   );
 };
 

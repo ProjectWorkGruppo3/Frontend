@@ -85,8 +85,8 @@ const Login: NextPage = () => {
   return (
     <>
       <Head>
-        <title>SerenUp - Sign In</title>
-        <meta name="description" content="Sign In to the Seren Up Web App" />
+        <title>SerenUp</title>
+        <meta name="description" content="Seren Up Web App" />
         <link rel="icon" href="/assets/logo.png" />
       </Head>
       <StaggerDiv>

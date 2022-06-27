@@ -1,6 +1,7 @@
 import { Box, Center, Grid, Loader, Title } from '@mantine/core';
 import { useAuth } from 'context/auth-context';
 import { NextPage } from 'next';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { CardFadeIn, FadeInDiv, StaggerDiv } from '../../animations';
@@ -28,16 +29,18 @@ const ReportsPage: NextPage = () => {
     const fetch = async () => {
       setLoading(true);
 
-      const { data: reports, error } = await reportsService.getReports({
-        token: auth!.authState!.token,
-      });
+      if (auth && auth.authState) {
+        const { data: reports, error } = await reportsService.getReports({
+          token: auth.authState.token,
+        });
 
-      if (error) {
-        notifyError(
-          'Sorry but something went wrong when try to load th reports'
-        );
-      } else {
-        setReports(reports);
+        if (error) {
+          notifyError(
+            'Sorry but something went wrong when try to load th reports'
+          );
+        } else {
+          setReports(reports);
+        }
       }
 
       setLoading(false);
@@ -48,6 +51,11 @@ const ReportsPage: NextPage = () => {
 
   return (
     <Box pt="xl" px="2%">
+      <Head>
+        <title>Administration Seren Up</title>
+        <meta name="description" content="Seren Up Web App" />
+        <link rel="icon" href="/assets/logo.png" />
+      </Head>
       <StaggerDiv>
         <FadeInDiv>
           <Header

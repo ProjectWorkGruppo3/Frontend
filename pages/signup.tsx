@@ -114,8 +114,9 @@ const SignUp: NextPage = () => {
   return (
     <>
       <Head>
-        <title>SerenUp - Sign Up</title>
-        <meta name="description" content="Sign Up to the Seren Up Web App" />
+        <title>SerenUp</title>
+        <meta name="description" content="Seren Up Web App" />
+        <link rel="icon" href="/assets/logo.png" />
       </Head>
       <StaggerDiv>
         <Container my="xl">
