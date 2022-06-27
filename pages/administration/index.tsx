@@ -1,40 +1,15 @@
-import {
-  ActionIcon,
-  Box,
-  Card,
-  Center,
-  Container,
-  Divider,
-  Grid,
-  Loader,
-  Stack,
-  Text,
-  Title,
-} from '@mantine/core';
+import { Box, Card, Center, Grid, Loader } from '@mantine/core';
 import { NextPage } from 'next';
 import { StatCard, TitleLink } from '../../components/administration/index';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { useAuth } from '../../context/auth-context';
-import Head from 'next/head';
-import {
-  CardFadeIn,
-  EaseInOutDiv,
-  FadeInDiv,
-  RootAnimationDiv,
-} from '../../animations';
-import { Header } from '../../components/common';
-import {
-  fullDatetimeWithoutYear,
-  normalDate,
-  normalFullTime,
-} from '../../utils/date-format';
 import dynamic from 'next/dynamic';
-import {
-  DensityMapData,
-  DensityMapProps,
-} from '../../components/administration/density-map';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { CardFadeIn, EaseInOutDiv, FadeInDiv } from '../../animations';
+import { Header } from '../../components/common';
+import { useAuth } from '../../context/auth-context';
+import { normalDate, normalFullTime } from '../../utils/date-format';
 import { fakeDensityMapData } from '../../utils/fake-data';
 
 const DensityMap = dynamic(
@@ -60,17 +35,19 @@ const AdministrationPage: NextPage = () => {
   }
 
   return (
-    <RootAnimationDiv>
+    <>
       <Head>
         <title>Administration Seren Up</title>
+        <meta name="description" content="Seren Up Web App" />
+        <link rel="icon" href="/assets/logo.png" />
       </Head>
       <Box py="xl" px="1%">
         <FadeInDiv>
           <Header
-            // onBack={() => router.back()}
             title="Admministration Panel"
             onLogout={() => {
-              // FIXME
+              setLoading(true);
+              auth!.setAuthState(null);
             }}
           />
         </FadeInDiv>
@@ -150,7 +127,7 @@ const AdministrationPage: NextPage = () => {
           </>
         )}
       </Box>
-    </RootAnimationDiv>
+    </>
   );
 };
 

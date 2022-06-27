@@ -11,7 +11,7 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { FadeInDiv, RootAnimationDiv, StaggerDiv } from 'animations';
+import { FadeInDiv, StaggerDiv } from 'animations';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -60,10 +60,10 @@ const ForgotPassword: NextPage = () => {
   };
 
   return (
-    <RootAnimationDiv>
+    <>
       <Head>
         <title>SerenUp</title>
-        <meta name="description" content="Sign In to the Seren Up Web App" />
+        <meta name="description" content="Seren Up Web App" />
         <link rel="icon" href="/assets/logo.png" />
       </Head>
       <StaggerDiv>
@@ -119,7 +119,7 @@ const ForgotPassword: NextPage = () => {
           <NotificationToast />
         </Container>
       </StaggerDiv>
-    </RootAnimationDiv>
+    </>
   );
 };
 

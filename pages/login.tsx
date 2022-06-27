@@ -22,7 +22,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
-import { FadeInDiv, RootAnimationDiv, StaggerDiv } from '../animations';
+import { FadeInDiv, StaggerDiv } from '../animations';
 import { NotificationToast } from '../components/common';
 import { useAuth } from '../context/auth-context';
 import AuthService from '../services/auth-service';
@@ -83,10 +83,10 @@ const Login: NextPage = () => {
   };
 
   return (
-    <RootAnimationDiv>
+    <>
       <Head>
-        <title>SerenUp - Sign In</title>
-        <meta name="description" content="Sign In to the Seren Up Web App" />
+        <title>SerenUp</title>
+        <meta name="description" content="Seren Up Web App" />
         <link rel="icon" href="/assets/logo.png" />
       </Head>
       <StaggerDiv>
@@ -187,7 +187,7 @@ const Login: NextPage = () => {
           <NotificationToast />
         </Container>
       </StaggerDiv>
-    </RootAnimationDiv>
+    </>
   );
 };
 
