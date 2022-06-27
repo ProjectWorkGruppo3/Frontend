@@ -5,7 +5,7 @@ import {
   Grid,
   Modal,
   TextInput,
-  Title
+  Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
@@ -21,7 +21,7 @@ interface FormProps {
 
 interface NewAdminUserModalProps {
   opened: boolean;
-  onSubmit: (email: string, name: string, surname: string ) => Promise<void>;
+  onSubmit: (email: string, name: string, surname: string) => Promise<void>;
   onClose: () => void;
 }
 
@@ -36,8 +36,10 @@ export const NewAdminUserModal = (props: NewAdminUserModalProps) => {
     },
     validate: {
       name: (value) => (value.length !== 0 ? null : 'Please type the name'),
-      surname: (value) => (value.length !== 0 ? null : 'Please type the surname'),
-      email: (value) => validateEmail(value) ? null : 'Please, type a valid email',
+      surname: (value) =>
+        value.length !== 0 ? null : 'Please type the surname',
+      email: (value) =>
+        validateEmail(value) ? null : 'Please, type a valid email',
     },
   });
 

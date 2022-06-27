@@ -1,4 +1,5 @@
 import { Box, Center, Grid, Loader, Title } from '@mantine/core';
+import { useAuth } from 'context/auth-context';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -7,12 +8,12 @@ import {
   CardFadeIn,
   EaseInOutDiv,
   FadeInDiv,
-  RootAnimationDiv
+  RootAnimationDiv,
 } from '../../animations';
 import {
   NewAdminUserModal,
   UserDetail,
-  UserSidebar
+  UserSidebar,
 } from '../../components/administration';
 import { Header, NotificationToast } from '../../components/common';
 import { AdminUser } from '../../models/admin-user';
@@ -21,12 +22,21 @@ import { fakeAdminUsers } from '../../utils/fake-data';
 import { notifyError, notifySuccess } from '../../utils/notify-toast';
 
 const AdminUsersPage: NextPage = () => {
+  const auth = useAuth();
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [selectedUser, setSelectedUser] = useState<AdminUser>();
   const [loading, setLoading] = useState<boolean>(true);
   const [newUserModalOpened, setNewUserModalOpened] = useState<boolean>(false);
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (auth && auth.isAuthenticated()) {
+      setLoading(false);
+    } else {
+      router.push('/login').then((_) => setLoading(false));
+    }
+  }, [auth, router]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -42,7 +52,7 @@ const AdminUsersPage: NextPage = () => {
   const onSaveUser = async (user: AdminUser) => {
     const { data: updated, error } = await adminService.updateAdminUser({
       user: user,
-      token: '', // FIXME
+      token: auth!.authState!.token,
     });
 
     if (error) {
@@ -57,7 +67,7 @@ const AdminUsersPage: NextPage = () => {
   const onDeleteUser = async (user: AdminUser) => {
     const { data: deleted, error } = await adminService.deleteAdminUser({
       userId: user.id,
-      token: '',
+      token: auth!.authState!.token,
     });
 
     if (error) {
@@ -69,7 +79,6 @@ const AdminUsersPage: NextPage = () => {
     }
   };
 
-
   const onAddUser = async (email: string, name: string, surname: string) => {
     console.log(email, name, surname);
 
@@ -78,21 +87,19 @@ const AdminUsersPage: NextPage = () => {
         id: '-1',
         name: name,
         surname: surname,
-        email: email
+        email: email,
       },
-      token: '' // FIXME
+      token: auth!.authState!.token,
     });
 
     if (error) {
-      notifyError(
-        'Sorry, but something went wrong when try to add the user'
-      );
+      notifyError('Sorry, but something went wrong when try to add the user');
     } else {
       notifySuccess('User added successfully');
     }
 
     setNewUserModalOpened(false);
-  }
+  };
 
   return (
     <RootAnimationDiv>
@@ -105,7 +112,8 @@ const AdminUsersPage: NextPage = () => {
             onBack={() => router.push('/administration/')}
             title="Admins"
             onLogout={() => {
-              // FIXME
+              setLoading(true);
+              auth!.setAuthState(null);
             }}
           />
         </FadeInDiv>

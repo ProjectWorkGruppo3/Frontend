@@ -3,7 +3,11 @@ import {
   Button,
   Card,
   Divider,
-  Grid, Group, ScrollArea, Text, TextInput
+  Grid,
+  Group,
+  ScrollArea,
+  Text,
+  TextInput,
 } from '@mantine/core';
 import { BiSearchAlt } from 'react-icons/bi';
 import { IoMdPersonAdd } from 'react-icons/io';
@@ -20,9 +24,9 @@ export interface UserSidebarProps {
 export const UserSidebar = (props: UserSidebarProps) => {
   return (
     <Card px="xs" style={{ height: '100%' }}>
-      <Group position='right'>
-        <Button color='green' onClick={props.onAdd}>
-          <IoMdPersonAdd size={16}/>
+      <Group position="right">
+        <Button color="green" onClick={props.onAdd}>
+          <IoMdPersonAdd size={16} />
         </Button>
       </Group>
       <TextInput

@@ -10,12 +10,7 @@ import {
 import { useAuth } from '../context/auth-context';
 
 import 'react-toastify/dist/ReactToastify.css';
-import {
-  CardFadeIn,
-  FadeInDiv,
-  RootAnimationDiv,
-  StaggerDiv,
-} from '../animations';
+import { CardFadeIn, FadeInDiv, StaggerDiv } from '../animations';
 import { Header, NotificationToast } from '../components/common';
 import { Device } from '../models';
 import DeviceService from '../services/device-service';
@@ -91,7 +86,7 @@ const Home: NextPage = () => {
   }
 
   return (
-    <RootAnimationDiv>
+    <>
       <StaggerDiv>
         <Box p="xl" mb="md">
           <NewDeviceModal
@@ -132,7 +127,7 @@ const Home: NextPage = () => {
 
         <NotificationToast />
       </StaggerDiv>
-    </RootAnimationDiv>
+    </>
   );
 };
 
