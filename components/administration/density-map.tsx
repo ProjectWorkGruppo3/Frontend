@@ -17,6 +17,7 @@ export interface DensityMapProps {
 }
 
 const DensityMap = (props: DensityMapProps) => {
+  
   const totalDevices = props.data.reduce(
     (prev, curr) => prev + curr.totalDevices,
     0
@@ -30,7 +31,7 @@ const DensityMap = (props: DensityMapProps) => {
         {props.title}
       </Text>
       <MapContainer
-        style={{ width: '100%', minHeight: '500px' }}
+        style={{ width: '100%', minHeight: '200px' }}
         /* @ts-ignore */
         zoom={1}
         center={[-0.09, 51.505]}

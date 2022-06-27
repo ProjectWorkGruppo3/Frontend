@@ -1,11 +1,20 @@
+import { AnalysisStatCard } from '@components/administration';
 import { Header, NotificationToast } from '@components/common';
-import { Box, Loader } from '@mantine/core';
-import { FadeInDiv, StaggerDiv } from 'animations';
+import { Box, Divider, Grid, Loader, Title } from '@mantine/core';
+import { EaseInOutDiv, FadeInDiv, StaggerDiv } from 'animations';
 import { useAuth } from 'context/auth-context';
 import { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { normalFullTime } from 'utils/date-format';
+import { fakeDensityMapData } from 'utils/fake-data';
+
+const DensityMap = dynamic(
+  () => import('../../components/administration/density-map'),
+  { ssr: false }
+);
 
 const AnalysisPage: NextPage = () => {
   const auth = useAuth();
@@ -30,7 +39,7 @@ const AnalysisPage: NextPage = () => {
       <StaggerDiv>
         <FadeInDiv>
           <Header
-            title={`Analysis`}
+            title={`Analysis Overview`}
             onBack={() => router.push('/administration/')}
             onLogout={() => {
               setLoading(true);
@@ -44,7 +53,46 @@ const AnalysisPage: NextPage = () => {
           </FadeInDiv>
         ) : (
           <FadeInDiv>
-            <p>WIP</p>
+            <Box style={{ height: '300px' }}>
+              <EaseInOutDiv>
+                <DensityMap
+                  title={`Last time updpated: ${normalFullTime(new Date())}`}
+                  data={fakeDensityMapData}
+                />
+              </EaseInOutDiv>
+            </Box>
+            <Box mb="xs">
+              <Title order={5} align="right">
+                Analysis - {normalFullTime(new Date())}
+              </Title>
+              <Divider />
+            </Box>
+            <Grid justify="center">
+              <Grid.Col span={2}>
+                <Box mb="xs">
+                  <AnalysisStatCard
+                    title="Data Ingested "
+                    value={100}
+                    trending="down"
+                    onClick={() => console.log("chart")}
+                  />
+                </Box>
+              </Grid.Col>
+              <Grid.Col span={2}>
+                <Box mb="xs">
+                  <AnalysisStatCard
+                    title="Serendipity"
+                    value="78%"
+                    trending="up"
+                  />
+                </Box>
+              </Grid.Col>
+              <Grid.Col span={2}>
+                <Box mb="xs">
+                  <AnalysisStatCard title="Data" value="dsad" />
+                </Box>
+              </Grid.Col>
+            </Grid>
           </FadeInDiv>
         )}
       </StaggerDiv>

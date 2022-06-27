@@ -1,5 +1,5 @@
 export * from './alarm-card';
-// export * from './density-map';
+export * from './anlysis-stat-card';
 export * from './new-user-modal';
 export * from './report-card';
 export * from './stat-card';

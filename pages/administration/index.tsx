@@ -91,12 +91,14 @@ const AdministrationPage: NextPage = () => {
                       </Grid.Col>
                       <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
                         <EaseInOutDiv>
+                          <Box style={{ height: '500px' }}>
                           <DensityMap
                             title={`Last time updpated: ${normalFullTime(
                               new Date()
                             )}`}
                             data={fakeDensityMapData}
                           />
+                          </Box>
                         </EaseInOutDiv>
                       </Grid.Col>
                     </Grid>
