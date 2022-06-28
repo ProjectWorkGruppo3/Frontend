@@ -2,29 +2,30 @@ import { ActionIcon, Card, Group, Title } from '@mantine/core';
 import {
   AnimatedAxis,
   AnimatedGrid,
-  AnimatedLineSeries, Tooltip, XYChart
+  AnimatedLineSeries,
+  Tooltip,
+  XYChart,
 } from '@visx/xychart';
 import moment from 'moment';
 import { GrClose } from 'react-icons/gr';
 
 export interface LineChartCardProps {
-  title: string,
-  dataKey: string,
+  title: string;
+  dataKey: string;
   data: {
-    x: string,
-    y: number
-  }[],
-  onClose: () => void
+    x: string;
+    y: number;
+  }[];
+  onClose: () => void;
 }
 
 export const LineChartCard = (props: LineChartCardProps) => {
-
   const d = Array.from({ length: 100 }, (v, k) => {
     return {
-      x: moment().add(k, 'day').format("YYYY-MM-DD"),
-      y: k % 2 === 0 ? k*5 : k
-    }
-  })
+      x: moment().add(k, 'day').format('YYYY-MM-DD'),
+      y: k % 2 === 0 ? k * 5 : k,
+    };
+  });
 
   const data1 = [
     { x: '2020-01-01', y: 50 },
@@ -46,15 +47,15 @@ export const LineChartCard = (props: LineChartCardProps) => {
   return (
     <Card
       sx={{
-        width: '95%'
+        width: '95%',
       }}
     >
-      <Group position='right'>
+      <Group position="right">
         <ActionIcon onClick={props.onClose}>
           <GrClose />
         </ActionIcon>
       </Group>
-      <Title align='center' order={5}>
+      <Title align="center" order={5}>
         {props.title}
       </Title>
       <XYChart

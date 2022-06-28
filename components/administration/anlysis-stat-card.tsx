@@ -42,7 +42,7 @@ export const AnalysisStatCard = (props: AnalysisStatCardProps) => {
           cursor: isHover && props.onClick ? 'pointer' : 'default',
           backgroundColor: isHover && props.onClick ? '#dfdfdf' : 'white',
         },
-        transition: '0.2s'
+        transition: '0.2s',
       }}
       onClick={props.onClick}
     >

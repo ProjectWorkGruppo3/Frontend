@@ -17,7 +17,6 @@ export interface DensityMapProps {
 }
 
 const DensityMap = (props: DensityMapProps) => {
-  
   const totalDevices = props.data.reduce(
     (prev, curr) => prev + curr.totalDevices,
     0
