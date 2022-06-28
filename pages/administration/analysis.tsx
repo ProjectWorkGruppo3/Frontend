@@ -1,6 +1,6 @@
-import { AnalysisStatCard } from '@components/administration';
+import { AnalysisStatCard, LineChartCard } from '@components/administration';
 import { Header, NotificationToast } from '@components/common';
-import { Box, Divider, Grid, Loader, Title } from '@mantine/core';
+import { Box, Center, Grid, Loader } from '@mantine/core';
 import { EaseInOutDiv, FadeInDiv, StaggerDiv } from 'animations';
 import { useAuth } from 'context/auth-context';
 import { NextPage } from 'next';
@@ -16,10 +16,21 @@ const DensityMap = dynamic(
   { ssr: false }
 );
 
+interface Chart {
+  title: string;
+  chartTitle: string;
+  data: {
+    x: string;
+    y: number;
+  }[];
+}
+
 const AnalysisPage: NextPage = () => {
   const auth = useAuth();
-  const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
+
+  const [loading, setLoading] = useState<boolean>(true);
+  const [chart, setChart] = useState<Chart>();
 
   useEffect(() => {
     if (auth && auth.isAuthenticated()) {
@@ -61,12 +72,6 @@ const AnalysisPage: NextPage = () => {
                 />
               </EaseInOutDiv>
             </Box>
-            <Box mb="xs">
-              <Title order={5} align="right">
-                Analysis - {normalFullTime(new Date())}
-              </Title>
-              <Divider />
-            </Box>
             <Grid justify="center">
               <Grid.Col span={2}>
                 <Box mb="xs">
@@ -74,7 +79,13 @@ const AnalysisPage: NextPage = () => {
                     title="Data Ingested "
                     value={100}
                     trending="down"
-                    onClick={() => console.log("chart")}
+                    onClick={() => {
+                      setChart({
+                        data: [],
+                        title: 'Data Ingested',
+                        chartTitle: 'Data',
+                      });
+                    }}
                   />
                 </Box>
               </Grid.Col>
@@ -89,10 +100,26 @@ const AnalysisPage: NextPage = () => {
               </Grid.Col>
               <Grid.Col span={2}>
                 <Box mb="xs">
-                  <AnalysisStatCard title="Data" value="dsad" />
+                  <AnalysisStatCard title="Falls" value="10" trending="down" />
                 </Box>
               </Grid.Col>
             </Grid>
+            {chart && (
+              <FadeInDiv>
+                <Grid>
+                  <Grid.Col>
+                    <Center>
+                      <LineChartCard
+                        title={chart.title}
+                        onClose={() => setChart(undefined)}
+                        dataKey={chart.chartTitle}
+                        data={chart.data}
+                      />
+                    </Center>
+                  </Grid.Col>
+                </Grid>
+              </FadeInDiv>
+            )}
           </FadeInDiv>
         )}
       </StaggerDiv>

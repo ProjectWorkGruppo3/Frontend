@@ -1,7 +1,5 @@
-import { ActionIcon, Card, Group, Stack, Text } from '@mantine/core';
-import { EaseInOutDiv } from 'animations';
+import { Card, Group, Stack, Text } from '@mantine/core';
 import { useState } from 'react';
-import { BiChevronsDown } from 'react-icons/bi';
 import { HiTrendingDown, HiTrendingUp } from 'react-icons/hi';
 
 export interface AnalysisStatCardProps {
@@ -34,11 +32,19 @@ export const AnalysisStatCard = (props: AnalysisStatCardProps) => {
 
   return (
     <Card
-      shadow="lg"
+      shadow={isHover && props.onClick ? 'xl' : 'sm'}
       radius="md"
       p="0"
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
+      sx={{
+        ':hover': {
+          cursor: isHover && props.onClick ? 'pointer' : 'default',
+          backgroundColor: isHover && props.onClick ? '#dfdfdf' : 'white',
+        },
+        transition: '0.2s'
+      }}
+      onClick={props.onClick}
     >
       <Group spacing="xs" position="center" align="center">
         <Text
@@ -59,16 +65,6 @@ export const AnalysisStatCard = (props: AnalysisStatCardProps) => {
       <Text align="center" mb="xs" color="#92999b">
         {props.title}
       </Text>
-
-      {isHover && props.onClick && (
-        <Group position="center">
-          <EaseInOutDiv>
-            <ActionIcon>
-              <BiChevronsDown size={24} />
-            </ActionIcon>
-          </EaseInOutDiv>
-        </Group>
-      )}
     </Card>
   );
 };
