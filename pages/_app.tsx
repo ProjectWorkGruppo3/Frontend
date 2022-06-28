@@ -1,4 +1,5 @@
 import { MantineProvider } from '@mantine/core';
+import { RootAnimationDiv } from 'animations';
 import { AnimatePresence } from 'framer-motion';
 import type { AppProps } from 'next/app';
 import { AuthProvider } from '../context/auth-context';
@@ -23,7 +24,9 @@ function MyApp({ Component, pageProps, router }: AppProps) {
     >
       <AuthProvider>
         <AnimatePresence exitBeforeEnter>
-          <Component {...pageProps} key={router.route} />
+          <RootAnimationDiv>
+            <Component {...pageProps} key={router.route} />
+          </RootAnimationDiv>
         </AnimatePresence>
       </AuthProvider>
     </MantineProvider>

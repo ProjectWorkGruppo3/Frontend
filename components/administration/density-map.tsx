@@ -30,7 +30,7 @@ const DensityMap = (props: DensityMapProps) => {
         {props.title}
       </Text>
       <MapContainer
-        style={{ width: '100%', minHeight: '500px' }}
+        style={{ width: '100%', minHeight: '200px' }}
         /* @ts-ignore */
         zoom={1}
         center={[-0.09, 51.505]}

@@ -30,7 +30,7 @@ import { useAuth } from '../context/auth-context';
 import AuthService from '../services/auth-service';
 
 import Link from 'next/link';
-import { FadeInDiv, RootAnimationDiv, StaggerDiv } from '../animations';
+import { FadeInDiv, StaggerDiv } from '../animations';
 import { NotificationToast } from '../components/common';
 import { notifyError, notifySuccess } from '../utils/notify-toast';
 
@@ -112,10 +112,11 @@ const SignUp: NextPage = () => {
   };
 
   return (
-    <RootAnimationDiv>
+    <>
       <Head>
-        <title>SerenUp - Sign Up</title>
-        <meta name="description" content="Sign Up to the Seren Up Web App" />
+        <title>SerenUp</title>
+        <meta name="description" content="Seren Up Web App" />
+        <link rel="icon" href="/assets/logo.png" />
       </Head>
       <StaggerDiv>
         <Container my="xl">
@@ -254,7 +255,7 @@ const SignUp: NextPage = () => {
       </StaggerDiv>
 
       <NotificationToast />
-    </RootAnimationDiv>
+    </>
   );
 };
 

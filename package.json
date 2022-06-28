@@ -15,18 +15,21 @@
     "@mantine/form": "^4.2.8",
     "@mantine/hooks": "^4.2.8",
     "@mantine/next": "^4.2.8",
+    "@visx/xychart": "^2.10.0",
     "axios": "^0.27.2",
     "dayjs": "^1.11.3",
     "framer-motion": "^6.3.11",
     "leaflet": "^1.8.0",
+    "moment": "^2.29.3",
     "next": "12.1.6",
     "react": "18.1.0",
     "react-chartjs-2": "4.2.0",
     "react-dom": "18.1.0",
     "react-icons": "^4.4.0",
+    "react-leaflet": "^4.0.0",
+    "react-spring": "^9.4.5",
     "react-toastify": "^9.0.4",
-    "tabler-icons-react": "1.48.1",
-    "react-leaflet": "^4.0.0"
+    "tabler-icons-react": "1.48.1"
   },
   "devDependencies": {
     "@types/node": "17.0.41",

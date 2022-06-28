@@ -8,12 +8,15 @@ import {
   Box,
   Grid,
   Group,
+  Loader,
   Navbar,
   Text,
   Title as MantineTitle,
 } from '@mantine/core';
+import { useAuth } from 'context/auth-context';
 import { getRandomInt } from 'lib/utils/getRandomInt';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import {
   Logout as LogoutIcon,
@@ -25,6 +28,18 @@ export default function Dashboard() {
   const [heartPulse, setHeartPulse] = useState(0);
   const [dummy, setDummy] = useState(0);
 
+  const [loading, setLoading] = useState<boolean>(true);
+  const auth = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (auth && auth.isAuthenticated()) {
+      setLoading(false);
+    } else {
+      router.push('/login').then((_) => setLoading(false));
+    }
+  }, [auth, router]);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setSteps(getRandomInt(10000));
@@ -35,10 +50,16 @@ export default function Dashboard() {
     return () => clearInterval(interval);
   }, []);
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <Box>
       <Head>
-        <title>📊 Dashboard | Seren-Up</title>
+        <title>SerenUp</title>
+        <meta name="description" content="Seren Up Web App" />
+        <link rel="icon" href="/assets/logo.png" />
       </Head>
       <AppShell
         navbar={

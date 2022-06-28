@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { AdminUser } from '../models/admin-user';
 import {
+  AddAdminUserProps,
   DeleteAdminUserProps,
   GetAdminUserProps,
   GetAdminUsersProps,
@@ -66,6 +67,37 @@ const AdminService = () => {
     }
   };
 
+  const addAdminUser = async (
+    props: AddAdminUserProps
+  ): Promise<ServiceReturnType<boolean>> => {
+    try {
+      await axios.post(
+        `${config.API_URL}/users/admins/${props.user.id}`, // FIXME
+        {
+          email: props.user.email,
+          name: props.user.name,
+          surname: props.user.surname,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: props.token,
+          },
+        }
+      );
+
+      return {
+        data: true,
+        error: undefined,
+      };
+    } catch (error: any) {
+      return {
+        data: false,
+        error: error,
+      };
+    }
+  };
+
   const updateAdminUser = async (
     props: UpdateAdminUserProps
   ): Promise<ServiceReturnType<boolean>> => {
@@ -126,6 +158,7 @@ const AdminService = () => {
   return {
     getAdminUsers,
     getAdminUser,
+    addAdminUser,
     updateAdminUser,
     deleteAdminUser,
   };
