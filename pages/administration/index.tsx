@@ -1,41 +1,19 @@
-import {
-  ActionIcon,
-  Box,
-  Card,
-  Center,
-  Container,
-  Divider,
-  Grid,
-  Loader,
-  Stack,
-  Text,
-  Title,
-} from '@mantine/core';
+import { Box, Center, Grid, Loader } from '@mantine/core';
 import { NextPage } from 'next';
-import { StatCard, TitleLink } from '../../components/administration/index';
+import {
+  AnalysisStatCard,
+  StatCard,
+  TitleLink,
+} from '../../components/administration/index';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { useAuth } from '../../context/auth-context';
-import Head from 'next/head';
-import {
-  CardFadeIn,
-  EaseInOutDiv,
-  FadeInDiv,
-  RootAnimationDiv,
-} from '../../animations';
-import { Header } from '../../components/common';
-import {
-  fullDatetimeWithoutYear,
-  normalDate,
-  normalFullTime,
-} from '../../utils/date-format';
 import dynamic from 'next/dynamic';
-import {
-  DensityMapData,
-  DensityMapProps,
-} from '../../components/administration/density-map';
-import { fakeDensityMapData } from '../../utils/fake-data';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { CardFadeIn, FadeInDiv } from '../../animations';
+import { Header } from '../../components/common';
+import { useAuth } from '../../context/auth-context';
+import { normalDate } from '../../utils/date-format';
 
 const DensityMap = dynamic(
   () => import('../../components/administration/density-map'),
@@ -60,17 +38,19 @@ const AdministrationPage: NextPage = () => {
   }
 
   return (
-    <RootAnimationDiv>
+    <>
       <Head>
         <title>Administration Seren Up</title>
+        <meta name="description" content="Seren Up Web App" />
+        <link rel="icon" href="/assets/logo.png" />
       </Head>
       <Box py="xl" px="1%">
         <FadeInDiv>
           <Header
-            // onBack={() => router.back()}
             title="Admministration Panel"
             onLogout={() => {
-              // FIXME
+              setLoading(true);
+              auth!.setAuthState(null);
             }}
           />
         </FadeInDiv>
@@ -98,59 +78,50 @@ const AdministrationPage: NextPage = () => {
                 </CardFadeIn>
               </Grid.Col>
             </Grid>
-            <Grid>
-              <Grid.Col xs={12} sm={12} md={12} lg={10} xl={10}>
-                <FadeInDiv>
-                  <Box mb="sm">
-                    <TitleLink
-                      link="/administration/analysis"
-                      title="Analysis"
-                    />
-                  </Box>
-                  <Card shadow="xl" radius="md">
-                    <Grid>
-                      <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                        Stats
-                      </Grid.Col>
-                      <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                        <EaseInOutDiv>
-                          <DensityMap
-                            title={`Last time updpated: ${normalFullTime(
-                              new Date()
-                            )}`}
-                            data={fakeDensityMapData}
-                          />
-                        </EaseInOutDiv>
-                      </Grid.Col>
-                    </Grid>
-                  </Card>
-                </FadeInDiv>
-              </Grid.Col>
-              <Grid.Col xs={12} sm={12} md={12} lg={2} xl={2}>
-                <FadeInDiv>
-                  <Box mb="xs">
-                    <TitleLink
-                      link="/administration/reports"
-                      title="Last Reports"
-                    />
-                  </Box>
-                </FadeInDiv>
+
+            <Box mb="lg">
+              <FadeInDiv>
+                <Box mb="sm">
+                  <TitleLink link="/administration/analysis" title="Analysis" />
+                </Box>
+
+                <Grid>
+                  <Grid.Col span={2}>
+                    <AnalysisStatCard title="Analysis 1" value={80} />
+                  </Grid.Col>
+                  <Grid.Col span={2}>
+                    <AnalysisStatCard title="Analysis 1" value={80} />
+                  </Grid.Col>
+                </Grid>
+              </FadeInDiv>
+            </Box>
+
+            <Box mb="lg">
+              <FadeInDiv>
+                <Box mb="xs">
+                  <TitleLink
+                    link="/administration/reports"
+                    title="Last Reports"
+                  />
+                </Box>
+              </FadeInDiv>
+              <Grid>
                 {Array.from({ length: 4 }, (v, k) => (
-                  <Box mb="xs">
+                  <Grid.Col span={2}>
                     <CardFadeIn>
                       <StatCard
                         name={normalDate(new Date())}
                         value={`Report #${k}`}
                       />
                     </CardFadeIn>
-                  </Box>
+                  </Grid.Col>
                 ))}
-              </Grid.Col>
-            </Grid>
+              </Grid>
+            </Box>
           </>
         )}
       </Box>
-    </RootAnimationDiv>
+    </>
   );
 };
 

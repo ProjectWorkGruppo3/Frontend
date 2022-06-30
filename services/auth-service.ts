@@ -52,6 +52,9 @@ const AuthService = () => {
       const result = await axios.post(
         `${config.API_URL}/Users/register`,
         {
+          name: props.name,
+          surname: props.surname,
+          job: props.job,
           email: props.email,
           password: props.password,
           weight: props.weight,

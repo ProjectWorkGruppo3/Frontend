@@ -9,13 +9,9 @@ import {
 } from '../components/home/index';
 import { useAuth } from '../context/auth-context';
 
+import Head from 'next/head';
 import 'react-toastify/dist/ReactToastify.css';
-import {
-  CardFadeIn,
-  FadeInDiv,
-  RootAnimationDiv,
-  StaggerDiv,
-} from '../animations';
+import { CardFadeIn, FadeInDiv, StaggerDiv } from '../animations';
 import { Header, NotificationToast } from '../components/common';
 import { Device } from '../models';
 import DeviceService from '../services/device-service';
@@ -91,7 +87,12 @@ const Home: NextPage = () => {
   }
 
   return (
-    <RootAnimationDiv>
+    <>
+      <Head>
+        <title>SerenUp</title>
+        <meta name="description" content="Seren Up Web App" />
+        <link rel="icon" href="/assets/logo.png" />
+      </Head>
       <StaggerDiv>
         <Box p="xl" mb="md">
           <NewDeviceModal
@@ -132,7 +133,7 @@ const Home: NextPage = () => {
 
         <NotificationToast />
       </StaggerDiv>
-    </RootAnimationDiv>
+    </>
   );
 };
 

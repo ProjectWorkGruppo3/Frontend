@@ -1,6 +1,6 @@
-import { CircleMarker, TileLayer, MapContainer, Tooltip } from 'react-leaflet';
+import { Text } from '@mantine/core';
 import 'leaflet/dist/leaflet.css';
-import { Text, Title } from '@mantine/core';
+import { CircleMarker, MapContainer, TileLayer, Tooltip } from 'react-leaflet';
 
 export interface DensityMapData {
   city: string;
@@ -30,7 +30,8 @@ const DensityMap = (props: DensityMapProps) => {
         {props.title}
       </Text>
       <MapContainer
-        style={{ width: '100%', minHeight: '500px' }}
+        style={{ width: '100%', minHeight: '200px' }}
+        /* @ts-ignore */
         zoom={1}
         center={[-0.09, 51.505]}
       >
@@ -41,10 +42,12 @@ const DensityMap = (props: DensityMapProps) => {
             <CircleMarker
               key={index}
               center={[city.coordinates.longitude, city.coordinates.latitude]}
+              /* @ts-ignore */
               radius={20 * Math.log(city.totalDevices / (totalDevices / 20))}
               fillOpacity={0.5}
               stroke={false}
             >
+              {/* @ts-ignore */}
               <Tooltip direction="right" offset={[-8, -2]} opacity={1}>
                 <Text>{`${city.city}: ${city.totalDevices} Devices connected`}</Text>
               </Tooltip>
