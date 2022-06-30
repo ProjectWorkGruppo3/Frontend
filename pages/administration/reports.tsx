@@ -49,6 +49,21 @@ const ReportsPage: NextPage = () => {
     fetch();
   }, [auth]);
 
+
+  const downloadReport = async (filename: string) => {
+    const {data: _, error} = await reportsService.downloadReport({
+      token: auth!.authState!.token,
+      filename: filename
+    });
+
+
+    if(error) {
+      notifyError('Sorry but something went wrong when try to download the file')
+    }
+
+
+  }
+
   return (
     <Box pt="xl" px="2%">
       <Head>
@@ -84,7 +99,7 @@ const ReportsPage: NextPage = () => {
               {reports.map((el, index) => (
                 <Grid.Col xs={12} sm={6} md={4} lg={2} xl={2} key={index}>
                   <CardFadeIn>
-                    <ReportCard report={el} />
+                    <ReportCard report={el} download={downloadReport} />
                   </CardFadeIn>
                 </Grid.Col>
               ))}
