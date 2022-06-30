@@ -33,8 +33,12 @@ import Link from 'next/link';
 import { FadeInDiv, StaggerDiv } from '../animations';
 import { NotificationToast } from '../components/common';
 import { notifyError, notifySuccess } from '../utils/notify-toast';
+import { locale } from 'dayjs';
 
 interface FormProps {
+  name: string;
+  surname: string;
+  job?: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -58,20 +62,30 @@ const SignUp: NextPage = () => {
 
   const formHandler = useForm<FormProps>({
     initialValues: {
+      name: '',
+      surname: '',
+      job: '',
       email: '',
       password: '',
       confirmPassword: '',
       birthday: '',
       height: '',
-      weight: '66',
+      weight: '',
     },
     validate: {
+      name: (value) => (value.length !== 0 ? null : 'Please, type the name'),
+      surname: (value) =>
+        value.length !== 0 ? null : 'Please, type the surname',
       email: (value) =>
         validateEmail(value) ? null : 'Please, type a valid email',
       password: (value) =>
         value.length !== 0 ? null : 'Please, type the password',
       confirmPassword: (value, values) =>
-        value === values.password ? null : 'Passwords not coincide',
+        value.length === 0
+          ? 'Please, type the password'
+          : value === values.password
+          ? null
+          : 'Passwords not coincide',
       height: (value) => {
         console.log(parseInt(value));
         return !isNaN(parseInt(value)) && parseInt(value) !== 0
@@ -84,6 +98,9 @@ const SignUp: NextPage = () => {
           ? null
           : 'Please, insert a valid weight';
       },
+      birthday: (value) => {
+        return value.length !== 0 ? null : 'Please, insert a valid birthday';
+      },
     },
   });
 
@@ -92,6 +109,8 @@ const SignUp: NextPage = () => {
     setLoading(true);
 
     const { data: registered, error } = await AuthService.signup({
+      name: props.name,
+      surname: props.surname,
       email: props.email,
       password: props.password,
       birthday: new Date(props.birthday),
@@ -146,6 +165,38 @@ const SignUp: NextPage = () => {
                 <Grid>
                   <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
                     <TextInput
+                      id="name-input"
+                      label="Name"
+                      description="Name you have used to register"
+                      placeholder="John"
+                      mb="md"
+                      icon={<MdOutlineAlternateEmail size={16} />}
+                      {...formHandler.getInputProps('name')}
+                      sx={{
+                        'input:focus': {
+                          borderColor: 'orange',
+                        },
+                      }}
+                    />
+                  </Grid.Col>
+                  <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                    <TextInput
+                      id="surname-input"
+                      label="Surname"
+                      description="Surname you have used to register"
+                      placeholder="Doe"
+                      mb="md"
+                      icon={<MdOutlineAlternateEmail size={16} />}
+                      {...formHandler.getInputProps('surname')}
+                      sx={{
+                        'input:focus': {
+                          borderColor: 'orange',
+                        },
+                      }}
+                    />
+                  </Grid.Col>
+                  <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                    <TextInput
                       id="email-input"
                       label="E-mail"
                       description="E-mail you have used to register"
@@ -158,6 +209,21 @@ const SignUp: NextPage = () => {
                           borderColor: 'orange',
                         },
                       }}
+                    />
+                  </Grid.Col>
+                  <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                    <DatePicker
+                      id="birthday-input"
+                      label="Date of birth"
+                      description="Select your birthday"
+                      mb="sm"
+                      placeholder={`${new Date().toLocaleDateString('en-US', {
+                        weekday: 'long',
+                      })} ${new Date().getDate()}, ${new Date().getFullYear()}`}
+                      allowFreeInput
+                      maxDate={new Date()}
+                      icon={<BsCalendarDate size={16} />}
+                      {...formHandler.getInputProps('birthday')}
                     />
                   </Grid.Col>
                   <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
@@ -176,6 +242,7 @@ const SignUp: NextPage = () => {
                       }}
                     />
                   </Grid.Col>
+
                   <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
                     <PasswordInput
                       id="confirm-pwd-input"
@@ -192,23 +259,14 @@ const SignUp: NextPage = () => {
                       }}
                     />
                   </Grid.Col>
-                  <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                    <DatePicker
-                      id="birthday-input"
-                      label="Date of birth"
-                      description="Select your birthday"
-                      mb="sm"
-                      maxDate={new Date()}
-                      icon={<BsCalendarDate size={16} />}
-                      {...formHandler.getInputProps('birthday')}
-                    />
-                  </Grid.Col>
+
                   <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
                     <NumberInput
                       id="weight-input"
                       label="Weight (kg)"
                       description="What's your weigth?"
                       mb="sm"
+                      placeholder="70"
                       icon={<FaWeight size={16} />}
                       {...formHandler.getInputProps('weight')}
                       hideControls
@@ -219,10 +277,21 @@ const SignUp: NextPage = () => {
                       id="height-input"
                       label="Height (cm)"
                       description="What's your weigth?"
+                      placeholder="170"
                       mb="sm"
                       icon={<GiBodyHeight size={16} />}
                       {...formHandler.getInputProps('height')}
                       hideControls
+                    />
+                  </Grid.Col>
+                  <Grid.Col span={12}>
+                    <TextInput
+                      id="job-input"
+                      label="Job"
+                      description="What's your current job?"
+                      mb="sm"
+                      placeholder="Software Developer"
+                      {...formHandler.getInputProps('job')}
                     />
                   </Grid.Col>
                 </Grid>

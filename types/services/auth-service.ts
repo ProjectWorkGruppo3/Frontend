@@ -16,6 +16,9 @@ export type LoginResult = {
 } | null;
 
 export interface SignUpProps {
+  name: string;
+  surname: string;
+  job?: string;
   email: string;
   password: string;
   birthday: Date;
