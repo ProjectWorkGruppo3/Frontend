@@ -4,16 +4,16 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { AdminUserCreated } from 'types/services/admin-service';
 import { CardFadeIn, EaseInOutDiv, FadeInDiv } from '../../animations';
 import {
   NewAdminUserModal,
   UserDetail,
-  UserSidebar,
+  UserSidebar
 } from '../../components/administration';
 import { Header, NotificationToast } from '../../components/common';
 import { AdminUser } from '../../models/admin-user';
 import adminService from '../../services/admin-service';
-import { fakeAdminUsers } from '../../utils/fake-data';
 import { notifyError, notifySuccess } from '../../utils/notify-toast';
 
 const AdminUsersPage: NextPage = () => {
@@ -37,7 +37,17 @@ const AdminUsersPage: NextPage = () => {
     const fetch = async () => {
       if (auth && auth.authState) {
         setLoading(true);
-        setUsers(fakeAdminUsers); // FIXME
+
+        const {data: admins, error} = await adminService.getAdminUsers({
+          token: auth.authState.token
+        })
+
+        if(error) {
+          notifyError('Failed to load admin users')
+        } else {
+          setUsers(admins);
+        }
+        
 
         setLoading(false);
       }
@@ -58,6 +68,7 @@ const AdminUsersPage: NextPage = () => {
       );
     } else {
       notifySuccess('User updated successfully');
+      setUsers(prevState => [...prevState.filter(el => el.id !== user.id), user])
     }
   };
 
@@ -73,19 +84,15 @@ const AdminUsersPage: NextPage = () => {
       );
     } else {
       notifySuccess('User deleted successfully');
+      setSelectedUser(undefined);
+      setUsers(prevState => [...prevState.filter(el => el.id !== user.id)]);
     }
   };
 
-  const onAddUser = async (email: string, name: string, surname: string) => {
-    console.log(email, name, surname);
+  const onAddUser = async (user: AdminUserCreated) => {
 
-    const { data: added, error } = await adminService.addAdminUser({
-      user: {
-        id: '-1',
-        name: name,
-        surname: surname,
-        email: email,
-      },
+    const { data: userCreated, error } = await adminService.addAdminUser({
+      user: user,
       token: auth!.authState!.token,
     });
 
@@ -93,6 +100,7 @@ const AdminUsersPage: NextPage = () => {
       notifyError('Sorry, but something went wrong when try to add the user');
     } else {
       notifySuccess('User added successfully');
+      setUsers(prevState => [...prevState, userCreated!])
     }
 
     setNewUserModalOpened(false);

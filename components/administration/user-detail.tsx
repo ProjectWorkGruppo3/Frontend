@@ -7,13 +7,13 @@ import {
   Divider,
   Grid,
   Group,
-  Image,
-  Text,
+  Image, Text,
   TextInput,
   Title,
-  Tooltip,
+  Tooltip
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { useState } from 'react';
 import { AiOutlineClose, AiOutlineUserDelete } from 'react-icons/ai';
 import { BsSave } from 'react-icons/bs';
 import { AdminUser } from '../../models/admin-user';
@@ -21,7 +21,7 @@ import { validateEmail } from '../../utils/validations';
 
 export interface UserDetailProps {
   user: AdminUser;
-  onSave: (user: AdminUser) => void;
+  onSave: (user: AdminUser) => Promise<void>;
   onDelete: (user: AdminUser) => void;
   onClose: () => void;
 }
@@ -33,6 +33,9 @@ interface FormProps {
 }
 
 export const UserDetail = (props: UserDetailProps) => {
+
+  const [loading, setLoading] = useState<boolean>(false);
+
   const formHandler = useForm<FormProps>({
     initialValues: {
       email: props.user.email,
@@ -47,7 +50,26 @@ export const UserDetail = (props: UserDetailProps) => {
 
   const onSubmit = async (values: FormProps) => {
     console.log(values);
+
+    setLoading(true);
+    
+    await props.onSave({
+      ...values,
+      id: props.user.id
+    });
+
+    setLoading(false);
   };
+
+
+  const onDelete = async () => {
+
+    setLoading(true);
+    
+    await props.onDelete(props.user);
+
+    setLoading(false);
+  }
 
   return (
     <Card style={{ height: '100%' }}>
@@ -75,12 +97,14 @@ export const UserDetail = (props: UserDetailProps) => {
                 label="Name"
                 mb="md"
                 {...formHandler.getInputProps('name')}
+                disabled={loading}
               />
               <TextInput
                 id="name-input"
                 label="Surname"
                 mb="md"
                 {...formHandler.getInputProps('surname')}
+                disabled={loading}
               />
               <TextInput
                 id="email-input"
@@ -88,6 +112,7 @@ export const UserDetail = (props: UserDetailProps) => {
                 placeholder="your@email.com"
                 mb="md"
                 {...formHandler.getInputProps('email')}
+                disabled={loading}
               />
             </Grid.Col>
             <Grid.Col span={4} offset={2}>
@@ -113,12 +138,12 @@ export const UserDetail = (props: UserDetailProps) => {
         </Box>
         <Group position="right" spacing="xs" style={{ height: '10%' }}>
           <Tooltip label="Delete" position="bottom" placement="end">
-            <Button color="red" onClick={() => props.onDelete(props.user)}>
+            <Button color="red" onClick={onDelete} disabled={loading}>
               <AiOutlineUserDelete />
             </Button>
           </Tooltip>
           <Tooltip label="Save" position="bottom" placement="end">
-            <Button color="green" type="submit">
+            <Button color="green" type="submit" disabled={loading}>
               <BsSave />
             </Button>
           </Tooltip>
