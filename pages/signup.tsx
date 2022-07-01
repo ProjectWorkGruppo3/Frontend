@@ -33,7 +33,6 @@ import Link from 'next/link';
 import { FadeInDiv, StaggerDiv } from '../animations';
 import { NotificationToast } from '../components/common';
 import { notifyError, notifySuccess } from '../utils/notify-toast';
-import { locale } from 'dayjs';
 
 interface FormProps {
   name: string;
@@ -116,6 +115,7 @@ const SignUp: NextPage = () => {
       birthday: new Date(props.birthday),
       height: parseInt(props.height),
       weight: parseInt(props.weight),
+      job: props.job,
     });
 
     if (error) {

@@ -5,6 +5,7 @@ import {
   AppShell,
   Button,
   Group,
+  Loader,
   Navbar,
   NumberInput,
   Text,
@@ -13,8 +14,10 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useAuth } from 'context/auth-context';
+import moment from 'moment';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import {
   Logout as LogoutIcon,
   Settings as SettingsIcon,
@@ -23,25 +26,17 @@ import {
 export default function Profile() {
   const authContext = useAuth();
   const router = useRouter();
-
+  const [loading, setLoading] = useState<boolean>(true);
   // TODO: Add backend
-
-  // useEffect(() => {
-  //   if (authContext && authContext.isAuthenticated()) {
-  //     router.push('/profile');
-  //   } else {
-  //     router.push('/');
-  //   }
-  // }, [authContext, router]);
 
   const form = useForm({
     initialValues: {
-      name: authContext?.authState?.user?.name || '',
-      surname: authContext?.authState?.user?.surname || '',
-      job: authContext?.authState?.user?.job || '',
-      height: authContext?.authState?.user?.height || 0,
-      weight: authContext?.authState?.user?.weight || 0,
-      age: 10,
+      name: '',
+      surname: '',
+      job: '',
+      height: 0,
+      weight: 0,
+      age: 0,
     },
 
     validate: {
@@ -53,6 +48,29 @@ export default function Profile() {
       age: (value) => value == 0 ?? 'Age is required',
     },
   });
+
+  useEffect(() => {
+    if (authContext && authContext.isAuthenticated()) {
+      setLoading(false);
+    } else {
+      router.push('/login');
+    }
+  }, [authContext, router]);
+
+  useEffect(() => {
+    if (authContext && authContext.authState) {
+      form.setValues({
+        name: authContext.authState.user.name,
+        surname: authContext.authState.user.surname,
+        weight: authContext.authState.user.weight,
+        height: authContext.authState.user.height,
+        job: authContext.authState.user.job,
+        age: moment
+          .duration(moment().diff(moment(authContext.authState.user.birthday)))
+          .asYears(),
+      });
+    }
+  }, [authContext, loading]);
 
   // TODO: Add authentication
 
@@ -81,6 +99,10 @@ export default function Profile() {
       form.reset();
     }
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <AppShell
