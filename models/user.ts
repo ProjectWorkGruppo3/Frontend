@@ -6,4 +6,6 @@ export type User = {
   birthday: Date;
   height: number;
   weight: number;
+  job: string;
+  roles: string[];
 };
