@@ -7,4 +7,5 @@ export type User = {
   height: number;
   weight: number;
   job: string;
+  roles: string[];
 };
