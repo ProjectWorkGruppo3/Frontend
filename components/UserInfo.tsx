@@ -1,12 +1,22 @@
 import { Card, Grid, Group, Title, Text, Box } from '@mantine/core';
+import { useAuth } from 'context/auth-context';
 import React from 'react';
 
 export default function UserInfo() {
+  const authContext = useAuth();
   return (
     <Grid style={{ width: '100%' }}>
-      <PersonalData title="Height" value="180" unitOfMeasurement="cm" />
-      <PersonalData title="Weight" value="70" unitOfMeasurement="kg" />
-      <PersonalData title="Age" value="30" />
+      <PersonalData
+        title="Height"
+        value={authContext?.authState?.user.height.toString() || 'N/D'}
+        unitOfMeasurement="cm"
+      />
+      <PersonalData
+        title="Weight"
+        value={authContext?.authState?.user.weight.toString() || 'N/D'}
+        unitOfMeasurement="kg"
+      />
+      <PersonalData title="Age" value={'10'} />
     </Grid>
   );
 }
