@@ -1,3 +1,4 @@
+import { NotificationToast } from '@components/common';
 import User from '@components/User';
 import UserInfo from '@components/UserInfo';
 import WeeklyGoals from '@components/WeeklyGoals';
@@ -18,18 +19,30 @@ import moment from 'moment';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import userService from 'services/user-service';
 import {
   Logout as LogoutIcon,
   Settings as SettingsIcon,
 } from 'tabler-icons-react';
+import { notifyError, notifySuccess } from 'utils/notify-toast';
+
+interface FormProps {
+  name: string;
+  surname: string;
+  job: string;
+  height: number;
+  weight: number;
+  age: number;
+}
 
 export default function Profile() {
   const authContext = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
+  const [saving, setSaving] = useState<boolean>(false);
   // TODO: Add backend
 
-  const form = useForm({
+  const formHandler = useForm<FormProps>({
     initialValues: {
       name: '',
       surname: '',
@@ -40,12 +53,12 @@ export default function Profile() {
     },
 
     validate: {
-      name: (value) => (value != '' ? null : 'Invalid name'),
-      surname: (value) => (value != '' ? null : 'Surname is required'),
-      job: (value) => (value != '' ? null : 'Job is required'),
-      height: (value) => value == 0 ?? 'Height is required',
-      weight: (value) => value == 0 ?? 'Height is required',
-      age: (value) => value == 0 ?? 'Age is required',
+      name: (value) => (value.length !== 0 ? null : 'Invalid name'),
+      surname: (value) => (value.length !== 0 ? null : 'Surname is required'),
+      job: (value) => (value.length !== 0 ? null : 'Job is required'),
+      height: (value) => (value !== 0 ? null : 'Height is required'),
+      weight: (value) => (value !== 0 ? null : 'Height is required'),
+      age: (value) => (value !== 0 ? null : 'Age is required'),
     },
   });
 
@@ -59,36 +72,60 @@ export default function Profile() {
 
   useEffect(() => {
     if (authContext && authContext.authState) {
-      form.setValues({
+      formHandler.setValues({
         name: authContext.authState.user.name,
         surname: authContext.authState.user.surname,
         weight: authContext.authState.user.weight,
         height: authContext.authState.user.height,
-        job: authContext.authState.user.job,
+        job: authContext.authState.user.job ?? '',
         age: moment
           .duration(moment().diff(moment(authContext.authState.user.birthday)))
           .asYears(),
       });
     }
-  }, [authContext, loading]);
+  }, [authContext, loading, formHandler.setValues]);
 
-  // TODO: Add authentication
+  const handleSubmit = async (value: FormProps) => {
+    if (authContext && authContext.isAuthenticated()) {
+      setSaving(true);
+      const user = authContext.authState!.user;
 
-  const handleSubmit = () => {
-    if (authContext /*&& authContext.isAuthenticated()*/) {
-      authContext.setAuthState({
-        ...authContext.authState!,
+      const { data, error } = await userService.updateProfile({
+        token: authContext.authState!.token,
         user: {
-          id: '1',
-          name: form.values.name,
-          surname: form.values.surname,
-          height: form.values.height,
-          weight: form.values.weight,
-          birthday: new Date(),
-          job: form.values.job,
-          email: 'giacomobaggio13@gmail.com', // To remove
+          id: user.id,
+          name: value.name,
+          weight: value.weight,
+          surname: value.surname,
+          roles: user.roles,
+          job: value.job,
+          height: value.height,
+          email: user.email,
+          birthday: moment(user.birthday).subtract(value.age, 'years').toDate(),
         },
       });
+
+      if (!error) {
+        authContext.setAuthState({
+          ...authContext.authState!,
+          user: {
+            ...user,
+            name: value.name,
+            weight: value.weight,
+            surname: value.surname,
+            job: value.job,
+            height: value.height,
+            birthday: moment(user.birthday)
+              .subtract(value.age, 'years')
+              .toDate(),
+          },
+        });
+
+        notifySuccess('User updated');
+      } else {
+        notifyError('Something went wrong when try to update the user');
+      }
+      setSaving(false);
     }
   };
 
@@ -96,7 +133,7 @@ export default function Profile() {
 
   const handleReset = async () => {
     if (window.confirm('Are you sure you want to discard your changes?')) {
-      form.reset();
+      formHandler.reset();
     }
   };
 
@@ -147,9 +184,9 @@ export default function Profile() {
       aside={
         <User>
           <Title order={2}>
-            {form.values.surname} {form.values.name}
+            {formHandler.values.surname} {formHandler.values.name}
           </Title>
-          <Text>{form.values.job}</Text>
+          <Text>{formHandler.values.job}</Text>
           <UserInfo />
           <WeeklyGoals />
         </User>
@@ -171,70 +208,60 @@ export default function Profile() {
           }}
         >
           <form
-            onSubmit={form.onSubmit((values) => console.log(values))}
+            onSubmit={formHandler.onSubmit(handleSubmit)}
             style={{ width: '100%', height: '100%' }}
           >
             <Title order={3}>Personal info</Title>
             <TextInput
-              placeholder={form.values.name}
               label="Name"
               m={10}
               ml={20}
               style={{ width: '50%' }}
-              {...form.getInputProps('name')}
+              {...formHandler.getInputProps('name')}
             />
 
             <TextInput
-              placeholder={form.values.surname}
               label="Surname"
               m={10}
               ml={20}
               style={{ width: '50%' }}
-              {...form.getInputProps('surname')}
+              {...formHandler.getInputProps('surname')}
             />
 
             <TextInput
-              placeholder={form.values.job}
-              required
               label="Job"
               m={10}
               ml={20}
               style={{ width: '50%' }}
-              {...form.getInputProps('job')}
+              {...formHandler.getInputProps('job')}
             />
 
             <NumberInput
-              placeholder={form.values.height.toString()}
-              required
               label="Height"
               m={10}
               ml={20}
               style={{ width: '50%' }}
-              {...form.getInputProps('height')}
+              {...formHandler.getInputProps('height')}
             />
 
             <NumberInput
-              placeholder={form.values.weight.toString()}
-              required
               label="Weight"
               m={10}
               ml={20}
               style={{ width: '50%' }}
-              {...form.getInputProps('weight')}
+              {...formHandler.getInputProps('weight')}
             />
 
             <NumberInput
-              placeholder={form.values.age.toString()}
-              required
               label="Age"
               m={10}
               ml={20}
               style={{ width: '50%' }}
-              {...form.getInputProps('age')}
+              {...formHandler.getInputProps('age')}
             />
 
-            <Group mt={'200px'} style={{ justifyContent: 'flex-end' }}>
-              <Button type="submit" onClick={handleSubmit}>
+            <Group mt={'200px'} position="right">
+              <Button type="submit" loading={saving}>
                 Save changes
               </Button>
               <Button
@@ -242,6 +269,7 @@ export default function Profile() {
                 color="red"
                 type="reset"
                 onClick={() => handleReset()}
+                loading={saving}
               >
                 Discard changes
               </Button>
@@ -253,6 +281,7 @@ export default function Profile() {
           style={{ float: 'right', width: '80%', justifyContent: 'flex-end' }}
         ></Group>
       </Group>
+      <NotificationToast />
     </AppShell>
   );
 }

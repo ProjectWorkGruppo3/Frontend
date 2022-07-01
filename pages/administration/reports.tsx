@@ -49,20 +49,18 @@ const ReportsPage: NextPage = () => {
     fetch();
   }, [auth]);
 
-
   const downloadReport = async (filename: string) => {
-    const {data: _, error} = await reportsService.downloadReport({
+    const { data: _, error } = await reportsService.downloadReport({
       token: auth!.authState!.token,
-      filename: filename
+      filename: filename,
     });
 
-
-    if(error) {
-      notifyError('Sorry but something went wrong when try to download the file')
+    if (error) {
+      notifyError(
+        'Sorry but something went wrong when try to download the file'
+      );
     }
-
-
-  }
+  };
 
   return (
     <Box pt="xl" px="2%">

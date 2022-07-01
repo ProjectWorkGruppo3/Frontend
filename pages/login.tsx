@@ -8,7 +8,7 @@ import {
   Stack,
   Text,
   TextInput,
-  Title
+  Title,
 } from '@mantine/core';
 import type { NextPage } from 'next';
 import { MdOutlineAlternateEmail, MdPassword } from 'react-icons/md';
@@ -40,13 +40,13 @@ const Login: NextPage = () => {
 
   useEffect(() => {
     if (authContext && authContext.isAuthenticated()) {
-      router.push(
-        authContext.authState!.user.roles.includes("Admin")
-        ?
-        '/administration'
-        : 
-        '/'
-      ).then((_) => setLoading(false));
+      router
+        .push(
+          authContext.authState!.user.roles.includes('Admin')
+            ? '/administration'
+            : '/'
+        )
+        .then((_) => setLoading(false));
     } else {
       setLoading(false);
     }
@@ -82,14 +82,10 @@ const Login: NextPage = () => {
         token: logged.token,
       });
 
-      console.log('Includes', logged.user.roles.includes("Admin"))
+      console.log('Includes', logged.user.roles.includes('Admin'));
 
       return router.replace(
-        logged.user.roles.includes("Admin")
-        ?
-        '/administration'
-        : 
-        '/'
+        logged.user.roles.includes('Admin') ? '/administration' : '/'
       );
     }
 

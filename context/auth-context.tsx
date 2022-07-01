@@ -25,8 +25,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [authState, setAuthState] = useState<AuthState | null>(null);
 
   useEffect(() => {
-    console.log('User context useeffect');
-
     const authStateSaved = getSavedAuthState();
 
     setAuthState(authStateSaved);

@@ -1,24 +1,23 @@
 import axios from 'axios';
 import { Report } from '../models/report';
 import { ServiceReturnType } from '../types/services/common-service';
-import { DonwloadReportProps, GetReportsProps } from '../types/services/reports-service';
+import {
+  DonwloadReportProps,
+  GetReportsProps,
+} from '../types/services/reports-service';
 import config from '../utils/config';
 
 const ReportsService = () => {
   const getReports = async (
     props: GetReportsProps
   ): Promise<ServiceReturnType<Report[]>> => {
-
     try {
-      const result = await axios.get(
-        `${config.API_URL}/Reports/`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${props.token}`,
-          },
-        }
-      );
+      const result = await axios.get(`${config.API_URL}/Reports/`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${props.token}`,
+        },
+      });
 
       const reports = result.data as Report[];
 
@@ -33,10 +32,10 @@ const ReportsService = () => {
       };
     }
   };
-  
 
-  const downloadReport = async (props: DonwloadReportProps) : Promise<ServiceReturnType<boolean>> => {
-
+  const downloadReport = async (
+    props: DonwloadReportProps
+  ): Promise<ServiceReturnType<boolean>> => {
     try {
       const response = await axios.post(
         `${config.API_URL}/Reports/${props.filename}`,
@@ -44,8 +43,8 @@ const ReportsService = () => {
         {
           responseType: 'blob',
           headers: {
-            Authorization: `Bearer ${props.token}`
-          }
+            Authorization: `Bearer ${props.token}`,
+          },
         }
       );
 
@@ -56,25 +55,23 @@ const ReportsService = () => {
       document.body.appendChild(link);
       link.click();
 
-      link.remove()
+      link.remove();
 
       return {
         data: true,
-        error: undefined
-      }
-
-
+        error: undefined,
+      };
     } catch (error) {
       return {
         data: false,
-        error: error
-      } 
+        error: error,
+      };
     }
-  }
+  };
 
   return {
     getReports,
-    downloadReport
+    downloadReport,
   };
 };
 

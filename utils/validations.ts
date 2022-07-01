@@ -4,10 +4,10 @@ export const validateEmail = (email: string): boolean => {
   );
 };
 
-
-
 // FIXME Regex: one digit
-export const validatePassword = (password: string) : boolean => {
-  const passwordRegex =  new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
-  return passwordRegex.test(password)
-}
+export const validatePassword = (password: string): boolean => {
+  const passwordRegex = new RegExp(
+    '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})'
+  );
+  return passwordRegex.test(password);
+};

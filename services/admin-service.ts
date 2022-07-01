@@ -5,7 +5,7 @@ import {
   DeleteAdminUserProps,
   GetAdminUserProps,
   GetAdminUsersProps,
-  UpdateAdminUserProps
+  UpdateAdminUserProps,
 } from '../types/services/admin-service';
 import { ServiceReturnType } from '../types/services/common-service';
 import config from '../utils/config';
@@ -15,15 +15,12 @@ const AdminService = () => {
     props: GetAdminUsersProps
   ): Promise<ServiceReturnType<AdminUser[]>> => {
     try {
-      const result = await axios.get(
-        `${config.API_URL}/Admins`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${props.token}`,
-          },
-        }
-      );
+      const result = await axios.get(`${config.API_URL}/Admins`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${props.token}`,
+        },
+      });
 
       const admins = result.data as AdminUser[];
 
@@ -70,7 +67,6 @@ const AdminService = () => {
   const addAdminUser = async (
     props: AddAdminUserProps
   ): Promise<ServiceReturnType<AdminUser | null>> => {
-
     // FIXME add profilepic
     try {
       const response = await axios.post(
@@ -104,10 +100,9 @@ const AdminService = () => {
   const updateAdminUser = async (
     props: UpdateAdminUserProps
   ): Promise<ServiceReturnType<boolean>> => {
-    
     try {
       await axios.put(
-        `${config.API_URL}/Admins/${props.user.id}`, 
+        `${config.API_URL}/Admins/${props.user.id}`,
         {
           email: props.user.email,
           name: props.user.name,
@@ -137,15 +132,12 @@ const AdminService = () => {
     props: DeleteAdminUserProps
   ): Promise<ServiceReturnType<boolean>> => {
     try {
-      await axios.delete(
-        `${config.API_URL}/Admins/${props.userId}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${props.token}`,
-          },
-        }
-      );
+      await axios.delete(`${config.API_URL}/Admins/${props.userId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${props.token}`,
+        },
+      });
 
       return {
         data: true,

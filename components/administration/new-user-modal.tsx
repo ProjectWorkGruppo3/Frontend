@@ -6,7 +6,7 @@ import {
   Modal,
   PasswordInput,
   TextInput,
-  Title
+  Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
@@ -47,9 +47,11 @@ export const NewAdminUserModal = (props: NewAdminUserModalProps) => {
       email: (value) =>
         validateEmail(value) ? null : 'Please, type a valid email',
       password: (value) =>
-        validatePassword(value) ? null : 'Please type a valid password\n(Minimum 1 digit, 1 special characters and 1 uppercase letter',
+        validatePassword(value)
+          ? null
+          : 'Please type a valid password\n(Minimum 1 digit, 1 special characters and 1 uppercase letter',
       confirmPassword: (value, values) =>
-        value === values.password ? null : 'Passwords not coincide'
+        value === values.password ? null : 'Passwords not coincide',
     },
   });
 
@@ -61,7 +63,7 @@ export const NewAdminUserModal = (props: NewAdminUserModalProps) => {
       name: values.name,
       surname: values.surname,
       email: values.email,
-      password: values.password
+      password: values.password,
     });
 
     formHandler.reset();

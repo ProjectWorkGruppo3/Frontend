@@ -27,4 +27,3 @@ export interface AdminUserCreated {
   password: string;
   profilePic?: string;
 }
-

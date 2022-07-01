@@ -7,10 +7,11 @@ import {
   Divider,
   Grid,
   Group,
-  Image, Text,
+  Image,
+  Text,
   TextInput,
   Title,
-  Tooltip
+  Tooltip,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
@@ -33,7 +34,6 @@ interface FormProps {
 }
 
 export const UserDetail = (props: UserDetailProps) => {
-
   const [loading, setLoading] = useState<boolean>(false);
 
   const formHandler = useForm<FormProps>({
@@ -52,24 +52,22 @@ export const UserDetail = (props: UserDetailProps) => {
     console.log(values);
 
     setLoading(true);
-    
+
     await props.onSave({
       ...values,
-      id: props.user.id
+      id: props.user.id,
     });
 
     setLoading(false);
   };
 
-
   const onDelete = async () => {
-
     setLoading(true);
-    
+
     await props.onDelete(props.user);
 
     setLoading(false);
-  }
+  };
 
   return (
     <Card style={{ height: '100%' }}>

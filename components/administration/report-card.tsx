@@ -6,21 +6,19 @@ import { normalDate } from '../../utils/date-format';
 
 export interface ReportCardProps {
   report: Report;
-  download: (filename: string) => Promise<void>
+  download: (filename: string) => Promise<void>;
 }
 
 export const ReportCard = (props: ReportCardProps) => {
-
   const [downloading, setDownloading] = useState<boolean>(false);
 
   const onDownload = async () => {
+    setDownloading(true);
 
-    setDownloading(true)
+    await props.download(props.report.name);
 
-    await props.download(props.report.name)
-
-    setDownloading(false)
-  }
+    setDownloading(false);
+  };
 
   return (
     <Card shadow="xl" radius="md" withBorder py="sm">
@@ -34,13 +32,7 @@ export const ReportCard = (props: ReportCardProps) => {
       </Grid>
       <Group position="right">
         <ActionIcon onClick={onDownload}>
-          {
-            downloading
-            ?
-            <Loader />
-            :
-            <BsDownload />
-          }
+          {downloading ? <Loader /> : <BsDownload />}
         </ActionIcon>
       </Group>
     </Card>
