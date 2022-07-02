@@ -1,5 +1,4 @@
-import { Card, Grid, Title, Text, ActionIcon } from '@mantine/core';
-import Link from 'next/link';
+import { ActionIcon, Card, Grid, Text } from '@mantine/core';
 import { IoIosArrowForward } from 'react-icons/io';
 
 export interface StatCardProps {
@@ -14,7 +13,15 @@ export const StatCard = (props: StatCardProps) => {
       <Grid justify="flex-start" align="center">
         <Grid.Col span={10}>
           <Text>{props.name}</Text>
-          <Text style={{ fontSize: '2rem' }} weight="bold">
+          <Text 
+            style={{ fontSize: '2rem' }} 
+            weight="bold"
+            sx={{
+              textOverflow:'ellipsis',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap'
+            }}
+          >
             {props.value}
           </Text>
         </Grid.Col>

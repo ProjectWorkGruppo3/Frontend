@@ -1,29 +1,28 @@
-import { Box, Center, Grid, Loader } from '@mantine/core';
+import { Alert, Box, Center, Grid, Loader } from '@mantine/core';
 import { NextPage } from 'next';
 import {
   AnalysisStatCard,
   StatCard,
-  TitleLink,
+  TitleLink
 } from '../../components/administration/index';
 
-import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { GeneralStatistics } from 'types/services/stats-service';
+import { notifyError } from 'utils/notify-toast';
 import { CardFadeIn, FadeInDiv } from '../../animations';
 import { Header } from '../../components/common';
 import { useAuth } from '../../context/auth-context';
+import statisticService from '../../services/stats-service';
 import { normalDate } from '../../utils/date-format';
-
-const DensityMap = dynamic(
-  () => import('../../components/administration/density-map'),
-  { ssr: false }
-);
 
 const AdministrationPage: NextPage = () => {
   const auth = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
+  const [generalStatistics, setGeneralStatistics] =
+    useState<GeneralStatistics>();
 
   useEffect(() => {
     if (auth && auth.isAuthenticated()) {
@@ -32,6 +31,30 @@ const AdministrationPage: NextPage = () => {
       router.push('/login').then((_) => setLoading(false));
     }
   }, [auth, router]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      if (auth && auth.authState) {
+        setLoading(true);
+        const { data: stats, error } =
+          await statisticService.getGeneralStatistics({
+            token: auth.authState.token,
+          });
+
+        if (error) {
+          notifyError('Failed to load statistics');
+        } else {
+          console.log(stats);
+
+          setGeneralStatistics(stats!);
+        }
+
+        setLoading(false);
+      }
+    };
+
+    fetch();
+  }, []);
 
   if (loading) {
     return <Loader />;
@@ -54,27 +77,36 @@ const AdministrationPage: NextPage = () => {
             }}
           />
         </FadeInDiv>
-        {loading ? (
+        {loading && (
           <Center>
             <FadeInDiv>
               <Loader />
             </FadeInDiv>
           </Center>
-        ) : (
+        )}
+
+        {!loading && !generalStatistics && (
+          <Alert color="red">Failed to retrieve data</Alert>
+        )}
+
+        {!loading && generalStatistics && (
           <>
             <Grid justify="flex-start" align="center" mb="sm">
               <Grid.Col xs={12} sm={12} md={12} lg={2} xl={2}>
                 <CardFadeIn>
                   <StatCard
                     name="Admins"
-                    value={20}
+                    value={generalStatistics.totalAdmins}
                     onClick={() => router.push('/administration/admins')}
                   />
                 </CardFadeIn>
               </Grid.Col>
               <Grid.Col xs={12} sm={12} md={12} lg={2} xl={2}>
                 <CardFadeIn>
-                  <StatCard name="Bracelets" value={200} />
+                  <StatCard 
+                    name="Bracelets" 
+                    value={generalStatistics.totalBracelets} 
+                  />
                 </CardFadeIn>
               </Grid.Col>
             </Grid>
@@ -106,16 +138,18 @@ const AdministrationPage: NextPage = () => {
                 </Box>
               </FadeInDiv>
               <Grid>
-                {Array.from({ length: 4 }, (v, k) => (
-                  <Grid.Col span={2}>
-                    <CardFadeIn>
-                      <StatCard
-                        name={normalDate(new Date())}
-                        value={`Report #${k}`}
-                      />
-                    </CardFadeIn>
-                  </Grid.Col>
-                ))}
+                {
+                  generalStatistics.lastReports.map(el => (
+                    <Grid.Col span={2}>
+                      <CardFadeIn>
+                        <StatCard
+                          name={normalDate(el.generatedAt)}
+                          value={el.name}
+                        />
+                      </CardFadeIn>
+                    </Grid.Col>
+                  ))
+                }
               </Grid>
             </Box>
           </>

@@ -25,8 +25,16 @@ export const ReportCard = (props: ReportCardProps) => {
       <Grid justify="flex-start" align="center">
         <Grid.Col span={10}>
           <Text>{normalDate(props.report.generatedAt)}</Text>
-          <Text style={{ fontSize: '2rem' }} weight="bold">
-            {normalDate(props.report.generatedAt)}
+          <Text 
+            style={{ fontSize: '2rem' }} 
+            weight="bold"
+            sx={{
+              textOverflow:'ellipsis',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            {props.report.name}
           </Text>
         </Grid.Col>
       </Grid>
