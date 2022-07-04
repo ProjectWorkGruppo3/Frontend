@@ -22,14 +22,16 @@ export const NewDeviceCard = (props: NewDeviceCardProps) => {
       onMouseOut={onMouseOut}
       sx={{
         ':hover': {
-          backgroundColor: isHover ? '#f7f5f5' : 'white',
+          color: isHover ? 'white' : 'dark',
+          backgroundColor: isHover ? 'var(--p-color)' : 'white',
+          borderColor: isHover ? 'var(--p-color)' : 'white',
           cursor: 'pointer',
           transition: '0.4s',
         },
       }}
     >
       <Group position="center" grow>
-        <AiOutlinePlus />
+        <AiOutlinePlus color={isHover ? 'white' : 'black'} />
       </Group>
     </Card>
   );

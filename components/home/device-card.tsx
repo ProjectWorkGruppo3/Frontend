@@ -21,8 +21,9 @@ export const DeviceCard = (props: DeviceCardProps) => {
         radius="md"
         withBorder
         sx={{
-          backgroundColor: isHover ? '#f7f5f5' : 'white',
-          borderColor: isHover ? '#f7f5f5' : 'white',
+          color: isHover ? 'white' : 'dark',
+          backgroundColor: isHover ? 'var(--p-color)' : 'white',
+          borderColor: isHover ? 'var(--p-color)' : 'white',
           cursor: isHover ? 'pointer' : 'default',
           transition: '0.4s',
         }}
@@ -39,7 +40,7 @@ export const DeviceCard = (props: DeviceCardProps) => {
               }}
             >
               <Image
-                src="/assets/file0.png"
+                src="/assets/device.png"
                 width="100%"
                 height="100%"
                 alt="device-image"

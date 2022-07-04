@@ -1,4 +1,4 @@
-import { Box, Center, Grid, Loader } from '@mantine/core';
+import { Box, Center, Grid, Loader, Title } from '@mantine/core';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect, useState } from 'react';
@@ -93,68 +93,74 @@ const Home: NextPage = () => {
   }
 
   return (
-    <>
-      <Head>
-        <title>SerenUp</title>
-        <meta name="description" content="Seren Up Web App" />
-        <link rel="icon" href="/assets/logo.png" />
-      </Head>
-      <StaggerDiv>
-        <Box p="xl" mb="md">
-          <NewDeviceModal
-            opened={newDeviceModalOpened}
-            onSubmit={onNewDeviceSubmit}
-            onClose={() => setNewDeviceModalOpened(false)}
-          />
-          <Grid>
-            <Grid.Col span={4}>
+    <StaggerDiv>
+      <Box sx={{ width: '100%', height: '100vh' }} p={0}>
+        <Head>
+          <title>SerenUp</title>
+          <meta name="description" content="Seren Up Web App" />
+          <link rel="icon" href="/assets/logo.png" />
+        </Head>
+        <NewDeviceModal
+          opened={newDeviceModalOpened}
+          onSubmit={onNewDeviceSubmit}
+          onClose={() => setNewDeviceModalOpened(false)}
+        />
+        <Grid sx={{ width: '100%', height: '100%' }} m={0}>
+          <Grid.Col span={4} p={0}>
+            <Box
+              sx={{
+                backgroundColor: 'var(--fi-color)',
+                height: '100%',
+              }}
+              p="lg"
+              mb="xl"
+            >
               <EaseInOutDiv>
+                <Title order={3}>Seren-Up</Title>
                 <Center>
                   <Floating>
-                    <Box sx={{ height: '100%' }} py="xl">
+                    <Box py="xl">
                       <img src="/assets/person.png" />
                     </Box>
                   </Floating>
                 </Center>
               </EaseInOutDiv>
-            </Grid.Col>
-            <Grid.Col span={8}>
-              <FadeInDiv>
-                <Header
-                  title={`Welcome ${
-                    auth!.authState!.user.name
-                  }, this is your bracelets`}
-                  onLogout={() => {
-                    setLoading(true);
-                    auth!.setAuthState(null);
-                  }}
-                />
-              </FadeInDiv>
-              <FadeInDiv>
-                <Grid align="center">
-                  {devices.map((el, index) => (
-                    <Grid.Col xs={12} sm={6} md={4} lg={2} xl={2} key={index}>
-                      <CardFadeIn>
-                        <DeviceCard device={el} />
-                      </CardFadeIn>
-                    </Grid.Col>
-                  ))}
-                  <Grid.Col xs={12} sm={1} md={1} lg={1} xl={1}>
+            </Box>
+          </Grid.Col>
+          <Grid.Col span={8} p="xl">
+            <FadeInDiv>
+              <Header
+                title={`Welcome ${auth!.authState!.user.name}`}
+                onLogout={() => {
+                  setLoading(true);
+                  auth!.setAuthState(null);
+                }}
+              />
+            </FadeInDiv>
+            <FadeInDiv>
+              <Grid align="center">
+                {devices.map((el, index) => (
+                  <Grid.Col xs={12} sm={6} md={4} lg={3} xl={3} key={index}>
                     <CardFadeIn>
-                      <NewDeviceCard
-                        onClick={() => setNewDeviceModalOpened(true)}
-                      />
+                      <DeviceCard device={el} />
                     </CardFadeIn>
                   </Grid.Col>
-                </Grid>
-              </FadeInDiv>
-            </Grid.Col>
-          </Grid>
-        </Box>
+                ))}
+                <Grid.Col xs={12} sm={1} md={1} lg={1} xl={1}>
+                  <CardFadeIn>
+                    <NewDeviceCard
+                      onClick={() => setNewDeviceModalOpened(true)}
+                    />
+                  </CardFadeIn>
+                </Grid.Col>
+              </Grid>
+            </FadeInDiv>
+          </Grid.Col>
+        </Grid>
+      </Box>
 
-        <NotificationToast />
-      </StaggerDiv>
-    </>
+      <NotificationToast />
+    </StaggerDiv>
   );
 };
 
