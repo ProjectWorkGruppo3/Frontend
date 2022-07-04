@@ -177,7 +177,9 @@ const Login: NextPage = () => {
                   </Button>
                 </Box>
                 <Center>
-                  <Text mr="1%">Do not have an account?</Text>
+                  <Text mr="1%" color="#525252">
+                    Do not have an account?
+                  </Text>
                   <Link href="/signup">
                     <Text
                       component="a"
