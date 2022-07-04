@@ -8,7 +8,7 @@ import {
   PasswordInput,
   Text,
   TextInput,
-  Title
+  Title,
 } from '@mantine/core';
 import type { NextPage } from 'next';
 
@@ -69,6 +69,7 @@ const Login: NextPage = () => {
     const { data: logged, error } = await AuthService.login({ ...props });
 
     if (error) {
+      setLoading(false);
       return notifyError(
         error['message'] ?? 'Sorry, but something wrong happened. Retry later'
       );
@@ -127,7 +128,7 @@ const Login: NextPage = () => {
                       {...formHandler.getInputProps('email')}
                       sx={{
                         'input:focus': {
-                          borderColor: 'orange',
+                          borderColor: 'var(--p-color)',
                         },
                       }}
                     />
@@ -140,7 +141,7 @@ const Login: NextPage = () => {
                       {...formHandler.getInputProps('password')}
                       sx={{
                         'div:focus-within': {
-                          borderColor: 'orange',
+                          borderColor: 'var(--p-color)',
                         },
                       }}
                     />

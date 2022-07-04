@@ -1,9 +1,8 @@
 import { Box, Card, Grid, Text } from '@mantine/core';
 import Image from 'next/image';
-import { Device } from '../../models';
-import { MdArrowForwardIos } from 'react-icons/md';
-import { useState } from 'react';
 import Link from 'next/link';
+import { useState } from 'react';
+import { Device } from '../../models';
 
 export interface DeviceCardProps {
   device: Device;
@@ -40,7 +39,7 @@ export const DeviceCard = (props: DeviceCardProps) => {
               }}
             >
               <Image
-                src="/assets/device.png"
+                src="/assets/file0.png"
                 width="100%"
                 height="100%"
                 alt="device-image"

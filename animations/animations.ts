@@ -60,3 +60,16 @@ export const iconEaseInOut: Variants = {
     },
   },
 };
+
+export const floatingAnimation: Variants = {
+  animate: {
+    y: [-10, 10, -10],
+    transition: {
+      duration: 5,
+      ease: 'easeIn',
+      repeat: Infinity,
+      repeatType: 'reverse',
+      repeatDelay: 5,
+    },
+  },
+};

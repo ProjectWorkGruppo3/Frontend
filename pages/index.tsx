@@ -11,7 +11,13 @@ import { useAuth } from '../context/auth-context';
 
 import Head from 'next/head';
 import 'react-toastify/dist/ReactToastify.css';
-import { CardFadeIn, FadeInDiv, StaggerDiv } from '../animations';
+import {
+  CardFadeIn,
+  EaseInOutDiv,
+  FadeInDiv,
+  Floating,
+  StaggerDiv,
+} from '../animations';
 import { Header, NotificationToast } from '../components/common';
 import { Device } from '../models';
 import DeviceService from '../services/device-service';
@@ -100,35 +106,50 @@ const Home: NextPage = () => {
             onSubmit={onNewDeviceSubmit}
             onClose={() => setNewDeviceModalOpened(false)}
           />
-          <FadeInDiv>
-            <Header
-              title={`Welcome ${
-                auth!.authState!.user.name
-              }, select the device:`}
-              onLogout={() => {
-                setLoading(true);
-                auth!.setAuthState(null);
-              }}
-            />
-          </FadeInDiv>
-          <FadeInDiv>
-            <Grid align="center">
-              {devices.map((el, index) => (
-                <Grid.Col xs={12} sm={6} md={4} lg={2} xl={2} key={index}>
-                  <CardFadeIn>
-                    <DeviceCard device={el} />
-                  </CardFadeIn>
-                </Grid.Col>
-              ))}
-              <Grid.Col xs={12} sm={1} md={1} lg={1} xl={1}>
-                <CardFadeIn>
-                  <NewDeviceCard
-                    onClick={() => setNewDeviceModalOpened(true)}
-                  />
-                </CardFadeIn>
-              </Grid.Col>
-            </Grid>
-          </FadeInDiv>
+          <Grid>
+            <Grid.Col span={4}>
+              <EaseInOutDiv>
+                <Center>
+                  <Floating>
+                    <Box sx={{ height: '100%' }} py="xl">
+                      <img src="/assets/person.png" />
+                    </Box>
+                  </Floating>
+                </Center>
+              </EaseInOutDiv>
+            </Grid.Col>
+            <Grid.Col span={8}>
+              <FadeInDiv>
+                <Header
+                  title={`Welcome ${
+                    auth!.authState!.user.name
+                  }, this is your bracelets`}
+                  onLogout={() => {
+                    setLoading(true);
+                    auth!.setAuthState(null);
+                  }}
+                />
+              </FadeInDiv>
+              <FadeInDiv>
+                <Grid align="center">
+                  {devices.map((el, index) => (
+                    <Grid.Col xs={12} sm={6} md={4} lg={2} xl={2} key={index}>
+                      <CardFadeIn>
+                        <DeviceCard device={el} />
+                      </CardFadeIn>
+                    </Grid.Col>
+                  ))}
+                  <Grid.Col xs={12} sm={1} md={1} lg={1} xl={1}>
+                    <CardFadeIn>
+                      <NewDeviceCard
+                        onClick={() => setNewDeviceModalOpened(true)}
+                      />
+                    </CardFadeIn>
+                  </Grid.Col>
+                </Grid>
+              </FadeInDiv>
+            </Grid.Col>
+          </Grid>
         </Box>
 
         <NotificationToast />
