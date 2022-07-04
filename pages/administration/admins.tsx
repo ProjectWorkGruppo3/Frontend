@@ -8,9 +8,13 @@ import { CardFadeIn, EaseInOutDiv, FadeInDiv } from '../../animations';
 import {
   NewAdminUserModal,
   UserDetail,
-  UserSidebar
+  UserSidebar,
 } from '../../components/administration';
-import { CircularLoading, Header, NotificationToast } from '../../components/common';
+import {
+  CircularLoading,
+  Header,
+  NotificationToast,
+} from '../../components/common';
 import { AdminUser } from '../../models/admin-user';
 import adminService from '../../services/admin-service';
 import { fakeAdminUsers } from '../../utils/fake-data';

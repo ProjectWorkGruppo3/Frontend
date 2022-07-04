@@ -19,7 +19,16 @@ export const ReportCard = (props: ReportCardProps) => {
         </Grid.Col>
       </Grid>
       <Group position="right">
-        <ActionIcon onClick={() => console.log('download pdf')}>
+        <ActionIcon
+          onClick={() => console.log('download pdf')}
+          sx={{
+            color: 'var(--p-color)',
+            ':hover': {
+              color: 'white',
+              backgroundColor: 'var(--p-color)',
+            },
+          }}
+        >
           <BsDownload />
         </ActionIcon>
       </Group>

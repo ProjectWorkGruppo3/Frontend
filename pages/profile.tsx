@@ -6,11 +6,12 @@ import {
   AppShell,
   Button,
   Center,
-  Group, Navbar,
+  Group,
+  Navbar,
   NumberInput,
   Text,
   TextInput,
-  Title
+  Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useAuth } from 'context/auth-context';
@@ -20,7 +21,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import {
   Logout as LogoutIcon,
-  Settings as SettingsIcon
+  Settings as SettingsIcon,
 } from 'tabler-icons-react';
 
 export default function Profile() {
