@@ -69,7 +69,9 @@ const ReportsPage: NextPage = () => {
         </FadeInDiv>
         {loading ? (
           <FadeInDiv>
-            <CircularLoading />
+            <Center my="xl">
+              <CircularLoading />
+            </Center>
           </FadeInDiv>
         ) : (
           <FadeInDiv>

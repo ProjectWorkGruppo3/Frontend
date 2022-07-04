@@ -7,6 +7,7 @@ import Welcome from '@components/Welcome';
 import {
   AppShell,
   Box,
+  Center,
   Grid,
   Group, Navbar,
   Text,
@@ -51,7 +52,11 @@ export default function Dashboard() {
   }, []);
 
   if (loading) {
-    return <CircularLoading />;
+    return (
+      <Center my="xl">
+        <CircularLoading />
+      </Center>
+    );
   }
 
   return (

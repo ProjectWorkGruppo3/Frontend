@@ -5,6 +5,7 @@ import WeeklyGoals from '@components/WeeklyGoals';
 import {
   AppShell,
   Button,
+  Center,
   Group, Navbar,
   NumberInput,
   Text,
@@ -100,7 +101,11 @@ export default function Profile() {
   };
 
   if (loading) {
-    return <CircularLoading />;
+    return (
+      <Center my="xl">
+        <CircularLoading />
+      </Center>
+    );
   }
 
   return (

@@ -119,7 +119,9 @@ const AdminUsersPage: NextPage = () => {
 
         {loading ? (
           <FadeInDiv>
-            <CircularLoading />
+            <Center my="xl">
+              <CircularLoading />
+            </Center>
           </FadeInDiv>
         ) : (
           <>
