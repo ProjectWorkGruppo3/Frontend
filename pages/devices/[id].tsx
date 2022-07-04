@@ -1,4 +1,5 @@
 import Card from '@components/Card';
+import { CircularLoading } from '@components/common';
 import User from '@components/User';
 import UserInfo from '@components/UserInfo';
 import WeeklyGoals from '@components/WeeklyGoals';
@@ -7,11 +8,9 @@ import {
   AppShell,
   Box,
   Grid,
-  Group,
-  Loader,
-  Navbar,
+  Group, Navbar,
   Text,
-  Title as MantineTitle,
+  Title as MantineTitle
 } from '@mantine/core';
 import { useAuth } from 'context/auth-context';
 import { getRandomInt } from 'lib/utils/getRandomInt';
@@ -21,7 +20,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import {
   Logout as LogoutIcon,
-  Settings as SettingsIcon,
+  Settings as SettingsIcon
 } from 'tabler-icons-react';
 
 export default function Dashboard() {
@@ -52,7 +51,7 @@ export default function Dashboard() {
   }, []);
 
   if (loading) {
-    return <Loader />;
+    return <CircularLoading />;
   }
 
   return (

@@ -1,4 +1,4 @@
-import { Box, Center, Grid, Loader, Title } from '@mantine/core';
+import { Box, Center, Grid, Title } from '@mantine/core';
 import { useAuth } from 'context/auth-context';
 import { NextPage } from 'next';
 import Head from 'next/head';
@@ -8,9 +8,9 @@ import { CardFadeIn, EaseInOutDiv, FadeInDiv } from '../../animations';
 import {
   NewAdminUserModal,
   UserDetail,
-  UserSidebar,
+  UserSidebar
 } from '../../components/administration';
-import { Header, NotificationToast } from '../../components/common';
+import { CircularLoading, Header, NotificationToast } from '../../components/common';
 import { AdminUser } from '../../models/admin-user';
 import adminService from '../../services/admin-service';
 import { fakeAdminUsers } from '../../utils/fake-data';
@@ -119,7 +119,7 @@ const AdminUsersPage: NextPage = () => {
 
         {loading ? (
           <FadeInDiv>
-            <Loader />
+            <CircularLoading />
           </FadeInDiv>
         ) : (
           <>

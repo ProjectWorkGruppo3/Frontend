@@ -1,6 +1,6 @@
 import { AnalysisStatCard, LineChartCard } from '@components/administration';
-import { Header, NotificationToast } from '@components/common';
-import { Box, Center, Grid, Loader } from '@mantine/core';
+import { CircularLoading, Header, NotificationToast } from '@components/common';
+import { Box, Center, Grid } from '@mantine/core';
 import { EaseInOutDiv, FadeInDiv, StaggerDiv } from 'animations';
 import { useAuth } from 'context/auth-context';
 import { NextPage } from 'next';
@@ -60,7 +60,7 @@ const AnalysisPage: NextPage = () => {
         </FadeInDiv>
         {loading ? (
           <FadeInDiv>
-            <Loader />
+            <CircularLoading />
           </FadeInDiv>
         ) : (
           <FadeInDiv>

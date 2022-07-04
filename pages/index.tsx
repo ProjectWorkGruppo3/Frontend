@@ -1,11 +1,11 @@
-import { Box, Center, Grid, Loader, Title } from '@mantine/core';
+import { Box, Center, Grid, Title } from '@mantine/core';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect, useState } from 'react';
 import {
   DeviceCard,
   NewDeviceCard,
-  NewDeviceModal,
+  NewDeviceModal
 } from '../components/home/index';
 import { useAuth } from '../context/auth-context';
 
@@ -16,9 +16,9 @@ import {
   EaseInOutDiv,
   FadeInDiv,
   Floating,
-  StaggerDiv,
+  StaggerDiv
 } from '../animations';
-import { Header, NotificationToast } from '../components/common';
+import { CircularLoading, Header, NotificationToast } from '../components/common';
 import { Device } from '../models';
 import DeviceService from '../services/device-service';
 import { notifyError, notifySuccess } from '../utils/notify-toast';
@@ -87,7 +87,7 @@ const Home: NextPage = () => {
   if (loading) {
     return (
       <Center my="xl">
-        <Loader />
+        <CircularLoading />
       </Center>
     );
   }

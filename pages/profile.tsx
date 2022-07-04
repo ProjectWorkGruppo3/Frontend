@@ -1,16 +1,15 @@
+import { CircularLoading } from '@components/common';
 import User from '@components/User';
 import UserInfo from '@components/UserInfo';
 import WeeklyGoals from '@components/WeeklyGoals';
 import {
   AppShell,
   Button,
-  Group,
-  Loader,
-  Navbar,
+  Group, Navbar,
   NumberInput,
   Text,
   TextInput,
-  Title,
+  Title
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useAuth } from 'context/auth-context';
@@ -20,7 +19,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import {
   Logout as LogoutIcon,
-  Settings as SettingsIcon,
+  Settings as SettingsIcon
 } from 'tabler-icons-react';
 
 export default function Profile() {
@@ -101,7 +100,7 @@ export default function Profile() {
   };
 
   if (loading) {
-    return <Loader />;
+    return <CircularLoading />;
   }
 
   return (

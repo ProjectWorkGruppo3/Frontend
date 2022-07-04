@@ -1,9 +1,9 @@
-import { Box, Center, Grid, Loader } from '@mantine/core';
+import { Box, Center, Grid } from '@mantine/core';
 import { NextPage } from 'next';
 import {
   AnalysisStatCard,
   StatCard,
-  TitleLink,
+  TitleLink
 } from '../../components/administration/index';
 
 import dynamic from 'next/dynamic';
@@ -11,7 +11,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { CardFadeIn, FadeInDiv } from '../../animations';
-import { Header } from '../../components/common';
+import { CircularLoading, Header } from '../../components/common';
 import { useAuth } from '../../context/auth-context';
 import { normalDate } from '../../utils/date-format';
 
@@ -34,7 +34,7 @@ const AdministrationPage: NextPage = () => {
   }, [auth, router]);
 
   if (loading) {
-    return <Loader />;
+    return <CircularLoading />;
   }
 
   return (
@@ -57,7 +57,7 @@ const AdministrationPage: NextPage = () => {
         {loading ? (
           <Center>
             <FadeInDiv>
-              <Loader />
+              <CircularLoading />
             </FadeInDiv>
           </Center>
         ) : (
