@@ -3,22 +3,21 @@ import {
   ActionIcon,
   Box,
   Button,
-  Card,
   Center,
-  Container,
+  Grid,
   Group,
+  MediaQuery,
+  Text,
   TextInput,
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { FadeInDiv, StaggerDiv } from 'animations';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
-import { MdOutlineAlternateEmail } from 'react-icons/md';
 import authService from 'services/auth-service';
 import { notifyError, notifySuccess } from 'utils/notify-toast';
 import { validateEmail } from 'utils/validations';
@@ -60,24 +59,72 @@ const ForgotPassword: NextPage = () => {
   };
 
   return (
-    <>
+    <Box sx={{ width: '100%', height: '100vh' }} p={0}>
       <Head>
         <title>SerenUp</title>
         <meta name="description" content="Seren Up Web App" />
         <link rel="icon" href="/assets/logo.png" />
       </Head>
-      <StaggerDiv>
-        <Container my="xl">
-          <FadeInDiv>
-            <Card radius="md">
-              <ActionIcon onClick={() => router.push('/login')} mb="xs">
-                <IoIosArrowBack />
-              </ActionIcon>
-              <Container>
-                <Title align="center">Reset Password</Title>
-              </Container>
 
-              <Center>
+      <Grid sx={{ width: '100%', height: '100%' }} m={0}>
+        <Grid.Col p="md" xs={12} sm={12} md={12} lg={6} xl={6}>
+          <Box sx={{ height: '10%' }} mb="10%">
+            <Title order={3}>Seren-Up</Title>
+          </Box>
+          <Box sx={{ height: '80%' }}>
+            <Box px="xl">
+              <Box mb="1%">
+                <Group spacing="xs">
+                  <ActionIcon onClick={() => router.push('/login')}>
+                    <IoIosArrowBack />
+                  </ActionIcon>
+                  <Title order={2} align="left">
+                    Recover Password
+                  </Title>
+                </Group>
+              </Box>
+              <Box mb="xs">
+                <Text color="var(--p-color)">Please enter your e-mail</Text>
+              </Box>
+              <form onSubmit={formHandler.onSubmit(onSubmit)}>
+                <TextInput
+                  id="email-input"
+                  label="E-mail"
+                  placeholder="Enter your e-mail"
+                  mb="md"
+                  {...formHandler.getInputProps('email')}
+                />
+
+                <Box mb="lg">
+                  <Button
+                    radius="sm"
+                    type="submit"
+                    sx={{
+                      backgroundColor: 'var(--p-color)',
+                      width: '100%',
+                      ':hover': {
+                        backgroundColor: 'var(--p-color)',
+                        filter: 'brightness(85%)',
+                      },
+                    }}
+                    loading={loading}
+                  >
+                    <Text color="var(--q-color)">Send Reset Mail</Text>
+                  </Button>
+                </Box>
+              </form>
+            </Box>
+          </Box>
+        </Grid.Col>
+        <Grid.Col xs={0} sm={0} md={0} lg={6} xl={6} p={0}>
+          <MediaQuery query="(max-width: 1200px)" styles={{ width: 0 }}>
+            <Box
+              sx={{
+                backgroundColor: 'var(--fi-color)',
+                height: '100%',
+              }}
+            >
+              <Center sx={{ height: '90%' }}>
                 <Box
                   sx={{
                     width: '60%',
@@ -93,33 +140,12 @@ const ForgotPassword: NextPage = () => {
                   />
                 </Box>
               </Center>
-              <form onSubmit={formHandler.onSubmit(onSubmit)}>
-                <TextInput
-                  id="email-input"
-                  label="E-mail"
-                  description="E-mail you have used to register"
-                  placeholder="your@email.com"
-                  mb="md"
-                  icon={<MdOutlineAlternateEmail size={16} />}
-                  {...formHandler.getInputProps('email')}
-                  sx={{
-                    'input:focus': {
-                      borderColor: 'orange',
-                    },
-                  }}
-                />
-                <Group position="center">
-                  <Button type="submit" color="orange" loading={loading}>
-                    Send Reset Mail
-                  </Button>
-                </Group>
-              </form>
-            </Card>
-          </FadeInDiv>
-          <NotificationToast />
-        </Container>
-      </StaggerDiv>
-    </>
+            </Box>
+          </MediaQuery>
+        </Grid.Col>
+      </Grid>
+      <NotificationToast />
+    </Box>
   );
 };
 
