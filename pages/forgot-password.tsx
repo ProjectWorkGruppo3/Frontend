@@ -9,9 +9,10 @@ import {
   MediaQuery,
   Text,
   TextInput,
-  Title,
+  Title
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { FadeInDiv, StaggerDiv } from 'animations';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -59,6 +60,7 @@ const ForgotPassword: NextPage = () => {
   };
 
   return (
+    <StaggerDiv>
     <Box sx={{ width: '100%', height: '100vh' }} p={0}>
       <Head>
         <title>SerenUp</title>
@@ -71,6 +73,7 @@ const ForgotPassword: NextPage = () => {
           <Box sx={{ height: '10%' }} mb="10%">
             <Title order={3}>Seren-Up</Title>
           </Box>
+          <FadeInDiv>
           <Box sx={{ height: '80%' }}>
             <Box px="xl">
               <Box mb="1%">
@@ -115,6 +118,7 @@ const ForgotPassword: NextPage = () => {
               </form>
             </Box>
           </Box>
+          </FadeInDiv>
         </Grid.Col>
         <Grid.Col xs={0} sm={0} md={0} lg={6} xl={6} p={0}>
           <MediaQuery query="(max-width: 1200px)" styles={{ width: 0 }}>
@@ -146,6 +150,7 @@ const ForgotPassword: NextPage = () => {
       </Grid>
       <NotificationToast />
     </Box>
+    </StaggerDiv>
   );
 };
 

@@ -8,7 +8,7 @@ import {
   PasswordInput,
   Text,
   TextInput,
-  Title,
+  Title
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import type { NextPage } from 'next';
@@ -24,6 +24,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../context/auth-context';
 import AuthService from '../services/auth-service';
 
+import { FadeInDiv, StaggerDiv } from 'animations';
 import Link from 'next/link';
 import { NotificationToast } from '../components/common';
 import { notifyError, notifySuccess } from '../utils/notify-toast';
@@ -125,6 +126,7 @@ const SignUp: NextPage = () => {
   };
 
   return (
+    <StaggerDiv>
     <Box sx={{ width: '100%', height: '100vh' }} p={0}>
       <Head>
         <title>SerenUp</title>
@@ -137,7 +139,7 @@ const SignUp: NextPage = () => {
           <Box mb="xl">
             <Title order={3}>Seren-Up</Title>
           </Box>
-          <Box>
+          <FadeInDiv>
             <Box px="xl">
               <Box mb="1%">
                 <Title order={2} align="left">
@@ -280,7 +282,7 @@ const SignUp: NextPage = () => {
                 </Center>
               </form>
             </Box>
-          </Box>
+          </FadeInDiv>
         </Grid.Col>
         <Grid.Col
           xs={0}
@@ -320,6 +322,7 @@ const SignUp: NextPage = () => {
       </Grid>
       <NotificationToast />
     </Box>
+    </StaggerDiv>
   );
 };
 
