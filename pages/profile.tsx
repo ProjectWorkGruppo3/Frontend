@@ -1,30 +1,23 @@
-import { CircularLoading } from '@components/common';
-import { NotificationToast } from '@components/common';
-import User from '@components/User';
-import UserInfo from '@components/UserInfo';
-import WeeklyGoals from '@components/WeeklyGoals';
+import { CircularLoading, Header, NotificationToast } from '@components/common';
 import {
-  AppShell,
+  Box,
   Button,
   Center,
+  Grid,
   Group,
-  Navbar,
   NumberInput,
   Text,
   TextInput,
-  Title,
+  Title
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { EaseInOutDiv, FadeInDiv, Floating, StaggerDiv } from 'animations';
 import { useAuth } from 'context/auth-context';
 import moment from 'moment';
-import Link from 'next/link';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import userService from 'services/user-service';
-import {
-  Logout as LogoutIcon,
-  Settings as SettingsIcon,
-} from 'tabler-icons-react';
 import { notifyError, notifySuccess } from 'utils/notify-toast';
 
 interface FormProps {
@@ -138,155 +131,168 @@ export default function Profile() {
     }
   };
 
-  if (loading) {
-    return (
-      <Center my="xl">
-        <CircularLoading />
-      </Center>
-    );
-  }
-
   return (
-    <AppShell
-      navbar={
-        <Navbar
-          width={{ base: '6%' }}
-          style={{
-            border: 'none',
-            backgroundColor: 'lightcoral',
-            minHeight: '100vh',
-            height: 'inherit',
-          }}
-        >
-          <Group
-            direction="column"
-            position="center"
-            style={{ color: 'white', height: '100%' }}
+    <StaggerDiv>
+      <Box sx={{ width: '100%', height: '100vh' }} p={0}>
+        <Head>
+          <title>SerenUp</title>
+          <meta name="description" content="Seren Up Web App" />
+          <link rel="icon" href="/assets/logo.png" />
+        </Head>
+
+        <Grid sx={{ width: '100%', height: '100%' }} m={0}>
+          <Grid.Col p="md" xs={12} sm={12} md={12} lg={6} xl={6}>
+            {loading ? (
+              <Center>
+                <CircularLoading />
+              </Center>
+            ) : (
+              <Box p='lg'>
+                <FadeInDiv>
+                  <Header
+                    title={`${authContext!.authState!.user.name} Profile`}
+                    profile={true}
+                    onBack={() => router.push('/')}
+                    onLogout={() => {
+                      setLoading(true);
+                      authContext!.setAuthState(null);
+                    }}
+                  />
+                </FadeInDiv>
+                <FadeInDiv>
+                    <form onSubmit={formHandler.onSubmit(handleSubmit)}>
+                      <Grid mb="sm">
+                        <Grid.Col span={12}>
+                          <TextInput
+                            id="name-input"
+                            label="Name"
+                            sx={{
+                              'input:focus': {
+                                borderColor: 'var(--p-color)',
+                              },
+                            }}
+                            {...formHandler.getInputProps('name')}
+                          />
+                        </Grid.Col>
+                        <Grid.Col span={12}>
+                          <TextInput
+                            label="Surname"
+                            sx={{
+                              'input:focus': {
+                                borderColor: 'var(--p-color)',
+                              },
+                            }}
+                            {...formHandler.getInputProps('surname')}
+                          />
+                        </Grid.Col>
+                        <Grid.Col span={12}>
+                          <TextInput
+                            label="Job"
+                            sx={{
+                              'input:focus': {
+                                borderColor: 'var(--p-color)',
+                              },
+                            }}
+                            {...formHandler.getInputProps('job')}
+                          />
+                        </Grid.Col>
+                        <Grid.Col span={12}>
+                          <NumberInput
+                            label="Age"
+                            sx={{
+                              'input:focus': {
+                                borderColor: 'var(--p-color)',
+                              },
+                            }}
+                            {...formHandler.getInputProps('age')}
+                          />
+                        </Grid.Col>
+                        <Grid.Col span={12}>
+                          <NumberInput
+                            label="Weight"
+                            sx={{
+                              'input:focus': {
+                                borderColor: 'var(--p-color)',
+                              },
+                            }}
+                            {...formHandler.getInputProps('weight')}
+                          />
+                        </Grid.Col>
+                        <Grid.Col span={12}>
+                          <NumberInput
+                            label="Height"
+                            sx={{
+                              'input:focus': {
+                                borderColor: 'var(--p-color)',
+                              },
+                            }}
+                            {...formHandler.getInputProps('height')}
+                          />
+                        </Grid.Col>
+                      </Grid>
+
+                      <Group position="right">
+                        <Button
+                          radius="sm"
+                          type="reset"
+                          color="red"
+                          onClick={() => handleReset()}
+                          loading={saving}
+                        >
+                          <Text color="var(--q-color)">Discard changes</Text>
+                        </Button>
+                        <Button
+                          radius="sm"
+                          type="submit"
+                          sx={{
+                            backgroundColor: 'var(--p-color)',
+                            ':hover': {
+                              backgroundColor: 'var(--p-color)',
+                              filter: 'brightness(85%)',
+                            },
+                          }}
+                          loading={saving}
+                        >
+                          <Text color="var(--q-color)">Save changes</Text>
+                        </Button>
+                      </Group>
+                    </form>
+                </FadeInDiv>
+              </Box>
+            )}
+          </Grid.Col>
+          <Grid.Col
+            xs={0}
+            sm={0}
+            md={0}
+            lg={6}
+            xl={6}
+            p={0}
+            sx={{ height: '100%' }}
           >
-            <Text align="center" py={30}>
-              Dummy logo
-            </Text>
-            <Link href="/profile">
-              <SettingsIcon
-                style={{ marginTop: '20px', marginBottom: '20px' }}
-              />
-            </Link>
-          </Group>
-          <Group
-            direction="column"
-            position="center"
-            style={{ color: 'white' }}
-          >
-            <LogoutIcon
-              style={{
-                marginBottom: '20px',
-                justifySelf: 'flex-end',
+            <Box
+              sx={{
+                backgroundColor: 'var(--fi-color)',
+                height: '100%',
               }}
-            />
-          </Group>
-        </Navbar>
-      }
-      aside={
-        <User>
-          <Title order={2}>
-            {formHandler.values.surname} {formHandler.values.name}
-          </Title>
-          <Text>{formHandler.values.job}</Text>
-          <UserInfo />
-          <WeeklyGoals />
-        </User>
-      }
-      style={{ width: '100vw', minHeight: '100vh', margin: '0' }}
-    >
-      <Group direction="column">
-        <Title order={1}>
-          Hi {authContext?.authState?.user?.name || 'there'}, welcome to your
-          personal area!
-        </Title>
-        <Group
-          direction="column"
-          style={{
-            width: '70%',
-            margin: 'auto',
-            height: '80vh',
-            marginTop: '10px',
-          }}
-        >
-          <form
-            onSubmit={formHandler.onSubmit(handleSubmit)}
-            style={{ width: '100%', height: '100%' }}
-          >
-            <Title order={3}>Personal info</Title>
-            <TextInput
-              label="Name"
-              m={10}
-              ml={20}
-              style={{ width: '50%' }}
-              {...formHandler.getInputProps('name')}
-            />
-
-            <TextInput
-              label="Surname"
-              m={10}
-              ml={20}
-              style={{ width: '50%' }}
-              {...formHandler.getInputProps('surname')}
-            />
-
-            <TextInput
-              label="Job"
-              m={10}
-              ml={20}
-              style={{ width: '50%' }}
-              {...formHandler.getInputProps('job')}
-            />
-
-            <NumberInput
-              label="Height"
-              m={10}
-              ml={20}
-              style={{ width: '50%' }}
-              {...formHandler.getInputProps('height')}
-            />
-
-            <NumberInput
-              label="Weight"
-              m={10}
-              ml={20}
-              style={{ width: '50%' }}
-              {...formHandler.getInputProps('weight')}
-            />
-
-            <NumberInput
-              label="Age"
-              m={10}
-              ml={20}
-              style={{ width: '50%' }}
-              {...formHandler.getInputProps('age')}
-            />
-
-            <Group mt={'200px'} position="right">
-              <Button type="submit" loading={saving}>
-                Save changes
-              </Button>
-              <Button
-                variant="subtle"
-                color="red"
-                type="reset"
-                onClick={() => handleReset()}
-                loading={saving}
-              >
-                Discard changes
-              </Button>
-            </Group>
-          </form>
-        </Group>
-        <Group
-          mt={40}
-          style={{ float: 'right', width: '80%', justifyContent: 'flex-end' }}
-        ></Group>
-      </Group>
-      <NotificationToast />
-    </AppShell>
+              p="lg"
+              mb="xl"
+            >
+              <EaseInOutDiv>
+                <Title align='right' order={3}>Seren-Up</Title>
+                <Center>
+                  <Floating>
+                    <Box py="xl">
+                      <img src="/assets/profile.png" alt="illustration-image" />
+                    </Box>
+                  </Floating>
+                </Center>
+              </EaseInOutDiv>
+            </Box>
+          </Grid.Col>
+        </Grid>
+        <NotificationToast />
+      </Box>
+    </StaggerDiv>
   );
 }
