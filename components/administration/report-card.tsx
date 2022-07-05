@@ -39,7 +39,16 @@ export const ReportCard = (props: ReportCardProps) => {
         </Grid.Col>
       </Grid>
       <Group position="right">
-        <ActionIcon onClick={onDownload}>
+        <ActionIcon
+          onClick={onDownload}
+          sx={{
+            color: 'var(--p-color)',
+            ':hover': {
+              color: 'white',
+              backgroundColor: 'var(--p-color)',
+            },
+          }}  
+        >
           {downloading ? <Loader /> : <BsDownload />}
         </ActionIcon>
       </Group>

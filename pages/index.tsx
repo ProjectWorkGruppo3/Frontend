@@ -1,4 +1,4 @@
-import { Box, Center, Grid, Loader } from '@mantine/core';
+import { Box, Center, Grid, Title } from '@mantine/core';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect, useState } from 'react';
@@ -11,8 +11,18 @@ import { useAuth } from '../context/auth-context';
 
 import Head from 'next/head';
 import 'react-toastify/dist/ReactToastify.css';
-import { CardFadeIn, FadeInDiv, StaggerDiv } from '../animations';
-import { Header, NotificationToast } from '../components/common';
+import {
+  CardFadeIn,
+  EaseInOutDiv,
+  FadeInDiv,
+  Floating,
+  StaggerDiv,
+} from '../animations';
+import {
+  CircularLoading,
+  Header,
+  NotificationToast,
+} from '../components/common';
 import { Device } from '../models';
 import DeviceService from '../services/device-service';
 import { notifyError, notifySuccess } from '../utils/notify-toast';
@@ -81,59 +91,81 @@ const Home: NextPage = () => {
   if (loading) {
     return (
       <Center my="xl">
-        <Loader />
+        <CircularLoading />
       </Center>
     );
   }
 
   return (
-    <>
-      <Head>
-        <title>SerenUp</title>
-        <meta name="description" content="Seren Up Web App" />
-        <link rel="icon" href="/assets/logo.png" />
-      </Head>
-      <StaggerDiv>
-        <Box p="xl" mb="md">
-          <NewDeviceModal
-            opened={newDeviceModalOpened}
-            onSubmit={onNewDeviceSubmit}
-            onClose={() => setNewDeviceModalOpened(false)}
-          />
-          <FadeInDiv>
-            <Header
-              title={`Welcome ${
-                auth!.authState!.user.name
-              }, select the device:`}
-              onLogout={() => {
-                setLoading(true);
-                auth!.setAuthState(null);
+    <StaggerDiv>
+      <Box sx={{ width: '100%', height: '100vh' }} p={0}>
+        <Head>
+          <title>SerenUp</title>
+          <meta name="description" content="Seren Up Web App" />
+          <link rel="icon" href="/assets/logo.png" />
+        </Head>
+        <NewDeviceModal
+          opened={newDeviceModalOpened}
+          onSubmit={onNewDeviceSubmit}
+          onClose={() => setNewDeviceModalOpened(false)}
+        />
+        <Grid sx={{ width: '100%', height: '100%' }} m={0}>
+          <Grid.Col span={4} p={0}>
+            <Box
+              sx={{
+                backgroundColor: 'var(--fi-color)',
+                height: '100%',
               }}
-            />
-          </FadeInDiv>
-          <FadeInDiv>
-            <Grid align="center">
-              {devices.map((el, index) => (
-                <Grid.Col xs={12} sm={6} md={4} lg={2} xl={2} key={index}>
+              p="lg"
+              mb="xl"
+            >
+              <EaseInOutDiv>
+                <Title order={3}>Seren-Up</Title>
+                <Center>
+                  <Floating>
+                    <Box py="xl">
+                      <img src="/assets/person.png" />
+                    </Box>
+                  </Floating>
+                </Center>
+              </EaseInOutDiv>
+            </Box>
+          </Grid.Col>
+          <Grid.Col span={8} p="xl">
+            <FadeInDiv>
+              <Header
+                title={`Welcome back, ${auth!.authState!.user.name}`}
+                profile={true}
+                onLogout={() => {
+                  setLoading(true);
+                  auth!.setAuthState(null);
+                }}
+              />
+            </FadeInDiv>
+            <FadeInDiv>
+              <Grid align="center">
+                {devices.map((el, index) => (
+                  <Grid.Col xs={12} sm={6} md={4} lg={3} xl={3} key={index}>
+                    <CardFadeIn>
+                      <DeviceCard device={el} />
+                    </CardFadeIn>
+                  </Grid.Col>
+                ))}
+                <Grid.Col xs={12} sm={1} md={1} lg={1} xl={1}>
                   <CardFadeIn>
-                    <DeviceCard device={el} />
+                    <NewDeviceCard
+                      onClick={() => setNewDeviceModalOpened(true)}
+                    />
                   </CardFadeIn>
                 </Grid.Col>
-              ))}
-              <Grid.Col xs={12} sm={1} md={1} lg={1} xl={1}>
-                <CardFadeIn>
-                  <NewDeviceCard
-                    onClick={() => setNewDeviceModalOpened(true)}
-                  />
-                </CardFadeIn>
-              </Grid.Col>
-            </Grid>
-          </FadeInDiv>
-        </Box>
+              </Grid>
+            </FadeInDiv>
+          </Grid.Col>
+        </Grid>
+      </Box>
 
-        <NotificationToast />
-      </StaggerDiv>
-    </>
+      <NotificationToast />
+    </StaggerDiv>
   );
 };
 

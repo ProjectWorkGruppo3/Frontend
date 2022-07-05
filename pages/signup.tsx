@@ -1,23 +1,17 @@
 import {
   Box,
   Button,
-  Card,
   Center,
-  Container,
   Grid,
+  MediaQuery,
   NumberInput,
   PasswordInput,
-  Stack,
   Text,
   TextInput,
   Title,
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import type { NextPage } from 'next';
-import { BsCalendarDate } from 'react-icons/bs';
-import { FaWeight } from 'react-icons/fa';
-import { GiBodyHeight } from 'react-icons/gi';
-import { MdOutlineAlternateEmail, MdPassword } from 'react-icons/md';
 
 import { useForm } from '@mantine/form';
 import { validateEmail } from '../utils/validations';
@@ -29,8 +23,8 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../context/auth-context';
 import AuthService from '../services/auth-service';
 
+import { FadeInDiv, StaggerDiv } from 'animations';
 import Link from 'next/link';
-import { FadeInDiv, StaggerDiv } from '../animations';
 import { NotificationToast } from '../components/common';
 import { notifyError, notifySuccess } from '../utils/notify-toast';
 
@@ -131,200 +125,242 @@ const SignUp: NextPage = () => {
   };
 
   return (
-    <>
-      <Head>
-        <title>SerenUp</title>
-        <meta name="description" content="Seren Up Web App" />
-        <link rel="icon" href="/assets/logo.png" />
-      </Head>
-      <StaggerDiv>
-        <Container my="xl">
-          <FadeInDiv>
-            <Card radius="md">
-              <Container mt="md">
-                <Title align="center">Sign Up</Title>
-              </Container>
+    <StaggerDiv>
+      <Box sx={{ width: '100%', height: '100vh' }} p={0}>
+        <Head>
+          <title>SerenUp</title>
+          <meta name="description" content="Seren Up Web App" />
+          <link rel="icon" href="/assets/logo.png" />
+        </Head>
 
-              <Center>
-                <Box
-                  sx={{
-                    width: '60%',
-                  }}
-                  my="md"
-                >
-                  <Image
-                    src="/assets/logo.png"
-                    width="100%"
-                    height="25%"
-                    layout="responsive"
-                    alt="logo"
-                  />
-                </Box>
-              </Center>
-              <form onSubmit={formHandler.onSubmit(onSubmit)}>
-                <Grid>
-                  <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                    <TextInput
-                      id="name-input"
-                      label="Name"
-                      description="Name you have used to register"
-                      placeholder="John"
-                      mb="md"
-                      icon={<MdOutlineAlternateEmail size={16} />}
-                      {...formHandler.getInputProps('name')}
-                      sx={{
-                        'input:focus': {
-                          borderColor: 'orange',
-                        },
-                      }}
-                    />
-                  </Grid.Col>
-                  <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                    <TextInput
-                      id="surname-input"
-                      label="Surname"
-                      description="Surname you have used to register"
-                      placeholder="Doe"
-                      mb="md"
-                      icon={<MdOutlineAlternateEmail size={16} />}
-                      {...formHandler.getInputProps('surname')}
-                      sx={{
-                        'input:focus': {
-                          borderColor: 'orange',
-                        },
-                      }}
-                    />
-                  </Grid.Col>
-                  <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                    <TextInput
-                      id="email-input"
-                      label="E-mail"
-                      description="E-mail you have used to register"
-                      placeholder="your@email.com"
-                      mb="md"
-                      icon={<MdOutlineAlternateEmail size={16} />}
-                      {...formHandler.getInputProps('email')}
-                      sx={{
-                        'input:focus': {
-                          borderColor: 'orange',
-                        },
-                      }}
-                    />
-                  </Grid.Col>
-                  <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                    <DatePicker
-                      id="birthday-input"
-                      label="Date of birth"
-                      description="Select your birthday"
-                      mb="sm"
-                      placeholder={`${new Date().toLocaleDateString('en-US', {
-                        weekday: 'long',
-                      })} ${new Date().getDate()}, ${new Date().getFullYear()}`}
-                      allowFreeInput
-                      maxDate={new Date()}
-                      icon={<BsCalendarDate size={16} />}
-                      {...formHandler.getInputProps('birthday')}
-                    />
-                  </Grid.Col>
-                  <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                    <PasswordInput
-                      id="pwd-input"
-                      label="Password"
-                      description="Write the password"
-                      placeholder="yoursecretpassword"
-                      mb="sm"
-                      icon={<MdPassword size={16} />}
-                      {...formHandler.getInputProps('password')}
-                      sx={{
-                        'div:focus-within': {
-                          borderColor: 'orange',
-                        },
-                      }}
-                    />
-                  </Grid.Col>
-
-                  <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                    <PasswordInput
-                      id="confirm-pwd-input"
-                      label="Confirm Password"
-                      description="Type again the password"
-                      placeholder="yoursecretpassword"
-                      mb="sm"
-                      icon={<MdPassword size={16} />}
-                      {...formHandler.getInputProps('confirmPassword')}
-                      sx={{
-                        'div:focus-within': {
-                          borderColor: 'orange',
-                        },
-                      }}
-                    />
-                  </Grid.Col>
-
-                  <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                    <NumberInput
-                      id="weight-input"
-                      label="Weight (kg)"
-                      description="What's your weigth?"
-                      mb="sm"
-                      placeholder="70"
-                      icon={<FaWeight size={16} />}
-                      {...formHandler.getInputProps('weight')}
-                      hideControls
-                    />
-                  </Grid.Col>
-                  <Grid.Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                    <NumberInput
-                      id="height-input"
-                      label="Height (cm)"
-                      description="What's your weigth?"
-                      placeholder="170"
-                      mb="sm"
-                      icon={<GiBodyHeight size={16} />}
-                      {...formHandler.getInputProps('height')}
-                      hideControls
-                    />
-                  </Grid.Col>
-                  <Grid.Col span={12}>
-                    <TextInput
-                      id="job-input"
-                      label="Job"
-                      description="What's your current job?"
-                      mb="sm"
-                      placeholder="Software Developer"
-                      {...formHandler.getInputProps('job')}
-                    />
-                  </Grid.Col>
-                </Grid>
-
-                <Stack align="center" spacing="xs">
-                  <Button type="submit" color="orange" loading={loading}>
+        <Grid sx={{ width: '100%', height: '100%' }} m={0}>
+          <Grid.Col p="md" xs={12} sm={12} md={12} lg={6} xl={6}>
+            <Box mb="xl">
+              <Title order={3}>Seren-Up</Title>
+            </Box>
+            <FadeInDiv>
+              <Box px="xl">
+                <Box mb="1%">
+                  <Title order={2} align="left">
                     Sign Up
-                  </Button>
-                  <Link href="/login">
-                    <Text
-                      variant="link"
-                      component="a"
+                  </Title>
+                </Box>
+                <Box mb="xs">
+                  <Text color="var(--p-color)">
+                    Welcome! Please enter your details to sign up
+                  </Text>
+                </Box>
+                <form onSubmit={formHandler.onSubmit(onSubmit)}>
+                  <Grid gutter="sm" mb="sm">
+                    <Grid.Col span={12}>
+                      <TextInput
+                        id="email-input"
+                        label="E-mail"
+                        placeholder="your@email.com"
+                        {...formHandler.getInputProps('email')}
+                        sx={{
+                          'input:focus': {
+                            borderColor: 'var(--p-color)',
+                          },
+                        }}
+                      />
+                    </Grid.Col>
+
+                    <Grid.Col xs={12} sm={12} md={12} lg={6} xl={6}>
+                      <PasswordInput
+                        id="pwd-input"
+                        label="Password"
+                        placeholder="Enter the password"
+                        {...formHandler.getInputProps('password')}
+                        sx={{
+                          'div:focus-within': {
+                            borderColor: 'var(--p-color)',
+                          },
+                        }}
+                      />
+                    </Grid.Col>
+                    <Grid.Col xs={12} sm={12} md={12} lg={6} xl={6}>
+                      <PasswordInput
+                        id="confirm-pwd-input"
+                        label="Confirm Password"
+                        placeholder="Enter the password"
+                        {...formHandler.getInputProps('confirmPassword')}
+                        sx={{
+                          'div:focus-within': {
+                            borderColor: 'var(--p-color)',
+                          },
+                        }}
+                      />
+                    </Grid.Col>
+
+                    <Grid.Col xs={12} sm={12} md={12} lg={6} xl={6}>
+                      <TextInput
+                        id="name-input"
+                        label="Name"
+                        placeholder="John"
+                        {...formHandler.getInputProps('name')}
+                        sx={{
+                          'input:focus': {
+                            borderColor: 'var(--p-color)',
+                          },
+                        }}
+                      />
+                    </Grid.Col>
+                    <Grid.Col xs={12} sm={12} md={12} lg={6} xl={6}>
+                      <TextInput
+                        id="surname-input"
+                        label="Surname"
+                        placeholder="Doe"
+                        {...formHandler.getInputProps('surname')}
+                        sx={{
+                          'input:focus': {
+                            borderColor: 'var(--p-color)',
+                          },
+                        }}
+                      />
+                    </Grid.Col>
+
+                    <Grid.Col xs={12} sm={12} md={12} lg={6} xl={6}>
+                      <TextInput
+                        id="job-input"
+                        label="Job"
+                        placeholder="Software Developer"
+                        {...formHandler.getInputProps('job')}
+                        sx={{
+                          'input:focus': {
+                            borderColor: 'var(--p-color)',
+                          },
+                        }}
+                      />
+                    </Grid.Col>
+                    <Grid.Col xs={12} sm={12} md={12} lg={6} xl={6}>
+                      <DatePicker
+                        id="birthday-input"
+                        label="Date of birth"
+                        placeholder={`${new Date().toLocaleDateString('en-US', {
+                          weekday: 'long',
+                        })} ${new Date().getDate()}, ${new Date().getFullYear()}`}
+                        maxDate={new Date()}
+                        {...formHandler.getInputProps('birthday')}
+                        sx={{
+                          'input:focus': {
+                            borderColor: 'var(--p-color)',
+                          },
+                        }}
+                      />
+                    </Grid.Col>
+
+                    <Grid.Col xs={12} sm={12} md={12} lg={6} xl={6}>
+                      <NumberInput
+                        id="weight-input"
+                        label="Weight (kg)"
+                        placeholder="70"
+                        {...formHandler.getInputProps('weight')}
+                        hideControls
+                        sx={{
+                          'input:focus': {
+                            borderColor: 'var(--p-color)',
+                          },
+                        }}
+                      />
+                    </Grid.Col>
+                    <Grid.Col xs={12} sm={12} md={12} lg={6} xl={6}>
+                      <NumberInput
+                        id="height-input"
+                        label="Height (cm)"
+                        placeholder="170"
+                        {...formHandler.getInputProps('height')}
+                        hideControls
+                        sx={{
+                          'input:focus': {
+                            borderColor: 'var(--p-color)',
+                          },
+                        }}
+                      />
+                    </Grid.Col>
+                  </Grid>
+
+                  <Box mb="lg">
+                    <Button
+                      radius="sm"
+                      type="submit"
                       sx={{
-                        color: '#d3d3d3',
+                        backgroundColor: 'var(--p-color)',
+                        width: '100%',
                         ':hover': {
-                          color: 'orange',
-                          transition: '0.6s',
-                          cursor: 'pointer',
+                          backgroundColor: 'var(--p-color)',
+                          filter: 'brightness(85%)',
                         },
                       }}
+                      loading={loading}
                     >
-                      You already have an account? Click here to Sign In
-                    </Text>
-                  </Link>
-                </Stack>
-              </form>
-            </Card>
-          </FadeInDiv>
-        </Container>
-      </StaggerDiv>
+                      <Text color="var(--q-color)">Sign Up</Text>
+                    </Button>
+                  </Box>
 
-      <NotificationToast />
-    </>
+                  <Center>
+                    <Text mr="1%" color="#525252">
+                      You already have an account?
+                    </Text>
+                    <Link href="/login">
+                      <Text
+                        component="a"
+                        variant="link"
+                        sx={{
+                          color: 'var(--p-color)',
+                          ':hover': {
+                            transition: '0.6s',
+                            cursor: 'pointer',
+                          },
+                        }}
+                      >
+                        Click here to Sign In
+                      </Text>
+                    </Link>
+                  </Center>
+                </form>
+              </Box>
+            </FadeInDiv>
+          </Grid.Col>
+          <Grid.Col
+            xs={0}
+            sm={0}
+            md={0}
+            lg={6}
+            xl={6}
+            p={0}
+            sx={{ height: '100%' }}
+          >
+            <MediaQuery query="(max-width: 1200px)" styles={{ width: 0 }}>
+              <Box
+                sx={{
+                  backgroundColor: 'var(--fi-color)',
+                  height: '100%',
+                }}
+              >
+                <Center sx={{ height: '90%' }}>
+                  <Box
+                    sx={{
+                      width: '60%',
+                    }}
+                    my="md"
+                  >
+                    <Image
+                      src="/assets/logo.png"
+                      width="100%"
+                      height="25%"
+                      layout="responsive"
+                      alt="logo"
+                    />
+                  </Box>
+                </Center>
+              </Box>
+            </MediaQuery>
+          </Grid.Col>
+        </Grid>
+        <NotificationToast />
+      </Box>
+    </StaggerDiv>
   );
 };
 

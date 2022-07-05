@@ -29,7 +29,7 @@ const AuthService = () => {
       );
 
       if (result.status === 401) {
-        throw new Error('Not Authorized');
+        throw new Error('Credentials are not correct');
       }
 
       const loginResult = result.data as LoginResult;

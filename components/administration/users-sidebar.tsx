@@ -23,7 +23,10 @@ export interface UserSidebarProps {
 
 export const UserSidebar = (props: UserSidebarProps) => {
   return (
-    <Card px="xs" style={{ height: '100%' }}>
+    <Card
+      px="xs"
+      style={{ height: '100%', backgroundColor: 'var(--fi-color)' }}
+    >
       <Group position="right">
         <Button color="green" onClick={props.onAdd}>
           <IoMdPersonAdd size={16} />
