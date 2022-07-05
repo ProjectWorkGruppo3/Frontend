@@ -10,7 +10,7 @@ const ReportsService = () => {
     props: GetReportsServiceProps
   ): Promise<ServiceReturnType<Report[]>> => {
     return {
-      data: fakeReports.slice(0, 10),
+      data: fakeReports.slice(0, 20),
       error: undefined,
     };
 

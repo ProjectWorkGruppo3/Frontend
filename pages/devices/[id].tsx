@@ -1,4 +1,5 @@
 import Card from '@components/Card';
+import { CircularLoading } from '@components/common';
 import User from '@components/User';
 import UserInfo from '@components/UserInfo';
 import WeeklyGoals from '@components/WeeklyGoals';
@@ -6,9 +7,9 @@ import Welcome from '@components/Welcome';
 import {
   AppShell,
   Box,
+  Center,
   Grid,
   Group,
-  Loader,
   Navbar,
   Text,
   Title as MantineTitle,
@@ -52,7 +53,11 @@ export default function Dashboard() {
   }, []);
 
   if (loading) {
-    return <Loader />;
+    return (
+      <Center my="xl">
+        <CircularLoading />
+      </Center>
+    );
   }
 
   return (

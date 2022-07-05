@@ -1,9 +1,8 @@
 import { Box, Card, Grid, Text } from '@mantine/core';
 import Image from 'next/image';
-import { Device } from '../../models';
-import { MdArrowForwardIos } from 'react-icons/md';
-import { useState } from 'react';
 import Link from 'next/link';
+import { useState } from 'react';
+import { Device } from '../../models';
 
 export interface DeviceCardProps {
   device: Device;
@@ -22,8 +21,9 @@ export const DeviceCard = (props: DeviceCardProps) => {
         radius="md"
         withBorder
         sx={{
-          backgroundColor: isHover ? '#f7f5f5' : 'white',
-          borderColor: isHover ? '#f7f5f5' : 'white',
+          color: isHover ? 'white' : 'dark',
+          backgroundColor: isHover ? 'var(--p-color)' : 'white',
+          borderColor: isHover ? 'var(--p-color)' : 'white',
           cursor: isHover ? 'pointer' : 'default',
           transition: '0.4s',
         }}
@@ -40,7 +40,7 @@ export const DeviceCard = (props: DeviceCardProps) => {
               }}
             >
               <Image
-                src="/assets/device.png"
+                src={isHover ? '/assets/sw-dark.gif' : '/assets/sw.gif'}
                 width="100%"
                 height="100%"
                 alt="device-image"

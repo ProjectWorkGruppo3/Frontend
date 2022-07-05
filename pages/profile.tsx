@@ -1,11 +1,12 @@
+import { CircularLoading } from '@components/common';
 import User from '@components/User';
 import UserInfo from '@components/UserInfo';
 import WeeklyGoals from '@components/WeeklyGoals';
 import {
   AppShell,
   Button,
+  Center,
   Group,
-  Loader,
   Navbar,
   NumberInput,
   Text,
@@ -101,7 +102,11 @@ export default function Profile() {
   };
 
   if (loading) {
-    return <Loader />;
+    return (
+      <Center my="xl">
+        <CircularLoading />
+      </Center>
+    );
   }
 
   return (

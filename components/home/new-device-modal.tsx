@@ -1,17 +1,18 @@
 import {
   Button,
   Card,
-  Divider,
   Grid,
+  Group,
   Modal,
+  Text,
   TextInput,
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import Image from 'next/image';
-import { TiSortAlphabetically } from 'react-icons/ti';
-import { BsSmartwatch } from 'react-icons/bs';
 import { useState } from 'react';
+import { BsSmartwatch } from 'react-icons/bs';
+import { TiSortAlphabetically } from 'react-icons/ti';
 
 interface FormProps {
   name: string;
@@ -50,27 +51,29 @@ export const NewDeviceModal = (props: NewDeviceModalProps) => {
   };
 
   return (
-    <Modal opened={props.opened} onClose={() => props.onClose()} size="xl">
-      <Card radius="md" p="0">
+    <Modal
+      opened={props.opened}
+      onClose={() => props.onClose()}
+      size="xl"
+      title={<Title order={3}>New Device</Title>}
+    >
+      <Card radius="md" p="sm">
         <Grid>
-          <Grid.Col xs={0} sm={3} md={3} lg={3} xl={3}>
+          <Grid.Col xs={0} sm={4} md={4} lg={4} xl={4}>
             <Image
-              src="/assets/device.png"
+              src="/assets/new-device-image.png"
               width="100%"
               height="100%"
               layout="responsive"
               alt="device-image"
             />
           </Grid.Col>
-          <Grid.Col xs={12} sm={9} md={9} lg={9} xl={9}>
-            <Title order={2}>New Device</Title>
-            <Divider />
+          <Grid.Col xs={12} sm={8} md={8} lg={8} xl={8}>
             <form onSubmit={formHandler.onSubmit(onSubmit)}>
               <TextInput
                 id="device-name-input"
                 label="Name"
-                description="Name for the device"
-                placeholder="device 1"
+                placeholder="Enter device name"
                 mb="md"
                 icon={<TiSortAlphabetically size={16} />}
                 {...formHandler.getInputProps('name')}
@@ -79,16 +82,27 @@ export const NewDeviceModal = (props: NewDeviceModalProps) => {
               <TextInput
                 id="device-id-input"
                 label="Device ID"
-                description="ID of the device"
-                placeholder="123-456-sad-dasd"
+                placeholder="Enter Device ID"
                 mb="md"
                 icon={<BsSmartwatch size={16} />}
                 {...formHandler.getInputProps('id')}
               />
 
-              <Button type="submit" loading={loading}>
-                Add Device
-              </Button>
+              <Group position="right">
+                <Button
+                  type="submit"
+                  loading={loading}
+                  sx={{
+                    backgroundColor: 'var(--p-color)',
+                    ':hover': {
+                      backgroundColor: 'var(--p-color)',
+                      filter: 'brightness(85%)',
+                    },
+                  }}
+                >
+                  <Text color="var(--q-color)">Add Device</Text>
+                </Button>
+              </Group>
             </form>
           </Grid.Col>
         </Grid>

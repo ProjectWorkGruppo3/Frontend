@@ -11,7 +11,6 @@ export const NotificationToast = () => {
       closeOnClick
       rtl={false}
       draggable
-      pauseOnHover
     />
   );
 };
