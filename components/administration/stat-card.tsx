@@ -13,13 +13,13 @@ export const StatCard = (props: StatCardProps) => {
       <Grid justify="flex-start" align="center">
         <Grid.Col span={10}>
           <Text>{props.name}</Text>
-          <Text 
-            style={{ fontSize: '2rem' }} 
+          <Text
+            style={{ fontSize: '2rem' }}
             weight="bold"
             sx={{
-              textOverflow:'ellipsis',
+              textOverflow: 'ellipsis',
               overflow: 'hidden',
-              whiteSpace: 'nowrap'
+              whiteSpace: 'nowrap',
             }}
           >
             {props.value}

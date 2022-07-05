@@ -25,13 +25,13 @@ export const ReportCard = (props: ReportCardProps) => {
       <Grid justify="flex-start" align="center">
         <Grid.Col span={10}>
           <Text>{normalDate(props.report.generatedAt)}</Text>
-          <Text 
-            style={{ fontSize: '2rem' }} 
+          <Text
+            style={{ fontSize: '2rem' }}
             weight="bold"
             sx={{
-              textOverflow:'ellipsis',
+              textOverflow: 'ellipsis',
               overflow: 'hidden',
-              whiteSpace: 'nowrap'
+              whiteSpace: 'nowrap',
             }}
           >
             {props.report.name}
@@ -47,7 +47,7 @@ export const ReportCard = (props: ReportCardProps) => {
               color: 'white',
               backgroundColor: 'var(--p-color)',
             },
-          }}  
+          }}
         >
           {downloading ? <Loader /> : <BsDownload />}
         </ActionIcon>

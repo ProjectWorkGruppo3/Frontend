@@ -124,7 +124,7 @@ const Home: NextPage = () => {
                 <Center>
                   <Floating>
                     <Box py="xl">
-                      <img src="/assets/person.png" />
+                      <img src="/assets/person.png" alt="illustration-image" />
                     </Box>
                   </Floating>
                 </Center>
