@@ -40,7 +40,7 @@ export const DeviceCard = (props: DeviceCardProps) => {
               }}
             >
               <Image
-                src="/assets/device.png"
+                src={isHover ? '/assets/sw-dark.gif' : '/assets/sw.gif'}
                 width="100%"
                 height="100%"
                 alt="device-image"

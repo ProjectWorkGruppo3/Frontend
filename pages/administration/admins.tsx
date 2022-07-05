@@ -113,6 +113,7 @@ const AdminUsersPage: NextPage = () => {
         <FadeInDiv>
           <Header
             onBack={() => router.push('/administration/')}
+            profile={false}
             title="Admins"
             onLogout={() => {
               setLoading(true);

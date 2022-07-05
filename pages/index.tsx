@@ -134,7 +134,8 @@ const Home: NextPage = () => {
           <Grid.Col span={8} p="xl">
             <FadeInDiv>
               <Header
-                title={`Welcome ${auth!.authState!.user.name}`}
+                title={`Welcome back, ${auth!.authState!.user.name}`}
+                profile={true}
                 onLogout={() => {
                   setLoading(true);
                   auth!.setAuthState(null);

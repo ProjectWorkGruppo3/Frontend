@@ -28,7 +28,11 @@ const AdministrationPage: NextPage = () => {
   }, [auth, router]);
 
   if (loading) {
-    return <CircularLoading />;
+    return (
+      <Center>
+        <CircularLoading />
+      </Center>
+    );
   }
 
   return (
@@ -43,6 +47,7 @@ const AdministrationPage: NextPage = () => {
           <FadeInDiv>
             <Header
               title="Admministration Panel"
+              profile={false}
               onLogout={() => {
                 setLoading(true);
                 auth!.setAuthState(null);

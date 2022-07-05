@@ -50,6 +50,7 @@ const AnalysisPage: NextPage = () => {
       <StaggerDiv>
         <FadeInDiv>
           <Header
+            profile={false}
             title={`Analysis Overview`}
             onBack={() => router.push('/administration/')}
             onLogout={() => {

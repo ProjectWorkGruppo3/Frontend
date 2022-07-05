@@ -69,6 +69,7 @@ const ReportsPage: NextPage = () => {
             <FadeInDiv>
               <Header
                 title={`Reports`}
+                profile={false}
                 onBack={() => router.push('/administration/')}
                 onLogout={() => {
                   setLoading(true);
