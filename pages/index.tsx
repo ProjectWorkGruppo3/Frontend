@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import {
   DeviceCard,
   NewDeviceCard,
-  NewDeviceModal,
+  NewDeviceModal
 } from '../components/home/index';
 import { useAuth } from '../context/auth-context';
 
@@ -16,12 +16,12 @@ import {
   EaseInOutDiv,
   FadeInDiv,
   Floating,
-  StaggerDiv,
+  StaggerDiv
 } from '../animations';
 import {
   CircularLoading,
   Header,
-  NotificationToast,
+  NotificationToast
 } from '../components/common';
 import { Device } from '../models';
 import DeviceService from '../services/device-service';
@@ -38,9 +38,7 @@ const Home: NextPage = () => {
     useState<boolean>(false);
 
   useEffect(() => {
-    if (auth && auth.isAuthenticated()) {
-      setLoading(false);
-    } else {
+    if (!auth || !auth.isAuthenticated()) {
       router.push('/login');
     }
   }, [auth, router]);
@@ -48,6 +46,10 @@ const Home: NextPage = () => {
   useEffect(() => {
     const fetchDevices = async () => {
       if (auth && auth.authState) {
+        if(auth.authState.user.roles.includes("Admin")) {
+          await router.push(auth.authState!.homepage)
+          return setLoading(false);
+        }
         const { data: devices, error } = await DeviceService.getDevices({
           token: auth.authState.token,
           userId: auth.authState.user.id,

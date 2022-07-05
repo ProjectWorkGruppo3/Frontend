@@ -9,6 +9,7 @@ type AuthState = {
   user: User;
   token: string;
   expiration: Date;
+  homepage: string;
 };
 
 type authContext = {
@@ -92,3 +93,4 @@ const useAuth = () => {
 };
 
 export { useAuth, AuthProvider };
+

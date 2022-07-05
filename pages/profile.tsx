@@ -57,26 +57,34 @@ export default function Profile() {
   });
 
   useEffect(() => {
-    if (authContext && authContext.isAuthenticated()) {
-      setLoading(false);
-    } else {
+    if (!authContext || !authContext.isAuthenticated()) {
       router.push('/login');
     }
   }, [authContext, router]);
 
   useEffect(() => {
-    if (authContext && authContext.authState) {
-      formHandler.setValues({
-        name: authContext.authState.user.name,
-        surname: authContext.authState.user.surname,
-        weight: authContext.authState.user.weight,
-        height: authContext.authState.user.height,
-        job: authContext.authState.user.job ?? '',
-        age: moment
-          .duration(moment().diff(moment(authContext.authState.user.birthday)))
-          .asYears(),
-      });
-    }
+    const fetch = async () => {
+      if (authContext && authContext.authState) {
+        if (authContext.authState.user.roles.includes('Admin')) {
+          await router.push(authContext.authState.homepage);
+          return setLoading(false);
+        }
+        formHandler.setValues({
+          name: authContext.authState.user.name,
+          surname: authContext.authState.user.surname,
+          weight: authContext.authState.user.weight,
+          height: authContext.authState.user.height,
+          job: authContext.authState.user.job ?? '',
+          age: moment
+            .duration(
+              moment().diff(moment(authContext.authState.user.birthday))
+            )
+            .asYears(),
+        });
+      }
+    };
+
+    fetch();
   }, [authContext, loading, formHandler.setValues]);
 
   const handleSubmit = async (value: FormProps) => {
@@ -147,7 +155,7 @@ export default function Profile() {
                 <CircularLoading />
               </Center>
             ) : (
-              <Box p='lg'>
+              <Box p="lg">
                 <FadeInDiv>
                   <Header
                     title={`${authContext!.authState!.user.name} Profile`}
@@ -160,103 +168,103 @@ export default function Profile() {
                   />
                 </FadeInDiv>
                 <FadeInDiv>
-                    <form onSubmit={formHandler.onSubmit(handleSubmit)}>
-                      <Grid mb="sm">
-                        <Grid.Col span={12}>
-                          <TextInput
-                            id="name-input"
-                            label="Name"
-                            sx={{
-                              'input:focus': {
-                                borderColor: 'var(--p-color)',
-                              },
-                            }}
-                            {...formHandler.getInputProps('name')}
-                          />
-                        </Grid.Col>
-                        <Grid.Col span={12}>
-                          <TextInput
-                            label="Surname"
-                            sx={{
-                              'input:focus': {
-                                borderColor: 'var(--p-color)',
-                              },
-                            }}
-                            {...formHandler.getInputProps('surname')}
-                          />
-                        </Grid.Col>
-                        <Grid.Col span={12}>
-                          <TextInput
-                            label="Job"
-                            sx={{
-                              'input:focus': {
-                                borderColor: 'var(--p-color)',
-                              },
-                            }}
-                            {...formHandler.getInputProps('job')}
-                          />
-                        </Grid.Col>
-                        <Grid.Col span={12}>
-                          <NumberInput
-                            label="Age"
-                            sx={{
-                              'input:focus': {
-                                borderColor: 'var(--p-color)',
-                              },
-                            }}
-                            {...formHandler.getInputProps('age')}
-                          />
-                        </Grid.Col>
-                        <Grid.Col span={12}>
-                          <NumberInput
-                            label="Weight"
-                            sx={{
-                              'input:focus': {
-                                borderColor: 'var(--p-color)',
-                              },
-                            }}
-                            {...formHandler.getInputProps('weight')}
-                          />
-                        </Grid.Col>
-                        <Grid.Col span={12}>
-                          <NumberInput
-                            label="Height"
-                            sx={{
-                              'input:focus': {
-                                borderColor: 'var(--p-color)',
-                              },
-                            }}
-                            {...formHandler.getInputProps('height')}
-                          />
-                        </Grid.Col>
-                      </Grid>
-
-                      <Group position="right">
-                        <Button
-                          radius="sm"
-                          type="reset"
-                          color="red"
-                          onClick={() => handleReset()}
-                          loading={saving}
-                        >
-                          <Text color="var(--q-color)">Discard changes</Text>
-                        </Button>
-                        <Button
-                          radius="sm"
-                          type="submit"
+                  <form onSubmit={formHandler.onSubmit(handleSubmit)}>
+                    <Grid mb="sm">
+                      <Grid.Col span={12}>
+                        <TextInput
+                          id="name-input"
+                          label="Name"
                           sx={{
-                            backgroundColor: 'var(--p-color)',
-                            ':hover': {
-                              backgroundColor: 'var(--p-color)',
-                              filter: 'brightness(85%)',
+                            'input:focus': {
+                              borderColor: 'var(--p-color)',
                             },
                           }}
-                          loading={saving}
-                        >
-                          <Text color="var(--q-color)">Save changes</Text>
-                        </Button>
-                      </Group>
-                    </form>
+                          {...formHandler.getInputProps('name')}
+                        />
+                      </Grid.Col>
+                      <Grid.Col span={12}>
+                        <TextInput
+                          label="Surname"
+                          sx={{
+                            'input:focus': {
+                              borderColor: 'var(--p-color)',
+                            },
+                          }}
+                          {...formHandler.getInputProps('surname')}
+                        />
+                      </Grid.Col>
+                      <Grid.Col span={12}>
+                        <TextInput
+                          label="Job"
+                          sx={{
+                            'input:focus': {
+                              borderColor: 'var(--p-color)',
+                            },
+                          }}
+                          {...formHandler.getInputProps('job')}
+                        />
+                      </Grid.Col>
+                      <Grid.Col span={12}>
+                        <NumberInput
+                          label="Age"
+                          sx={{
+                            'input:focus': {
+                              borderColor: 'var(--p-color)',
+                            },
+                          }}
+                          {...formHandler.getInputProps('age')}
+                        />
+                      </Grid.Col>
+                      <Grid.Col span={12}>
+                        <NumberInput
+                          label="Weight"
+                          sx={{
+                            'input:focus': {
+                              borderColor: 'var(--p-color)',
+                            },
+                          }}
+                          {...formHandler.getInputProps('weight')}
+                        />
+                      </Grid.Col>
+                      <Grid.Col span={12}>
+                        <NumberInput
+                          label="Height"
+                          sx={{
+                            'input:focus': {
+                              borderColor: 'var(--p-color)',
+                            },
+                          }}
+                          {...formHandler.getInputProps('height')}
+                        />
+                      </Grid.Col>
+                    </Grid>
+
+                    <Group position="right">
+                      <Button
+                        radius="sm"
+                        type="reset"
+                        color="red"
+                        onClick={() => handleReset()}
+                        loading={saving}
+                      >
+                        <Text color="var(--q-color)">Discard changes</Text>
+                      </Button>
+                      <Button
+                        radius="sm"
+                        type="submit"
+                        sx={{
+                          backgroundColor: 'var(--p-color)',
+                          ':hover': {
+                            backgroundColor: 'var(--p-color)',
+                            filter: 'brightness(85%)',
+                          },
+                        }}
+                        loading={saving}
+                      >
+                        <Text color="var(--q-color)">Save changes</Text>
+                      </Button>
+                    </Group>
+                  </form>
                 </FadeInDiv>
               </Box>
             )}
@@ -279,7 +287,9 @@ export default function Profile() {
               mb="xl"
             >
               <EaseInOutDiv>
-                <Title align='right' order={3}>Seren-Up</Title>
+                <Title align="right" order={3}>
+                  Seren-Up
+                </Title>
                 <Center>
                   <Floating>
                     <Box py="xl">
