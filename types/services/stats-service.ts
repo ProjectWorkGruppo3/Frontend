@@ -15,6 +15,15 @@ export interface DailyStatisticsRaw {
   analysis: Analytic[];
 }
 
+export interface ChartData {
+  date: Date;
+  value: number;
+}
+
 export interface GetGeneralStatisticsProps extends AuthorizeProps {}
 
 export interface GetDailyStatisticsProps extends AuthorizeProps {}
+
+export interface GetChartDataProps extends AuthorizeProps {
+  datakey: string;
+}

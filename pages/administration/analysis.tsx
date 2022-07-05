@@ -1,4 +1,4 @@
-import { AnalysisStatCard } from '@components/administration';
+import { AnalysisStatCard, ChartCardRemote } from '@components/administration';
 import { CircularLoading, Header, NotificationToast } from '@components/common';
 import { Alert, Box, Center, Grid } from '@mantine/core';
 import { EaseInOutDiv, FadeInDiv, StaggerDiv } from 'animations';
@@ -18,14 +18,7 @@ const DensityMap = dynamic(
   { ssr: false }
 );
 
-interface Chart {
-  title: string;
-  chartTitle: string;
-  data: {
-    x: string;
-    y: number;
-  }[];
-}
+
 
 const AnalysisPage: NextPage = () => {
   const auth = useAuth();
@@ -34,7 +27,7 @@ const AnalysisPage: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [dailyStatistics, setDailyStatistics] = useState<DailyStatistics>();
 
-  // const [chart, setChart] = useState<Chart>();
+  const [chart, setChart] = useState<string>();
 
   useEffect(() => {
     if (!auth || !auth.isAuthenticated()) {
@@ -114,27 +107,28 @@ const AnalysisPage: NextPage = () => {
                       title={el.name}
                       value={el.value}
                       trending={el.trend}
+                      onClick={() => setChart(el.name)}
                     />
                   </Box>
                 </Grid.Col>
               ))}
             </Grid>
-            {/* {chart && (
+            {chart && (
               <FadeInDiv>
                 <Grid>
                   <Grid.Col>
                     <Center>
-                      <LineChartCard
-                        title={chart.title}
+                      <ChartCardRemote
+                        title={chart}
                         onClose={() => setChart(undefined)}
-                        dataKey={chart.chartTitle}
-                        data={chart.data}
+                        dataKey={chart}
+                        token={auth!.authState!.token}
                       />
                     </Center>
                   </Grid.Col>
                 </Grid>
               </FadeInDiv>
-            )} */}
+            )}
           </FadeInDiv>
         )}
       </StaggerDiv>

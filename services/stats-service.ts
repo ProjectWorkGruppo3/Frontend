@@ -2,8 +2,10 @@ import axios from 'axios';
 import { DailyStatistics, GeolocalizationValue } from 'models/daily-statistics';
 import { ServiceReturnType } from 'types/services/common-service';
 import {
+  ChartData,
   DailyStatisticsRaw,
   GeneralStatistics,
+  GetChartDataProps,
   GetDailyStatisticsProps,
   GetGeneralStatisticsProps,
 } from 'types/services/stats-service';
@@ -66,9 +68,38 @@ const StatisticsService = () => {
     }
   };
 
+  const getChartData = async (
+    props: GetChartDataProps
+  ): Promise<ServiceReturnType<ChartData[] | null>> => {
+    try {
+      const response = await axios.get(
+        `${config.API_URL}/Analysis/${props.datakey}/data`,
+        {
+          headers: {
+            Authorization: `Bearer ${props.token}`,
+          },
+        }
+      );
+
+      const data = response.data as ChartData[];
+
+      return {
+        data: data,
+        error: null,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        data: null,
+        error: error,
+      };
+    }
+  };
+
   return {
     getGeneralStatistics,
     getDailyStatistics,
+    getChartData,
   };
 };
 
