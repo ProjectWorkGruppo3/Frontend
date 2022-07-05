@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import {
   DeviceCard,
   NewDeviceCard,
-  NewDeviceModal,
+  NewDeviceModal
 } from '../components/home/index';
 import { useAuth } from '../context/auth-context';
 
@@ -16,14 +16,14 @@ import {
   EaseInOutDiv,
   FadeInDiv,
   Floating,
-  StaggerDiv,
+  StaggerDiv
 } from '../animations';
 import {
   CircularLoading,
   Header,
-  NotificationToast,
+  NotificationToast
 } from '../components/common';
-import { Device } from '../models';
+import { Device } from '../models/device';
 import DeviceService from '../services/device-service';
 import { notifyError, notifySuccess } from '../utils/notify-toast';
 

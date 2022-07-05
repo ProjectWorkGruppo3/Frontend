@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { ServiceReturnType } from 'types/services/common-service';
-import { Device } from '../models';
+import { Device } from '../models/device';
 import {
   AddNewDeviceProps,
   GetDeviceDataProps,
-  GetDevicesProps,
+  GetDevicesProps
 } from '../types/services/device-service';
 import config from '../utils/config';
 
