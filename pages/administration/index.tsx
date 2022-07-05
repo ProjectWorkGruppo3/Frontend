@@ -4,7 +4,7 @@ import { NextPage } from 'next';
 import {
   AnalysisStatCard,
   StatCard,
-  TitleLink,
+  TitleLink
 } from '../../components/administration/index';
 
 import Head from 'next/head';
@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import { GeneralStatistics } from 'types/services/stats-service';
 import { normalDate } from 'utils/date-format';
 import { notifyError } from 'utils/notify-toast';
-import { CircularLoading, Header } from '../../components/common';
+import { CircularLoading, Header, NotificationToast } from '../../components/common';
 import { useAuth } from '../../context/auth-context';
 import statisticService from '../../services/stats-service';
 
@@ -40,7 +40,7 @@ const AdministrationPage: NextPage = () => {
           await statisticService.getGeneralStatistics({
             token: auth.authState.token,
           });
-
+          console.log(error)
         if (error) {
           notifyError('Failed to load statistics');
         } else {
@@ -54,7 +54,7 @@ const AdministrationPage: NextPage = () => {
     };
 
     fetch();
-  }, []);
+  }, [auth]);
 
   if (loading) {
     return (
@@ -98,7 +98,7 @@ const AdministrationPage: NextPage = () => {
                   <CardFadeIn>
                     <StatCard
                       name="Admins"
-                      value={generalStatistics.totalAdmins}
+                      value={generalStatistics.adminsCount}
                       onClick={() => router.push('/administration/admins')}
                     />
                   </CardFadeIn>
@@ -107,7 +107,7 @@ const AdministrationPage: NextPage = () => {
                   <CardFadeIn>
                     <StatCard
                       name="Bracelets"
-                      value={generalStatistics.totalBracelets}
+                      value={generalStatistics.devicesCount}
                     />
                   </CardFadeIn>
                 </Grid.Col>
@@ -123,12 +123,13 @@ const AdministrationPage: NextPage = () => {
                   </Box>
 
                   <Grid>
-                    <Grid.Col span={3}>
-                      <AnalysisStatCard title="Analysis 1" value={80} />
-                    </Grid.Col>
-                    <Grid.Col span={3}>
-                      <AnalysisStatCard title="Analysis 1" value={80} />
-                    </Grid.Col>
+                    {
+                      generalStatistics.lastAnalysis.map((el, index) => (
+                        <Grid.Col span={3} key={index}>
+                          <AnalysisStatCard title={el.name} value={el.value} trending={el.trend} />
+                        </Grid.Col>    
+                      ))
+                    }
                   </Grid>
                 </FadeInDiv>
               </Box>
@@ -143,7 +144,7 @@ const AdministrationPage: NextPage = () => {
                   </Box>
                 </FadeInDiv>
                 <Grid>
-                  {generalStatistics.lastReports.map((el, index) => (
+                  {generalStatistics.latestReports.map((el, index) => (
                     <Grid.Col span={3} key={index}>
                       <CardFadeIn>
                         <StatCard
@@ -182,6 +183,7 @@ const AdministrationPage: NextPage = () => {
           </Box>
         </Grid.Col>
       </Grid>
+      <NotificationToast />
     </Box>
   );
 };

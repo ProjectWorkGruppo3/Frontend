@@ -2,7 +2,7 @@ import axios from 'axios';
 import { ServiceReturnType } from 'types/services/common-service';
 import {
   GeneralStatistics,
-  GetGeneralStatisticsProps,
+  GetGeneralStatisticsProps
 } from 'types/services/stats-service';
 import config from 'utils/config';
 
@@ -24,6 +24,7 @@ const StatisticsService = () => {
         error: null,
       };
     } catch (error) {
+      console.log(error)
       return {
         data: null,
         error: error,

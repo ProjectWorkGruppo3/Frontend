@@ -1,11 +1,13 @@
 import { Card, Group, Stack, Text } from '@mantine/core';
 import { useState } from 'react';
 import { HiTrendingDown, HiTrendingUp } from 'react-icons/hi';
+import { MdOutlineTrendingFlat } from 'react-icons/md';
+import AnalyticTrend from 'types/analytic-trend';
 
 export interface AnalysisStatCardProps {
   title: string;
   value: string | number;
-  trending?: 'up' | 'down';
+  trending?: AnalyticTrend;
   onClick?: () => void;
 }
 
@@ -21,10 +23,12 @@ export const AnalysisStatCard = (props: AnalysisStatCardProps) => {
     }
 
     switch (props.trending) {
-      case 'up':
+      case 'Up':
         return <HiTrendingUp color="green" />;
-      case 'down':
+      case 'Down':
         return <HiTrendingDown color="red" />;
+      case 'Equal':
+        return <MdOutlineTrendingFlat color='black' />
       default:
         return undefined;
     }
