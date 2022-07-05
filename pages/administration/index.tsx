@@ -4,7 +4,7 @@ import { NextPage } from 'next';
 import {
   AnalysisStatCard,
   StatCard,
-  TitleLink
+  TitleLink,
 } from '../../components/administration/index';
 
 import Head from 'next/head';
@@ -13,7 +13,11 @@ import { useEffect, useState } from 'react';
 import { GeneralStatistics } from 'types/services/stats-service';
 import { normalDate } from 'utils/date-format';
 import { notifyError } from 'utils/notify-toast';
-import { CircularLoading, Header, NotificationToast } from '../../components/common';
+import {
+  CircularLoading,
+  Header,
+  NotificationToast,
+} from '../../components/common';
 import { useAuth } from '../../context/auth-context';
 import statisticService from '../../services/stats-service';
 
@@ -40,7 +44,7 @@ const AdministrationPage: NextPage = () => {
           await statisticService.getGeneralStatistics({
             token: auth.authState.token,
           });
-          console.log(error)
+        console.log(error);
         if (error) {
           notifyError('Failed to load statistics');
         } else {
@@ -55,14 +59,6 @@ const AdministrationPage: NextPage = () => {
 
     fetch();
   }, [auth]);
-
-  if (loading) {
-    return (
-      <Center>
-        <CircularLoading />
-      </Center>
-    );
-  }
 
   return (
     <Box sx={{ width: '100%', height: '100vh' }} p={0}>
@@ -123,13 +119,15 @@ const AdministrationPage: NextPage = () => {
                   </Box>
 
                   <Grid>
-                    {
-                      generalStatistics.lastAnalysis.map((el, index) => (
-                        <Grid.Col span={3} key={index}>
-                          <AnalysisStatCard title={el.name} value={el.value} trending={el.trend} />
-                        </Grid.Col>    
-                      ))
-                    }
+                    {generalStatistics.lastAnalysis.map((el, index) => (
+                      <Grid.Col span={3} key={index}>
+                        <AnalysisStatCard
+                          title={el.name}
+                          value={el.value}
+                          trending={el.trend}
+                        />
+                      </Grid.Col>
+                    ))}
                   </Grid>
                 </FadeInDiv>
               </Box>

@@ -9,4 +9,12 @@ export interface GeneralStatistics {
   lastAnalysis: Analytic[];
 }
 
+export interface DailyStatisticsRaw {
+  date: Date;
+  geolocalizationData: string;
+  analysis: Analytic[];
+}
+
 export interface GetGeneralStatisticsProps extends AuthorizeProps {}
+
+export interface GetDailyStatisticsProps extends AuthorizeProps {}

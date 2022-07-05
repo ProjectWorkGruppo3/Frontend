@@ -8,7 +8,7 @@ import {
   NumberInput,
   Text,
   TextInput,
-  Title
+  Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { EaseInOutDiv, FadeInDiv, Floating, StaggerDiv } from 'animations';

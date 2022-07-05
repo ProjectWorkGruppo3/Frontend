@@ -8,7 +8,7 @@ import {
   PasswordInput,
   Text,
   TextInput,
-  Title
+  Title,
 } from '@mantine/core';
 import type { NextPage } from 'next';
 
@@ -39,7 +39,8 @@ const Login: NextPage = () => {
 
   useEffect(() => {
     if (authContext && authContext.isAuthenticated()) {
-      router.push(authContext.authState!.homepage)
+      router
+        .push(authContext.authState!.homepage)
         .then((_) => setLoading(false));
     } else {
       setLoading(false);
@@ -75,7 +76,7 @@ const Login: NextPage = () => {
         user: logged.user,
         expiration: logged.expiration,
         token: logged.token,
-        homepage: logged.user.roles.includes("Admin") ? '/administration' : '/'
+        homepage: logged.user.roles.includes('Admin') ? '/administration' : '/',
       });
 
       console.log('Includes', logged.user.roles.includes('Admin'));

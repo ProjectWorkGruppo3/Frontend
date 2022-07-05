@@ -1,7 +1,4 @@
-import { DensityMapData } from '../components/administration/density-map';
-import { Report } from '../models/report';
-
-export const fakeDensityMapData: DensityMapData[] = [
+export const fakeDensityMapData = [
   {
     city: 'Tokyo',
     coordinates: {
@@ -126,10 +123,4 @@ export const fakeAdminUsers = Array.from({ length: 5 }, (v, k) => ({
   weight: k + 50,
   profilePic:
     'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvZmlsZSUyMHBpY3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-}));
-
-export const fakeReports: Report[] = Array.from({ length: 20 }, (v, k) => ({
-  id: k.toString(),
-  date: new Date(),
-  downloadLink: '#',
 }));

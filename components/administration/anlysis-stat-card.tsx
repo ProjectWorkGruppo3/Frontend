@@ -28,7 +28,7 @@ export const AnalysisStatCard = (props: AnalysisStatCardProps) => {
       case 'Down':
         return <HiTrendingDown color="red" />;
       case 'Equal':
-        return <MdOutlineTrendingFlat color='black' />
+        return <MdOutlineTrendingFlat color="black" />;
       default:
         return undefined;
     }

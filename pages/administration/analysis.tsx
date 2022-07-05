@@ -1,15 +1,17 @@
-import { AnalysisStatCard, LineChartCard } from '@components/administration';
+import { AnalysisStatCard } from '@components/administration';
 import { CircularLoading, Header, NotificationToast } from '@components/common';
-import { Box, Center, Grid } from '@mantine/core';
+import { Alert, Box, Center, Grid } from '@mantine/core';
 import { EaseInOutDiv, FadeInDiv, StaggerDiv } from 'animations';
 import { useAuth } from 'context/auth-context';
+import { DailyStatistics } from 'models/daily-statistics';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import statisticService from 'services/stats-service';
 import { normalFullTime } from 'utils/date-format';
-import { fakeDensityMapData } from 'utils/fake-data';
+import { notifyError } from 'utils/notify-toast';
 
 const DensityMap = dynamic(
   () => import('../../components/administration/density-map'),
@@ -30,15 +32,35 @@ const AnalysisPage: NextPage = () => {
   const router = useRouter();
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [chart, setChart] = useState<Chart>();
+  const [dailyStatistics, setDailyStatistics] = useState<DailyStatistics>();
+
+  // const [chart, setChart] = useState<Chart>();
 
   useEffect(() => {
-    if (auth && auth.isAuthenticated()) {
-      setLoading(false);
-    } else {
-      router.push('/login').then((_) => setLoading(false));
+    if (!auth || !auth.isAuthenticated()) {
+      router.push('/login');
     }
   }, [auth, router]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (auth && auth.authState) {
+        const { data, error } = await statisticService.getDailyStatistics({
+          token: auth.authState.token,
+        });
+
+        if (error) {
+          notifyError('Failed to load analytics');
+        } else {
+          setDailyStatistics(data!);
+        }
+
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [auth]);
 
   return (
     <Box pt="xl" px="2%">
@@ -59,55 +81,45 @@ const AnalysisPage: NextPage = () => {
             }}
           />
         </FadeInDiv>
-        {loading ? (
+
+        {loading && (
           <FadeInDiv>
             <Center my="xl">
               <CircularLoading />
             </Center>
           </FadeInDiv>
-        ) : (
+        )}
+
+        {!loading && !dailyStatistics && (
+          <Alert color="red">Failed to retrieve data</Alert>
+        )}
+
+        {!loading && dailyStatistics && (
           <FadeInDiv>
             <Box style={{ height: '300px' }}>
               <EaseInOutDiv>
                 <DensityMap
-                  title={`Last time updpated: ${normalFullTime(new Date())}`}
-                  data={fakeDensityMapData}
+                  title={`Last time updpated: ${normalFullTime(
+                    dailyStatistics.date
+                  )}`}
+                  data={dailyStatistics.geolocalizationData}
                 />
               </EaseInOutDiv>
             </Box>
             <Grid justify="center">
-              <Grid.Col span={2}>
-                <Box mb="xs">
-                  <AnalysisStatCard
-                    title="Data Ingested "
-                    value={100}
-                    trending="down"
-                    onClick={() => {
-                      setChart({
-                        data: [],
-                        title: 'Data Ingested',
-                        chartTitle: 'Data',
-                      });
-                    }}
-                  />
-                </Box>
-              </Grid.Col>
-              <Grid.Col span={2}>
-                <Box mb="xs">
-                  <AnalysisStatCard
-                    title="Serendipity"
-                    value="78%"
-                    trending="up"
-                  />
-                </Box>
-              </Grid.Col>
-              <Grid.Col span={2}>
-                <Box mb="xs">
-                  <AnalysisStatCard title="Falls" value="10" trending="down" />
-                </Box>
-              </Grid.Col>
+              {dailyStatistics.analysis.map((el, index) => (
+                <Grid.Col span={2} key={index}>
+                  <Box mb="xs">
+                    <AnalysisStatCard
+                      title={el.name}
+                      value={el.value}
+                      trending={el.trend}
+                    />
+                  </Box>
+                </Grid.Col>
+              ))}
             </Grid>
-            {chart && (
+            {/* {chart && (
               <FadeInDiv>
                 <Grid>
                   <Grid.Col>
@@ -122,7 +134,7 @@ const AnalysisPage: NextPage = () => {
                   </Grid.Col>
                 </Grid>
               </FadeInDiv>
-            )}
+            )} */}
           </FadeInDiv>
         )}
       </StaggerDiv>
