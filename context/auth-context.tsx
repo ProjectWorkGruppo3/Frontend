@@ -15,6 +15,7 @@ type authContext = {
   authState: AuthState | null;
   setAuthState: (state: AuthState | null) => void;
   isAuthenticated: () => boolean;
+  getSavedAuthState: () => AuthState | null;
 } | null;
 
 const AuthContext = createContext<authContext>(null);
@@ -24,10 +25,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [authState, setAuthState] = useState<AuthState | null>(null);
 
   useEffect(() => {
+    console.log('User context useeffect');
+
     const authStateSaved = getSavedAuthState();
 
     setAuthState(authStateSaved);
   }, []);
+
   const getSavedAuthState = () => {
     const data = localStorage.getItem(TOKEN_KEY);
 
@@ -75,6 +79,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         authState: authState,
         setAuthState: setUser,
         isAuthenticated: isAuthenticated,
+        getSavedAuthState: getSavedAuthState,
       }}
     >
       {children}

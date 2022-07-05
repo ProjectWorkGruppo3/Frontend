@@ -50,7 +50,7 @@ export const UserDetail = (props: UserDetailProps) => {
   };
 
   return (
-    <Card style={{ height: '100%' }}>
+    <Card style={{ height: '100%', backgroundColor: 'var(--fi-color)' }}>
       <form
         onSubmit={formHandler.onSubmit(onSubmit)}
         style={{ height: '100%' }}

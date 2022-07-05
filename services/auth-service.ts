@@ -29,7 +29,7 @@ const AuthService = () => {
       );
 
       if (result.status === 401) {
-        throw new Error('Not Authorized');
+        throw new Error('Credentials are not correct');
       }
 
       const loginResult = result.data as LoginResult;
@@ -52,6 +52,9 @@ const AuthService = () => {
       const result = await axios.post(
         `${config.API_URL}/Users/register`,
         {
+          name: props.name,
+          surname: props.surname,
+          job: props.job,
           email: props.email,
           password: props.password,
           weight: props.weight,

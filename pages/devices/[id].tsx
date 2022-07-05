@@ -1,4 +1,5 @@
 import Card from '@components/Card';
+import { CircularLoading } from '@components/common';
 import User from '@components/User';
 import UserInfo from '@components/UserInfo';
 import WeeklyGoals from '@components/WeeklyGoals';
@@ -6,9 +7,9 @@ import Welcome from '@components/Welcome';
 import {
   AppShell,
   Box,
+  Center,
   Grid,
   Group,
-  Loader,
   Navbar,
   Text,
   Title as MantineTitle,
@@ -16,6 +17,7 @@ import {
 import { useAuth } from 'context/auth-context';
 import { getRandomInt } from 'lib/utils/getRandomInt';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import {
@@ -51,7 +53,11 @@ export default function Dashboard() {
   }, []);
 
   if (loading) {
-    return <Loader />;
+    return (
+      <Center my="xl">
+        <CircularLoading />
+      </Center>
+    );
   }
 
   return (
@@ -64,7 +70,7 @@ export default function Dashboard() {
       <AppShell
         navbar={
           <Navbar
-            width={{ base: '4%' }}
+            width={{ base: '6%' }}
             style={{
               border: 'none',
               backgroundColor: 'lightcoral',
@@ -80,9 +86,11 @@ export default function Dashboard() {
               <Text align="center" py={30}>
                 Dummy logo
               </Text>
-              <SettingsIcon
-                style={{ marginTop: '20px', marginBottom: '20px' }}
-              />
+              <Link href="/profile">
+                <SettingsIcon
+                  style={{ marginTop: '20px', marginBottom: '20px' }}
+                />
+              </Link>
             </Group>
             <Group
               direction="column"
