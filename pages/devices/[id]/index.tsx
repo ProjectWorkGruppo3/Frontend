@@ -1,6 +1,10 @@
 import { AnalysisStatCard } from '@components/administration';
 import { CircularLoading, Header } from '@components/common';
-import { StateCard, TotalAlarmCard } from '@components/dashboard';
+import {
+  RemoteDeviceStatsChart,
+  StateCard,
+  TotalAlarmCard,
+} from '@components/dashboard';
 import { Box, Center, Divider, Grid, Title } from '@mantine/core';
 import { EaseInOutDiv, FadeInDiv, Floating, StaggerDiv } from 'animations';
 import { useAuth } from 'context/auth-context';
@@ -111,8 +115,13 @@ const Dashboard: NextPage = () => {
                       />
                     </Box>
                   </Grid.Col>
-                  <Grid.Col span={9}>
-                    <p>Chart</p>
+                  <Grid.Col span={9} p="lg">
+                    <RemoteDeviceStatsChart
+                      token=""
+                      title="Chart"
+                      deviceId="dsad"
+                      dataKey="Data"
+                    />
                   </Grid.Col>
                 </Grid>
               </Box>
