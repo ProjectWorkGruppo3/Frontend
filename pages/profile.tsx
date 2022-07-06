@@ -8,7 +8,7 @@ import {
   NumberInput,
   Text,
   TextInput,
-  Title,
+  Title
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { EaseInOutDiv, FadeInDiv, Floating, StaggerDiv } from 'animations';
@@ -81,11 +81,13 @@ export default function Profile() {
             )
             .asYears(),
         });
+
+        setLoading(false);
       }
     };
 
     fetch();
-  }, [authContext, loading, formHandler.setValues]);
+  }, [authContext, loading, formHandler.setValues, router]);
 
   const handleSubmit = async (value: FormProps) => {
     if (authContext && authContext.isAuthenticated()) {

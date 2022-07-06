@@ -21,4 +21,4 @@ artifacts:
   files:
     - '**/*'
   exclude-paths:
-    - ./node_modules
+    - ./node_modules/**/*

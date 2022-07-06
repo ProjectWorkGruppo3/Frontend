@@ -1,8 +1,8 @@
 #!/bin/bash
 
 cd /home/app
-npm run build
-pm2 start npm --name "seren-up-fe"
-pm2 startup
-pm2 save
-pm2 restart all
+sudo npm run build
+sudo pm2 start npm --name "seren-up-fe"
+sudo pm2 startup
+sudo pm2 save
+sudo pm2 restart all
