@@ -18,8 +18,6 @@ const DensityMap = dynamic(
   { ssr: false }
 );
 
-
-
 const AnalysisPage: NextPage = () => {
   const auth = useAuth();
   const router = useRouter();
