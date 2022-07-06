@@ -1,12 +1,10 @@
 version: '3.8'
 
-
 services:
   fe:
-    build: 
+    build:
       context: .
       dockerfile: docker/Dockerfile
     ports:
       - 3000:3000
       - 80:3000
-    

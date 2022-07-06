@@ -5,7 +5,7 @@ import {
   AnimatedGrid,
   AnimatedLineSeries,
   Tooltip,
-  XYChart
+  XYChart,
 } from '@visx/xychart';
 import { FadeInDiv } from 'animations';
 import { useEffect, useState } from 'react';
@@ -54,7 +54,7 @@ export const ChartCardRemote = (props: ChartCardRemoteProps) => {
     <Card
       sx={{
         width: '95%',
-        backgroundColor: 'var(--fi-color)'
+        backgroundColor: 'var(--fi-color)',
       }}
     >
       <Group position="right">
