@@ -36,7 +36,7 @@ const PositionCard = (props: PositionCardProps) => {
         <Divider sx={{ width: '40%' }} />
       </Center>
       <MapContainer
-        style={{ width: '100%', height: '200px' }}
+        style={{ width: '100%', height: '100%', minHeight: '150px' }}
         /* @ts-ignore */
         zoom={10}
         center={position}

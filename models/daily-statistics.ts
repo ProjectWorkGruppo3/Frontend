@@ -1,3 +1,4 @@
+import { GeolocalizationValue } from 'types/geolocalization';
 import { Analytic } from './analytic';
 
 export type DailyStatistics = {
@@ -6,8 +7,3 @@ export type DailyStatistics = {
   analysis: Analytic[];
 };
 
-export type GeolocalizationValue = {
-  total: number;
-  latitude: number;
-  longitude: number;
-};

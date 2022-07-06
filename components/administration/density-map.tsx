@@ -1,7 +1,8 @@
 import { Text } from '@mantine/core';
 import 'leaflet/dist/leaflet.css';
-import { GeolocalizationValue } from 'models/daily-statistics';
+
 import { CircleMarker, MapContainer, TileLayer, Tooltip } from 'react-leaflet';
+import { GeolocalizationValue } from 'types/geolocalization';
 
 export interface DensityMapProps {
   title: string;

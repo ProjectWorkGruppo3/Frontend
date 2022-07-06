@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { DailyStatistics, GeolocalizationValue } from 'models/daily-statistics';
+import { DailyStatistics } from 'models/daily-statistics';
+import { GeolocalizationValue } from 'types/geolocalization';
 import { ServiceReturnType } from 'types/services/common-service';
 import {
   ChartData,
@@ -7,7 +8,7 @@ import {
   GeneralStatistics,
   GetChartDataProps,
   GetDailyStatisticsProps,
-  GetGeneralStatisticsProps,
+  GetGeneralStatisticsProps
 } from 'types/services/stats-service';
 import config from 'utils/config';
 

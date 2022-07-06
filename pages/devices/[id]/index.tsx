@@ -3,7 +3,7 @@ import { CircularLoading, Header } from '@components/common';
 import {
   RemoteDeviceStatsChart,
   StateCard,
-  TotalAlarmCard,
+  TotalAlarmCard
 } from '@components/dashboard';
 import { Box, Center, Divider, Grid, Title } from '@mantine/core';
 import { EaseInOutDiv, FadeInDiv, Floating, StaggerDiv } from 'animations';
@@ -13,6 +13,9 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import DeviceService from 'services/device-service';
+import { GeneralDeviceData } from 'types/services/device-service';
+import { notifyError } from 'utils/notify-toast';
 
 const PositionComponent = dynamic(
   () => import('components/dashboard/position-card'),
@@ -22,15 +25,52 @@ const PositionComponent = dynamic(
 const Dashboard: NextPage = () => {
   const auth = useAuth();
   const router = useRouter();
+
   const [loading, setLoading] = useState<boolean>(true);
+  const [data, setData] = useState<GeneralDeviceData>();
 
   useEffect(() => {
     if (!auth || !auth.isAuthenticated()) {
       router.push('/login');
-    } else {
-      setLoading(false);
     }
   }, [auth, router]);
+
+  useEffect(() => {
+    const fetchDevices = async () => {
+      if (auth && auth.authState) {
+        if (auth.authState.user.roles.includes('Admin')) {
+          await router.push(auth.authState!.homepage);
+          return setLoading(false);
+        }
+
+        const { id } = router.query;
+        const { data: generalData, error } =
+          await DeviceService.getGeneralDeviceData({
+            token: auth.authState.token,
+            deviceId: id as string,
+          });
+
+        console.log(error);
+
+        if(error?.code === "ERR_BAD_REQUEST") {
+          await router.push('/404');
+        }
+
+        if (error) {
+          notifyError(
+            error['message'] ??
+              'Sorry, but something wrong happened. Retry later'
+          );
+        } else {
+          setData(generalData!);
+        }
+
+        setLoading(false);
+      }
+    };
+
+    fetchDevices();
+  }, [loading, auth]);
 
   return (
     <StaggerDiv>
@@ -40,36 +80,37 @@ const Dashboard: NextPage = () => {
           <meta name="description" content="Seren Up Web App" />
           <link rel="icon" href="/assets/logo.png" />
         </Head>
-        {loading ? (
-          <Center>
+
+        
+        <Grid sx={{ width: '100%', height: '100%' }} m={0}>
+          <Grid.Col span={4} p={0}>
+            <Box
+              sx={{
+                backgroundColor: 'var(--fi-color)',
+                height: '100%',
+              }}
+              p="lg"
+              mb="xl"
+            >
+              <EaseInOutDiv>
+                <Title order={3}>Seren-Up</Title>
+                <Center>
+                  <Floating>
+                    <Box py="xl">
+                      <img
+                        src="/assets/dashboard.png"
+                        alt="illustration-image"
+                      />
+                    </Box>
+                  </Floating>
+                </Center>
+              </EaseInOutDiv>
+            </Box>
+          </Grid.Col>
+          {loading && (
             <CircularLoading />
-          </Center>
-        ) : (
-          <Grid sx={{ width: '100%', height: '100%' }} m={0}>
-            <Grid.Col span={4} p={0}>
-              <Box
-                sx={{
-                  backgroundColor: 'var(--fi-color)',
-                  height: '100%',
-                }}
-                p="lg"
-                mb="xl"
-              >
-                <EaseInOutDiv>
-                  <Title order={3}>Seren-Up</Title>
-                  <Center>
-                    <Floating>
-                      <Box py="xl">
-                        <img
-                          src="/assets/dashboard.png"
-                          alt="illustration-image"
-                        />
-                      </Box>
-                    </Floating>
-                  </Center>
-                </EaseInOutDiv>
-              </Box>
-            </Grid.Col>
+          )}
+          {!loading && data && (
             <Grid.Col span={8} p="xl">
               <FadeInDiv>
                 <Header
@@ -86,34 +127,15 @@ const Dashboard: NextPage = () => {
               <Box mb="sm">
                 <Grid>
                   <Grid.Col span={3}>
-                    <Box mb="sm">
-                      <AnalysisStatCard
-                        title={'Serendipity'}
-                        value={80}
-                        trending="Up"
-                      />
-                    </Box>
-                    <Box mb="sm">
-                      <AnalysisStatCard
-                        title={'Serendipity'}
-                        value={80}
-                        trending="Up"
-                      />
-                    </Box>
-                    <Box mb="sm">
-                      <AnalysisStatCard
-                        title={'Serendipity'}
-                        value={80}
-                        trending="Up"
-                      />
-                    </Box>
-                    <Box mb="sm">
-                      <AnalysisStatCard
-                        title={'Serendipity'}
-                        value={80}
-                        trending="Up"
-                      />
-                    </Box>
+                    {data.analysis.map((el, index) => (
+                      <Box mb="sm" key={index}>
+                        <AnalysisStatCard
+                          title={el.name}
+                          value={el.value}
+                          trending={el.trend}
+                        />
+                      </Box>
+                    ))}
                   </Grid.Col>
                   <Grid.Col span={9} p="lg">
                     <RemoteDeviceStatsChart
@@ -134,30 +156,30 @@ const Dashboard: NextPage = () => {
 
               <Grid>
                 <Grid.Col span={4}>
-                  <StateCard state="Sleeping" />
+                  <StateCard state={data.lastState} />
                 </Grid.Col>
                 <Grid.Col span={4}>
                   <Box
                     sx={{
-                      height: '300px',
+                      height: '200px',
                     }}
                   >
                     <PositionComponent
-                      latitude={45.49509}
-                      longitude={9.107739}
+                      latitude={data.lastLocation.latitude}
+                      longitude={data.lastLocation.longitude}
                     />
                   </Box>
                 </Grid.Col>
                 <Grid.Col span={4}>
                   <TotalAlarmCard
-                    total={50}
+                    total={data.totalAlarms}
                     onClick={() => console.log('Go to alarms')}
                   />
                 </Grid.Col>
               </Grid>
             </Grid.Col>
-          </Grid>
-        )}
+          )}
+        </Grid>
       </Box>
     </StaggerDiv>
   );
