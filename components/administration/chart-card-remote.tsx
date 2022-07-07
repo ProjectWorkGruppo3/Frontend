@@ -5,7 +5,7 @@ import {
   AnimatedGrid,
   AnimatedLineSeries,
   Tooltip,
-  XYChart,
+  XYChart
 } from '@visx/xychart';
 import { FadeInDiv } from 'animations';
 import { useEffect, useState } from 'react';
@@ -28,6 +28,7 @@ export const ChartCardRemote = (props: ChartCardRemoteProps) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true)
       const { data, error } = await statisticService.getChartData({
         token: props.token,
         datakey: props.dataKey,
@@ -43,7 +44,7 @@ export const ChartCardRemote = (props: ChartCardRemoteProps) => {
     };
 
     fetchData();
-  }, []);
+  }, [props.dataKey]);
 
   const accessors = {
     xAccessor: (d: any) => d.x,

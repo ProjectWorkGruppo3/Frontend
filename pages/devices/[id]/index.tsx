@@ -3,7 +3,7 @@ import { CircularLoading, Header } from '@components/common';
 import {
   RemoteDeviceStatsChart,
   StateCard,
-  TotalAlarmCard,
+  TotalAlarmCard
 } from '@components/dashboard';
 import { Box, Center, Divider, Grid, Title } from '@mantine/core';
 import { EaseInOutDiv, FadeInDiv, Floating, StaggerDiv } from 'animations';
@@ -88,7 +88,7 @@ const Dashboard: NextPage = () => {
     if (auth && auth.authState) {
       const { id } = router.query;
 
-      const { data: generalData, error } =
+      const { data, error } =
         await DeviceService.getGeneralDeviceData({
           token: auth.authState.token,
           deviceId: id as string,
