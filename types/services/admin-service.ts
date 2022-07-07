@@ -16,5 +16,14 @@ export interface DeleteAdminUserProps extends AuthorizeProps {
 }
 
 export interface AddAdminUserProps extends AuthorizeProps {
-  user: AdminUser;
+  user: AdminUserCreated;
+}
+
+export interface AdminUserCreated {
+  id: string;
+  email: string;
+  name: string;
+  surname: string;
+  password: string;
+  profilePic?: string;
 }

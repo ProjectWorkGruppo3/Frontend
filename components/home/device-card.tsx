@@ -2,7 +2,7 @@ import { Box, Card, Grid, Text } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { Device } from '../../models';
+import { Device } from '../../models/device';
 
 export interface DeviceCardProps {
   device: Device;

@@ -40,11 +40,7 @@ const Login: NextPage = () => {
   useEffect(() => {
     if (authContext && authContext.isAuthenticated()) {
       router
-        .push(
-          authContext.authState!.user.roles.includes('Admin')
-            ? '/administration'
-            : '/'
-        )
+        .push(authContext.authState!.homepage)
         .then((_) => setLoading(false));
     } else {
       setLoading(false);
@@ -80,6 +76,7 @@ const Login: NextPage = () => {
         user: logged.user,
         expiration: logged.expiration,
         token: logged.token,
+        homepage: logged.user.roles.includes('Admin') ? '/administration' : '/',
       });
 
       console.log('Includes', logged.user.roles.includes('Admin'));

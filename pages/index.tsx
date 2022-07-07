@@ -23,7 +23,7 @@ import {
   Header,
   NotificationToast,
 } from '../components/common';
-import { Device } from '../models';
+import { Device } from '../models/device';
 import DeviceService from '../services/device-service';
 import { notifyError, notifySuccess } from '../utils/notify-toast';
 
@@ -38,9 +38,7 @@ const Home: NextPage = () => {
     useState<boolean>(false);
 
   useEffect(() => {
-    if (auth && auth.isAuthenticated()) {
-      setLoading(false);
-    } else {
+    if (!auth || !auth.isAuthenticated()) {
       router.push('/login');
     }
   }, [auth, router]);
@@ -48,6 +46,10 @@ const Home: NextPage = () => {
   useEffect(() => {
     const fetchDevices = async () => {
       if (auth && auth.authState) {
+        if (auth.authState.user.roles.includes('Admin')) {
+          await router.push(auth.authState!.homepage);
+          return setLoading(false);
+        }
         const { data: devices, error } = await DeviceService.getDevices({
           token: auth.authState.token,
           userId: auth.authState.user.id,
@@ -124,7 +126,7 @@ const Home: NextPage = () => {
                 <Center>
                   <Floating>
                     <Box py="xl">
-                      <img src="/assets/person.png" />
+                      <img src="/assets/person.png" alt="illustration-image" />
                     </Box>
                   </Floating>
                 </Center>

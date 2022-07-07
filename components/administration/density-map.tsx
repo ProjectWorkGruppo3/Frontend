@@ -1,28 +1,30 @@
 import { Text } from '@mantine/core';
 import 'leaflet/dist/leaflet.css';
-import { CircleMarker, MapContainer, TileLayer, Tooltip } from 'react-leaflet';
 
-export interface DensityMapData {
-  city: string;
-  coordinates: {
-    latitude: number;
-    longitude: number;
-  };
-  totalDevices: number;
-}
+import { CircleMarker, MapContainer, TileLayer, Tooltip } from 'react-leaflet';
+import { GeolocalizationValue } from 'types/geolocalization';
 
 export interface DensityMapProps {
   title: string;
-  data: DensityMapData[];
+  data: GeolocalizationValue[];
 }
 
 const DensityMap = (props: DensityMapProps) => {
-  const totalDevices = props.data.reduce(
-    (prev, curr) => prev + curr.totalDevices,
-    0
-  );
+  const totalDevices = props.data.reduce((prev, curr) => prev + curr.total, 0);
 
-  console.log(totalDevices);
+  const safeData = props.data.map((el): GeolocalizationValue => {
+    return {
+      total: el.total,
+      longitude: parseFloat(el.longitude.toFixed(4)),
+      latitude: parseFloat(el.latitude.toFixed(4)),
+    };
+  });
+
+  const getRadius = (n: number): number => {
+    if (n === 0) return 0;
+
+    return 20 * Math.log(n / (totalDevices / 20));
+  };
 
   return (
     <>
@@ -37,19 +39,19 @@ const DensityMap = (props: DensityMapProps) => {
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-        {props.data.map((city, index) => {
+        {safeData.map((city, index) => {
           return (
             <CircleMarker
               key={index}
-              center={[city.coordinates.longitude, city.coordinates.latitude]}
+              center={[city.latitude, city.longitude]}
               /* @ts-ignore */
-              radius={20 * Math.log(city.totalDevices / (totalDevices / 20))}
+              radius={getRadius(city.total)}
               fillOpacity={0.5}
               stroke={false}
             >
               {/* @ts-ignore */}
               <Tooltip direction="right" offset={[-8, -2]} opacity={1}>
-                <Text>{`${city.city}: ${city.totalDevices} Devices connected`}</Text>
+                <Text>{`${city.total} Devices connected`}</Text>
               </Tooltip>
             </CircleMarker>
           );

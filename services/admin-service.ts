@@ -15,15 +15,12 @@ const AdminService = () => {
     props: GetAdminUsersProps
   ): Promise<ServiceReturnType<AdminUser[]>> => {
     try {
-      const result = await axios.get(
-        `${config.API_URL}/users/admins`, // FIXME
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: props.token,
-          },
-        }
-      );
+      const result = await axios.get(`${config.API_URL}/Admins`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${props.token}`,
+        },
+      });
 
       const admins = result.data as AdminUser[];
 
@@ -44,7 +41,7 @@ const AdminService = () => {
   ): Promise<ServiceReturnType<AdminUser | undefined>> => {
     try {
       const result = await axios.get(
-        `${config.API_URL}/users/admins/${props.userId}`, // FIXME
+        `${config.API_URL}/Admins/${props.userId}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -69,30 +66,32 @@ const AdminService = () => {
 
   const addAdminUser = async (
     props: AddAdminUserProps
-  ): Promise<ServiceReturnType<boolean>> => {
+  ): Promise<ServiceReturnType<AdminUser | null>> => {
+    // FIXME add profilepic
     try {
-      await axios.post(
-        `${config.API_URL}/users/admins/${props.user.id}`, // FIXME
+      const response = await axios.post(
+        `${config.API_URL}/Admins/`,
         {
           email: props.user.email,
           name: props.user.name,
           surname: props.user.surname,
+          password: props.user.password,
         },
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: props.token,
+            Authorization: `Bearer ${props.token}`,
           },
         }
       );
 
       return {
-        data: true,
+        data: response.data as AdminUser,
         error: undefined,
       };
     } catch (error: any) {
       return {
-        data: false,
+        data: null,
         error: error,
       };
     }
@@ -103,7 +102,7 @@ const AdminService = () => {
   ): Promise<ServiceReturnType<boolean>> => {
     try {
       await axios.put(
-        `${config.API_URL}/users/admins/${props.user.id}`, // FIXME
+        `${config.API_URL}/Admins/${props.user.id}`,
         {
           email: props.user.email,
           name: props.user.name,
@@ -112,7 +111,7 @@ const AdminService = () => {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: props.token,
+            Authorization: `Bearer ${props.token}`,
           },
         }
       );
@@ -133,15 +132,12 @@ const AdminService = () => {
     props: DeleteAdminUserProps
   ): Promise<ServiceReturnType<boolean>> => {
     try {
-      await axios.delete(
-        `${config.API_URL}/users/admins/${props.userId}`, // FIXME
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: props.token,
-          },
-        }
-      );
+      await axios.delete(`${config.API_URL}/Admins/${props.userId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${props.token}`,
+        },
+      });
 
       return {
         data: true,
