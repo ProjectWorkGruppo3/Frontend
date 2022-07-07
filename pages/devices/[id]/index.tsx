@@ -3,7 +3,7 @@ import { CircularLoading, Header } from '@components/common';
 import {
   RemoteDeviceStatsChart,
   StateCard,
-  TotalAlarmCard
+  TotalAlarmCard,
 } from '@components/dashboard';
 import { Box, Center, Divider, Grid, Title } from '@mantine/core';
 import { EaseInOutDiv, FadeInDiv, Floating, StaggerDiv } from 'animations';
@@ -88,11 +88,10 @@ const Dashboard: NextPage = () => {
     if (auth && auth.authState) {
       const { id } = router.query;
 
-      const { data, error } =
-        await DeviceService.getGeneralDeviceData({
-          token: auth.authState.token,
-          deviceId: id as string,
-        });
+      const { data, error } = await DeviceService.getGeneralDeviceData({
+        token: auth.authState.token,
+        deviceId: id as string,
+      });
 
       if (data) {
         setData(data);
@@ -207,7 +206,13 @@ const Dashboard: NextPage = () => {
                   <Grid.Col span={4}>
                     <TotalAlarmCard
                       total={data.totalAlarms}
-                      onClick={() => console.log('Go to alarms')}
+                      onClick={() => {
+                        const { id } = router.query;
+
+                        if (id) {
+                          router.push(`/devices/${id}/alarms`);
+                        }
+                      }}
                     />
                   </Grid.Col>
                 </Grid>
