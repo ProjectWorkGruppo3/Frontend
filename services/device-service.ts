@@ -1,9 +1,13 @@
 import axios from 'axios';
 import { ServiceReturnType } from 'types/services/common-service';
+import { ChartData } from 'types/services/stats-service';
 import { Device } from '../models/device';
 import {
-  AddNewDeviceProps, GeneralDeviceData, GetDevicesProps,
-  GetGeneralDeviceDataProps
+  AddNewDeviceProps,
+  GeneralDeviceData,
+  GetDevicesProps,
+  GetDeviceStatisticChartDataProps,
+  GetGeneralDeviceDataProps,
 } from '../types/services/device-service';
 import config from '../utils/config';
 
@@ -94,18 +98,17 @@ const DeviceService = () => {
     }
   };
 
-
-  const getGeneralDeviceData = async (props: GetGeneralDeviceDataProps) : Promise<ServiceReturnType<GeneralDeviceData | null>> => {
-
+  const getGeneralDeviceData = async (
+    props: GetGeneralDeviceDataProps
+  ): Promise<ServiceReturnType<GeneralDeviceData | null>> => {
     try {
-      
       const result = await axios.get(
         `${config.API_URL}/UserDeviceData/${props.deviceId}`,
         {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${props.token}`,
-          }
+          },
         }
       );
 
@@ -113,23 +116,49 @@ const DeviceService = () => {
 
       return {
         data: data,
-        error: null
-      }
-  
-
+        error: null,
+      };
     } catch (error) {
       return {
         data: null,
-        error: error
-      }
+        error: error,
+      };
     }
+  };
 
-  }
+  const getDeviceStatisticChartData = async (
+    props: GetDeviceStatisticChartDataProps
+  ): Promise<ServiceReturnType<ChartData[] | null>> => {
+    try {
+      const result = await axios.get(
+        `${config.API_URL}/UserDeviceData/${props.deviceId}/${props.statisticName}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${props.token}`,
+          },
+        }
+      );
+
+      const data = result.data as ChartData[];
+
+      return {
+        data: data,
+        error: null,
+      };
+    } catch (error) {
+      return {
+        data: null,
+        error: error,
+      };
+    }
+  };
 
   return {
     getDevices,
     addNewDevice,
-    getGeneralDeviceData
+    getGeneralDeviceData,
+    getDeviceStatisticChartData,
   };
 };
 

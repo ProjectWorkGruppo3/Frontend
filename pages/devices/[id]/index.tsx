@@ -3,7 +3,7 @@ import { CircularLoading, Header } from '@components/common';
 import {
   RemoteDeviceStatsChart,
   StateCard,
-  TotalAlarmCard
+  TotalAlarmCard,
 } from '@components/dashboard';
 import { Box, Center, Divider, Grid, Title } from '@mantine/core';
 import { EaseInOutDiv, FadeInDiv, Floating, StaggerDiv } from 'animations';
@@ -12,7 +12,7 @@ import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import DeviceService from 'services/device-service';
 import { GeneralDeviceData } from 'types/services/device-service';
 import { notifyError } from 'utils/notify-toast';
@@ -28,6 +28,7 @@ const Dashboard: NextPage = () => {
 
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<GeneralDeviceData>();
+  const [chart, setChart] = useState<string>();
 
   useEffect(() => {
     if (!auth || !auth.isAuthenticated()) {
@@ -44,6 +45,7 @@ const Dashboard: NextPage = () => {
         }
 
         const { id } = router.query;
+
         const { data: generalData, error } =
           await DeviceService.getGeneralDeviceData({
             token: auth.authState.token,
@@ -52,9 +54,10 @@ const Dashboard: NextPage = () => {
 
         console.log(error);
 
-        if(error?.code === "ERR_BAD_REQUEST") {
-          await router.push('/404');
-        }
+        // FIXME
+        // if (error?.code === 'ERR_BAD_REQUEST') {
+        //   await router.push('/404');
+        // }
 
         if (error) {
           notifyError(
@@ -63,6 +66,7 @@ const Dashboard: NextPage = () => {
           );
         } else {
           setData(generalData!);
+          setChart(generalData!.analysis[0].name);
         }
 
         setLoading(false);
@@ -70,7 +74,31 @@ const Dashboard: NextPage = () => {
     };
 
     fetchDevices();
+
+    const intervalFetch = setInterval(() => {
+      fetchNew();
+    }, 5000);
+
+    return () => {
+      clearInterval(intervalFetch);
+    };
   }, [loading, auth]);
+
+  const fetchNew = useCallback(async () => {
+    if (auth && auth.authState) {
+      const { id } = router.query;
+
+      const { data: generalData, error } =
+        await DeviceService.getGeneralDeviceData({
+          token: auth.authState.token,
+          deviceId: id as string,
+        });
+
+      if (data) {
+        setData(data);
+      }
+    }
+  }, []);
 
   return (
     <StaggerDiv>
@@ -81,7 +109,6 @@ const Dashboard: NextPage = () => {
           <link rel="icon" href="/assets/logo.png" />
         </Head>
 
-        
         <Grid sx={{ width: '100%', height: '100%' }} m={0}>
           <Grid.Col span={4} p={0}>
             <Box
@@ -107,9 +134,7 @@ const Dashboard: NextPage = () => {
               </EaseInOutDiv>
             </Box>
           </Grid.Col>
-          {loading && (
-            <CircularLoading />
-          )}
+          {loading && <CircularLoading />}
           {!loading && data && (
             <Grid.Col span={8} p="xl">
               <FadeInDiv>
@@ -125,58 +150,68 @@ const Dashboard: NextPage = () => {
               </FadeInDiv>
 
               <Box mb="sm">
-                <Grid>
-                  <Grid.Col span={3}>
-                    {data.analysis.map((el, index) => (
-                      <Box mb="sm" key={index}>
-                        <AnalysisStatCard
-                          title={el.name}
-                          value={el.value}
-                          trending={el.trend}
+                <EaseInOutDiv>
+                  <Grid>
+                    <Grid.Col span={3}>
+                      {data.analysis.map((el, index) => (
+                        <Box mb="sm" key={index}>
+                          <AnalysisStatCard
+                            title={el.name}
+                            value={el.value}
+                            trending={el.trend}
+                            onClick={() => setChart(el.name)}
+                          />
+                        </Box>
+                      ))}
+                    </Grid.Col>
+                    <Grid.Col span={9} p="lg">
+                      {chart ? (
+                        <RemoteDeviceStatsChart
+                          token={auth!.authState!.token}
+                          title={chart}
+                          deviceId={router.query.id as string}
+                          dataKey={chart}
                         />
-                      </Box>
-                    ))}
+                      ) : (
+                        <Title order={3}>Select a card</Title>
+                      )}
+                    </Grid.Col>
+                  </Grid>
+                </EaseInOutDiv>
+              </Box>
+
+              <FadeInDiv>
+                <Box mb="md">
+                  <Center>
+                    <Divider sx={{ width: '80%' }} />
+                  </Center>
+                </Box>
+              </FadeInDiv>
+              <FadeInDiv>
+                <Grid>
+                  <Grid.Col span={4}>
+                    <StateCard state={data.lastState} />
                   </Grid.Col>
-                  <Grid.Col span={9} p="lg">
-                    <RemoteDeviceStatsChart
-                      token=""
-                      title="Chart"
-                      deviceId="dsad"
-                      dataKey="Data"
+                  <Grid.Col span={4}>
+                    <Box
+                      sx={{
+                        height: '200px',
+                      }}
+                    >
+                      <PositionComponent
+                        latitude={data.lastLocation.latitude}
+                        longitude={data.lastLocation.longitude}
+                      />
+                    </Box>
+                  </Grid.Col>
+                  <Grid.Col span={4}>
+                    <TotalAlarmCard
+                      total={data.totalAlarms}
+                      onClick={() => console.log('Go to alarms')}
                     />
                   </Grid.Col>
                 </Grid>
-              </Box>
-
-              <Box mb="md">
-                <Center>
-                  <Divider sx={{ width: '80%' }} />
-                </Center>
-              </Box>
-
-              <Grid>
-                <Grid.Col span={4}>
-                  <StateCard state={data.lastState} />
-                </Grid.Col>
-                <Grid.Col span={4}>
-                  <Box
-                    sx={{
-                      height: '200px',
-                    }}
-                  >
-                    <PositionComponent
-                      latitude={data.lastLocation.latitude}
-                      longitude={data.lastLocation.longitude}
-                    />
-                  </Box>
-                </Grid.Col>
-                <Grid.Col span={4}>
-                  <TotalAlarmCard
-                    total={data.totalAlarms}
-                    onClick={() => console.log('Go to alarms')}
-                  />
-                </Grid.Col>
-              </Grid>
+              </FadeInDiv>
             </Grid.Col>
           )}
         </Grid>

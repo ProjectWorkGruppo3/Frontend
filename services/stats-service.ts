@@ -8,7 +8,7 @@ import {
   GeneralStatistics,
   GetChartDataProps,
   GetDailyStatisticsProps,
-  GetGeneralStatisticsProps
+  GetGeneralStatisticsProps,
 } from 'types/services/stats-service';
 import config from 'utils/config';
 

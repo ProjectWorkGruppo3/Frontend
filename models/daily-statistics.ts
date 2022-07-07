@@ -6,4 +6,3 @@ export type DailyStatistics = {
   geolocalizationData: GeolocalizationValue[];
   analysis: Analytic[];
 };
-

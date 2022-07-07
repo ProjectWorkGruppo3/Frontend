@@ -1,6 +1,5 @@
 export type GeolocalizationValue = {
-    total: number;
-    latitude: number;
-    longitude: number;
-  };
-  
+  total: number;
+  latitude: number;
+  longitude: number;
+};
