@@ -1,10 +1,13 @@
 import axios from 'axios';
 import { ServiceReturnType } from 'types/services/common-service';
-import { Device } from '../models';
+import { ChartData } from 'types/services/stats-service';
+import { Device } from '../models/device';
 import {
   AddNewDeviceProps,
-  GetDeviceDataProps,
+  GeneralDeviceData,
   GetDevicesProps,
+  GetDeviceStatisticChartDataProps,
+  GetGeneralDeviceDataProps,
 } from '../types/services/device-service';
 import config from '../utils/config';
 
@@ -40,24 +43,24 @@ const DeviceService = () => {
     }
   };
 
-  // TODO
-  const getDeviceData = async (props: GetDeviceDataProps) => {
-    const result = await axios.get(
-      `${config.API_URL}/users/${props.userId}/devices/${props.deviceId}`, //FIXME
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: props.token,
-        },
-        validateStatus: () => true,
-      }
-    );
+  // // TODO
+  // const getDeviceData = async (props: GetDeviceDataProps) => {
+  //   const result = await axios.get(
+  //     `${config.API_URL}/users/${props.userId}/devices/${props.deviceId}`, //FIXME
+  //     {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: props.token,
+  //       },
+  //       validateStatus: () => true,
+  //     }
+  //   );
 
-    if (result.status >= 400) {
-      console.log(result.data);
-      throw new Error(result.data['message'] ?? 'Somethin wrong happened');
-    }
-  };
+  //   if (result.status >= 400) {
+  //     console.log(result.data);
+  //     throw new Error(result.data['message'] ?? 'Somethin wrong happened');
+  //   }
+  // };
 
   const addNewDevice = async (
     props: AddNewDeviceProps
@@ -95,9 +98,67 @@ const DeviceService = () => {
     }
   };
 
+  const getGeneralDeviceData = async (
+    props: GetGeneralDeviceDataProps
+  ): Promise<ServiceReturnType<GeneralDeviceData | null>> => {
+    try {
+      const result = await axios.get(
+        `${config.API_URL}/UserDeviceData/${props.deviceId}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${props.token}`,
+          },
+        }
+      );
+
+      const data = result.data as GeneralDeviceData;
+
+      return {
+        data: data,
+        error: null,
+      };
+    } catch (error) {
+      return {
+        data: null,
+        error: error,
+      };
+    }
+  };
+
+  const getDeviceStatisticChartData = async (
+    props: GetDeviceStatisticChartDataProps
+  ): Promise<ServiceReturnType<ChartData[] | null>> => {
+    try {
+      const result = await axios.get(
+        `${config.API_URL}/UserDeviceData/${props.deviceId}/${props.statisticName}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${props.token}`,
+          },
+        }
+      );
+
+      const data = result.data as ChartData[];
+
+      return {
+        data: data,
+        error: null,
+      };
+    } catch (error) {
+      return {
+        data: null,
+        error: error,
+      };
+    }
+  };
+
   return {
     getDevices,
     addNewDevice,
+    getGeneralDeviceData,
+    getDeviceStatisticChartData,
   };
 };
 

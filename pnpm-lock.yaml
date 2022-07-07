@@ -24,6 +24,7 @@ specifiers:
   react-chartjs-2: 4.2.0
   react-dom: 18.1.0
   react-icons: ^4.4.0
+  react-infinite-scroll-component: ^6.1.0
   react-leaflet: ^4.0.0
   react-spring: ^9.4.5
   react-toastify: ^9.0.4
@@ -47,6 +48,7 @@ dependencies:
   react-chartjs-2: 4.2.0_react@18.1.0
   react-dom: 18.1.0_react@18.1.0
   react-icons: 4.4.0_react@18.1.0
+  react-infinite-scroll-component: 6.1.0_react@18.1.0
   react-leaflet: 4.0.0_7oc3rxsfz6gd4kfck6cfsvv34q
   react-spring: 9.4.5_ef5jwxihqo6n7gxfmzogljlgcm
   react-toastify: 9.0.4_ef5jwxihqo6n7gxfmzogljlgcm
@@ -3617,6 +3619,18 @@ packages:
       react: 18.1.0
     dev: false
 
+  /react-infinite-scroll-component/6.1.0_react@18.1.0:
+    resolution:
+      {
+        integrity: sha512-SQu5nCqy8DxQWpnUVLx7V7b7LcA37aM7tvoWjTLZp1dk6EJibM5/4EJKzOnl07/BsM1Y40sKLuqjCwwH/xV0TQ==,
+      }
+    peerDependencies:
+      react: '>=16.0.0'
+    dependencies:
+      react: 18.1.0
+      throttle-debounce: 2.3.0
+    dev: false
+
   /react-is/16.13.1:
     resolution:
       {
@@ -4117,6 +4131,14 @@ packages:
         integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==,
       }
     dev: true
+
+  /throttle-debounce/2.3.0:
+    resolution:
+      {
+        integrity: sha512-H7oLPV0P7+jgvrk+6mwwwBDmxTaxnu9HMXmloNLXwnNO0ZxZ31Orah2n8lU1eMPvsaowP2CX+USCgyovXfdOFQ==,
+      }
+    engines: { node: '>=8' }
+    dev: false
 
   /through/2.3.8:
     resolution:
