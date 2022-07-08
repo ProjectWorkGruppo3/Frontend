@@ -5,7 +5,7 @@ import {
   DeleteAdminUserProps,
   GetAdminUserProps,
   GetAdminUsersProps,
-  UpdateAdminUserProps,
+  UpdateAdminUserProps
 } from '../types/services/admin-service';
 import { ServiceReturnType } from '../types/services/common-service';
 import config from '../utils/config';
@@ -67,7 +67,6 @@ const AdminService = () => {
   const addAdminUser = async (
     props: AddAdminUserProps
   ): Promise<ServiceReturnType<AdminUser | null>> => {
-    // FIXME add profilepic
     try {
       const response = await axios.post(
         `${config.API_URL}/Admins/`,

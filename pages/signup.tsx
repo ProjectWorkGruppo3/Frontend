@@ -15,7 +15,7 @@ import { DatePicker } from '@mantine/dates';
 import type { NextPage } from 'next';
 
 import { FormList, formList, useForm } from '@mantine/form';
-import { validateEmail } from '../utils/validations';
+import { validateEmail, validatePassword } from '../utils/validations';
 
 import Head from 'next/head';
 import Image from 'next/image';
@@ -74,10 +74,8 @@ const SignUp: NextPage = () => {
       name: (value) => (value.length !== 0 ? null : 'Please, type the name'),
       surname: (value) =>
         value.length !== 0 ? null : 'Please, type the surname',
-      email: (value) =>
-        validateEmail(value) ? null : 'Please, type a valid email',
-      password: (value) =>
-        value.length !== 0 ? null : 'Please, type the password',
+      email: (value) => validateEmail(value),
+      password: (value) => validatePassword(value),
       confirmPassword: (value, values) =>
         value.length === 0
           ? 'Please, type the password'

@@ -44,7 +44,6 @@ export default function Profile() {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
   const [saving, setSaving] = useState<boolean>(false);
-  // TODO: Add backend
 
   const formHandler = useForm<FormProps>({
     initialValues: {
@@ -148,8 +147,6 @@ export default function Profile() {
       setSaving(false);
     }
   };
-
-  // TODO: Find an awesome library that offers some cute alert / dialogs
 
   const handleReset = async () => {
     if (window.confirm('Are you sure you want to discard your changes?')) {
