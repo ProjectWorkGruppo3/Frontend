@@ -300,7 +300,7 @@ const SignUp: NextPage = () => {
                       <Title order={5}>Emergency Contacts</Title>
                       <Divider mb="xs" />
                       <Text color="var(--p-color)" size='sm' mb="xs">
-                        Emergency contacts receive alarm notification, it's recommended to put almost one but you can add one after
+                        Emergency contacts receive alarm notification, it&apos;s recommended to put almost one but you can add one after
                       </Text>
                       <Grid>
                         {fields.map((el, index) => (

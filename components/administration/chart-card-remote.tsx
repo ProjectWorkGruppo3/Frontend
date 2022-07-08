@@ -5,7 +5,7 @@ import {
   AnimatedGrid,
   AnimatedLineSeries,
   Tooltip,
-  XYChart,
+  XYChart
 } from '@visx/xychart';
 import { FadeInDiv } from 'animations';
 import { useEffect, useState } from 'react';
@@ -44,7 +44,7 @@ export const ChartCardRemote = (props: ChartCardRemoteProps) => {
     };
 
     fetchData();
-  }, [props.dataKey]);
+  }, [props.dataKey, props.token]);
 
   const accessors = {
     xAccessor: (d: any) => d.x,

@@ -4,7 +4,7 @@ import {
   AnimatedGrid,
   AnimatedLineSeries,
   Tooltip,
-  XYChart,
+  XYChart
 } from '@visx/xychart';
 import { useCallback, useEffect, useState } from 'react';
 import deviceService from 'services/device-service';
@@ -22,6 +22,18 @@ export const RemoteDeviceStatsChart = (props: RemoteDeviceStatsChartProps) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [chartData, setChartData] = useState<ChartData[]>();
   const [fetchError, setFetchError] = useState<string>();
+
+  const fetchNew = useCallback(async () => {
+    const { data, error } = await deviceService.getDeviceStatisticChartData({
+      token: props.token,
+      statisticName: props.dataKey,
+      deviceId: props.deviceId,
+    });
+
+    if (data) {
+      setChartData(data!);
+    }
+  }, [props.dataKey, props.token, props.deviceId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,19 +65,9 @@ export const RemoteDeviceStatsChart = (props: RemoteDeviceStatsChartProps) => {
     return () => {
       clearInterval(intervalFetch);
     };
-  }, [props.dataKey]);
+  }, [props.dataKey, fetchNew, props.deviceId, props.token]);
 
-  const fetchNew = useCallback(async () => {
-    const { data, error } = await deviceService.getDeviceStatisticChartData({
-      token: props.token,
-      statisticName: props.dataKey,
-      deviceId: props.deviceId,
-    });
-
-    if (data) {
-      setChartData(data!);
-    }
-  }, []);
+  
 
   const accessors = {
     xAccessor: (d: any) => d.x,

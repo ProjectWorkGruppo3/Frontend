@@ -3,7 +3,7 @@ import { CircularLoading, Header } from '@components/common';
 import {
   RemoteDeviceStatsChart,
   StateCard,
-  TotalAlarmCard,
+  TotalAlarmCard
 } from '@components/dashboard';
 import { Box, Center, Divider, Grid, Title } from '@mantine/core';
 import { EaseInOutDiv, FadeInDiv, Floating, StaggerDiv } from 'animations';
@@ -35,6 +35,21 @@ const Dashboard: NextPage = () => {
       router.push('/login');
     }
   }, [auth, router]);
+
+  const fetchNew = useCallback(async () => {
+    if (auth && auth.authState) {
+      const { id } = router.query;
+
+      const { data, error } = await DeviceService.getGeneralDeviceData({
+        token: auth.authState.token,
+        deviceId: id as string,
+      });
+
+      if (data) {
+        setData(data);
+      }
+    }
+  }, [auth, router.query]);
 
   useEffect(() => {
     const fetchDevices = async () => {
@@ -82,22 +97,9 @@ const Dashboard: NextPage = () => {
     return () => {
       clearInterval(intervalFetch);
     };
-  }, [loading, auth]);
+  }, [loading, auth, fetchNew, router]);
 
-  const fetchNew = useCallback(async () => {
-    if (auth && auth.authState) {
-      const { id } = router.query;
 
-      const { data, error } = await DeviceService.getGeneralDeviceData({
-        token: auth.authState.token,
-        deviceId: id as string,
-      });
-
-      if (data) {
-        setData(data);
-      }
-    }
-  }, []);
 
   return (
     <StaggerDiv>
