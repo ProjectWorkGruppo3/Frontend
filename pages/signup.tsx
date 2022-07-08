@@ -23,7 +23,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/auth-context';
 
-import { EmergencyContactInput } from '@components/signup';
+import { EmergencyContactInput } from '@components/common';
 import { FadeInDiv, StaggerDiv } from 'animations';
 import Link from 'next/link';
 import AuthService from 'services/auth-service';
@@ -100,19 +100,14 @@ const SignUp: NextPage = () => {
         return value.length !== 0 ? null : 'Please, insert a valid birthday';
       },
       contacts: {
-        email: (value, values) => {
-          if(values.contacts.length === 0) {
-            return 'Please add almost one emergency contact';
-          }
-          return validateEmail(value) ? null : 'Please, type a valid email';
-        }
+        email: (value) => validateEmail(value) ? null : 'Please, type a valid email'
       },
     },
   });
 
   const fields = formHandler.values.contacts.map((item, index) => (
     <EmergencyContactInput
-      key={index}
+      key={item.email}
       index={index}
       inputProps={formHandler.getListInputProps('contacts', index, 'email')}
       onRemoveItem={() => formHandler.removeListItem('contacts', index)}
