@@ -24,6 +24,7 @@ export interface SignUpProps {
   birthday: Date;
   height: number;
   weight: number;
+  contacts: string[];
 }
 
 export interface ForgotPasswordProps {

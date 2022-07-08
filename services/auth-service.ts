@@ -4,7 +4,7 @@ import {
   ForgotPasswordProps,
   LoginProps,
   LoginResult,
-  SignUpProps,
+  SignUpProps
 } from '../types/services/auth-service';
 import config from '../utils/config';
 
@@ -60,6 +60,7 @@ const AuthService = () => {
           weight: props.weight,
           height: props.height,
           dayOfBirth: props.birthday,
+          emergencyContacts: props.contacts
         },
         {
           headers: {
