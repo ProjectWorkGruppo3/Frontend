@@ -5,7 +5,7 @@ import {
   DeleteAdminUserProps,
   GetAdminUserProps,
   GetAdminUsersProps,
-  UpdateAdminUserProps
+  UpdateAdminUserProps,
 } from '../types/services/admin-service';
 import { ServiceReturnType } from '../types/services/common-service';
 import config from '../utils/config';

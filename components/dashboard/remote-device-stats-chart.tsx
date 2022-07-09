@@ -4,7 +4,7 @@ import {
   AnimatedGrid,
   AnimatedLineSeries,
   Tooltip,
-  XYChart
+  XYChart,
 } from '@visx/xychart';
 import { useCallback, useEffect, useState } from 'react';
 import deviceService from 'services/device-service';
@@ -66,8 +66,6 @@ export const RemoteDeviceStatsChart = (props: RemoteDeviceStatsChartProps) => {
       clearInterval(intervalFetch);
     };
   }, [props.dataKey, fetchNew, props.deviceId, props.token]);
-
-  
 
   const accessors = {
     xAccessor: (d: any) => d.x,

@@ -3,7 +3,7 @@ import { CircularLoading, Header } from '@components/common';
 import {
   RemoteDeviceStatsChart,
   StateCard,
-  TotalAlarmCard
+  TotalAlarmCard,
 } from '@components/dashboard';
 import { Box, Center, Divider, Grid, Title } from '@mantine/core';
 import { EaseInOutDiv, FadeInDiv, Floating, StaggerDiv } from 'animations';
@@ -98,8 +98,6 @@ const Dashboard: NextPage = () => {
       clearInterval(intervalFetch);
     };
   }, [loading, auth, fetchNew, router]);
-
-
 
   return (
     <StaggerDiv>

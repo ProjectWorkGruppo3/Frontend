@@ -6,7 +6,7 @@ import {
   Modal,
   PasswordInput,
   TextInput,
-  Title
+  Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState } from 'react';

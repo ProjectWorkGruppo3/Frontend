@@ -6,7 +6,7 @@ import {
   EaseInOutDiv,
   FadeInDiv,
   Floating,
-  StaggerDiv
+  StaggerDiv,
 } from 'animations';
 import { useAuth } from 'context/auth-context';
 import { NextPage } from 'next';

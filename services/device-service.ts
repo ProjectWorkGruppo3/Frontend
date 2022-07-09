@@ -7,7 +7,7 @@ import {
   GeneralDeviceData,
   GetDevicesProps,
   GetDeviceStatisticChartDataProps,
-  GetGeneralDeviceDataProps
+  GetGeneralDeviceDataProps,
 } from '../types/services/device-service';
 import config from '../utils/config';
 

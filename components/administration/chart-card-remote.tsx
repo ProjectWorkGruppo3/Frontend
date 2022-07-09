@@ -5,7 +5,7 @@ import {
   AnimatedGrid,
   AnimatedLineSeries,
   Tooltip,
-  XYChart
+  XYChart,
 } from '@visx/xychart';
 import { FadeInDiv } from 'animations';
 import { useEffect, useState } from 'react';

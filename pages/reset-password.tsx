@@ -8,7 +8,7 @@ import {
   MediaQuery,
   PasswordInput,
   Text,
-  Title
+  Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { EaseInOutDiv, FadeInDiv, Floating, StaggerDiv } from 'animations';
@@ -25,7 +25,9 @@ interface FormProps {
   confirmPassword: string;
 }
 
-const RecoverPassword: NextPage<{ recoverToken: string }> = ({ recoverToken }) => {
+const RecoverPassword: NextPage<{ recoverToken: string }> = ({
+  recoverToken,
+}) => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
@@ -48,19 +50,17 @@ const RecoverPassword: NextPage<{ recoverToken: string }> = ({ recoverToken }) =
   const onSubmit = async (values: FormProps) => {
     setLoading(true);
 
-    const { error } = await authService.resetPassword({ 
+    const { error } = await authService.resetPassword({
       recoverToken: recoverToken,
-      password: values.password
+      password: values.password,
     });
 
-    if(error) {
-      notifyError(error["message"] ?? "Something went wrong");
+    if (error) {
+      notifyError(error['message'] ?? 'Something went wrong');
       setLoading(false);
     } else {
-      router.push('/login').then(_ => setLoading(false));
+      router.push('/login').then((_) => setLoading(false));
     }
-
-    
   };
 
   return (
@@ -88,7 +88,9 @@ const RecoverPassword: NextPage<{ recoverToken: string }> = ({ recoverToken }) =
                     </Group>
                   </Box>
                   <Box mb="xs">
-                    <Text color="var(--p-color)">Please type the new password</Text>
+                    <Text color="var(--p-color)">
+                      Please type the new password
+                    </Text>
                   </Box>
                   <form onSubmit={formHandler.onSubmit(onSubmit)}>
                     <PasswordInput
@@ -114,7 +116,7 @@ const RecoverPassword: NextPage<{ recoverToken: string }> = ({ recoverToken }) =
                           borderColor: 'var(--p-color)',
                         },
                       }}
-                      mb='sm'
+                      mb="sm"
                     />
 
                     <Box mb="lg">
@@ -173,25 +175,24 @@ const RecoverPassword: NextPage<{ recoverToken: string }> = ({ recoverToken }) =
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const { recoverToken } = query;
 
-    const { recoverToken } = query;
-
-    if(!recoverToken) {
-        return {
-            props: {},
-            redirect: {
-                destination: '/'
-            }
-        }
-    }
-
+  if (!recoverToken) {
     return {
-        props: {
-            data: {
-                recoverToken: recoverToken
-            }
-        }
-    }
-}
+      props: {},
+      redirect: {
+        destination: '/',
+      },
+    };
+  }
+
+  return {
+    props: {
+      data: {
+        recoverToken: recoverToken,
+      },
+    },
+  };
+};
 
 export default RecoverPassword;

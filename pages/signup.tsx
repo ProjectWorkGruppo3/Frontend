@@ -9,7 +9,7 @@ import {
   PasswordInput,
   Text,
   TextInput,
-  Title
+  Title,
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import type { NextPage } from 'next';
@@ -98,7 +98,8 @@ const SignUp: NextPage = () => {
         return value.length !== 0 ? null : 'Please, insert a valid birthday';
       },
       contacts: {
-        email: (value) => validateEmail(value) ? null : 'Please, type a valid email'
+        email: (value) =>
+          validateEmail(value) ? null : 'Please, type a valid email',
       },
     },
   });
@@ -113,7 +114,7 @@ const SignUp: NextPage = () => {
   ));
 
   const onSubmit = async (props: FormProps) => {
-    const contacts = props.contacts.map(el => el.email);
+    const contacts = props.contacts.map((el) => el.email);
     setLoading(true);
 
     const { data: registered, error } = await AuthService.signup({
@@ -125,7 +126,7 @@ const SignUp: NextPage = () => {
       height: parseInt(props.height),
       weight: parseInt(props.weight),
       job: props.job,
-      contacts: contacts
+      contacts: contacts,
     });
 
     if (error) {
@@ -297,8 +298,9 @@ const SignUp: NextPage = () => {
                     <Grid.Col>
                       <Title order={5}>Emergency Contacts</Title>
                       <Divider mb="xs" />
-                      <Text color="var(--p-color)" size='sm' mb="xs">
-                        Emergency contacts receive alarm notification, it&apos;s recommended to put almost one but you can add one after
+                      <Text color="var(--p-color)" size="sm" mb="xs">
+                        Emergency contacts receive alarm notification, it&apos;s
+                        recommended to put almost one but you can add one after
                       </Text>
                       <Grid>
                         {fields.map((el, index) => (
@@ -322,7 +324,9 @@ const SignUp: NextPage = () => {
                                 })
                               }
                             >
-                              <Text color="var(--q-color)">Add Emergency Contact</Text>
+                              <Text color="var(--q-color)">
+                                Add Emergency Contact
+                              </Text>
                             </Button>
                           </Center>
                         </Grid.Col>
@@ -372,14 +376,7 @@ const SignUp: NextPage = () => {
               </Box>
             </FadeInDiv>
           </Grid.Col>
-          <Grid.Col
-            xs={0}
-            sm={0}
-            md={0}
-            lg={6}
-            xl={6}
-            p={0}
-          >
+          <Grid.Col xs={0} sm={0} md={0} lg={6} xl={6} p={0}>
             <MediaQuery query="(max-width: 1200px)" styles={{ width: 0 }}>
               <Box
                 sx={{
@@ -401,16 +398,16 @@ const SignUp: NextPage = () => {
                       layout="responsive"
                       alt="logo"
                     />
-                    <Text 
-                      align="center" 
-                      mt='sm'
-                      weight='500'
-                      size='xl'
+                    <Text
+                      align="center"
+                      mt="sm"
+                      weight="500"
+                      size="xl"
                       sx={{
-                        letterSpacing: '1px'
+                        letterSpacing: '1px',
                       }}
                     >
-                      Seren Up, We Trust 
+                      Seren Up, We Trust
                     </Text>
                   </Box>
                 </Center>
@@ -432,4 +429,3 @@ function notifyError(arg0: any) {
 function notifySuccess(arg0: string) {
   throw new Error('Function not implemented.');
 }
-

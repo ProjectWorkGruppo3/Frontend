@@ -2,7 +2,7 @@ import {
   CircularLoading,
   EmergencyContactInput,
   Header,
-  NotificationToast
+  NotificationToast,
 } from '@components/common';
 import {
   Box,
@@ -14,7 +14,7 @@ import {
   NumberInput,
   Text,
   TextInput,
-  Title
+  Title,
 } from '@mantine/core';
 import { formList, FormList, useForm } from '@mantine/form';
 import { EaseInOutDiv, FadeInDiv, Floating, StaggerDiv } from 'animations';
@@ -265,8 +265,8 @@ export default function Profile() {
                         <Title order={5}>Emergency Contacts</Title>
                         <Divider mb="xs" />
                         <Text color="var(--p-color)" size="sm" mb="xs">
-                          Emergency contacts receive alarm notification, it&apos;s
-                          recommended to put almost one
+                          Emergency contacts receive alarm notification,
+                          it&apos;s recommended to put almost one
                         </Text>
                         <Grid>
                           {fields.map((el, index) => (

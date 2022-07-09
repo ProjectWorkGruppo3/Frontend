@@ -10,11 +10,11 @@ export interface EmergencyContactInputProps {
 
 export const EmergencyContactInput = (props: EmergencyContactInputProps) => {
   return (
-    <Grid align='center' py={0}>
+    <Grid align="center" py={0}>
       <Grid.Col span={11}>
         <TextInput
-            p={0}
-          placeholder={`Email Emergency Contact ${props.index+1}`}
+          p={0}
+          placeholder={`Email Emergency Contact ${props.index + 1}`}
           {...props.inputProps}
           sx={{
             'input:focus': {
@@ -24,12 +24,8 @@ export const EmergencyContactInput = (props: EmergencyContactInputProps) => {
         />
       </Grid.Col>
       <Grid.Col span={1} p={0}>
-        <ActionIcon
-            color="red"
-            variant="hover"
-            onClick={props.onRemoveItem}
-        >
-            <FiTrash size={16} />
+        <ActionIcon color="red" variant="hover" onClick={props.onRemoveItem}>
+          <FiTrash size={16} />
         </ActionIcon>
       </Grid.Col>
     </Grid>
