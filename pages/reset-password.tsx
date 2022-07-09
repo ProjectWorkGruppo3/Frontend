@@ -1,61 +1,66 @@
 import { NotificationToast } from '@components/common';
 import {
-  ActionIcon,
   Box,
   Button,
   Center,
   Grid,
   Group,
   MediaQuery,
+  PasswordInput,
   Text,
-  TextInput,
-  Title,
+  Title
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { FadeInDiv, StaggerDiv } from 'animations';
-import { NextPage } from 'next';
+import { EaseInOutDiv, FadeInDiv, Floating, StaggerDiv } from 'animations';
+import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { IoIosArrowBack } from 'react-icons/io';
 import authService from 'services/auth-service';
-import { notifyError, notifySuccess } from 'utils/notify-toast';
-import { validateEmail } from 'utils/validations';
+import { notifyError } from 'utils/notify-toast';
+import { validatePassword } from 'utils/validations';
 
 interface FormProps {
-  email: string;
+  password: string;
+  confirmPassword: string;
 }
 
-const ForgotPassword: NextPage = () => {
+const RecoverPassword: NextPage<{ recoverToken: string }> = ({ recoverToken }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
   const formHandler = useForm<FormProps>({
     initialValues: {
-      email: '',
+      password: '',
+      confirmPassword: '',
     },
     validate: {
-      email: (value) => validateEmail(value),
+      password: (value) => validatePassword(value),
+      confirmPassword: (value, values) =>
+        value.length === 0
+          ? 'Please, type the password'
+          : value === values.password
+          ? null
+          : 'Passwords not coincide',
     },
   });
 
   const onSubmit = async (values: FormProps) => {
     setLoading(true);
 
-    const { data: sended, error } = await authService.forgotPassword({
-      email: values.email,
+    const { error } = await authService.resetPassword({ 
+      recoverToken: recoverToken,
+      password: values.password
     });
 
-    if (error) {
-      notifyError('Something went wrong');
+    if(error) {
+      notifyError(error["message"] ?? "Something went wrong");
+      setLoading(false);
     } else {
-      notifySuccess('Reset e-mail sended. Check your mail');
+      router.push('/login').then(_ => setLoading(false));
     }
 
-    setTimeout(() => router.push('/login'), 2000);
-
-    setLoading(false);
+    
   };
 
   return (
@@ -77,29 +82,39 @@ const ForgotPassword: NextPage = () => {
                 <Box px="xl">
                   <Box mb="1%">
                     <Group spacing="xs">
-                      <ActionIcon onClick={() => router.push('/login')}>
-                        <IoIosArrowBack />
-                      </ActionIcon>
                       <Title order={2} align="left">
-                        Recover Password
+                        Reset Password
                       </Title>
                     </Group>
                   </Box>
                   <Box mb="xs">
-                    <Text color="var(--p-color)">Please enter your e-mail</Text>
+                    <Text color="var(--p-color)">Please type the new password</Text>
                   </Box>
                   <form onSubmit={formHandler.onSubmit(onSubmit)}>
-                    <TextInput
-                      id="email-input"
-                      label="E-mail"
-                      placeholder="Enter your e-mail"
-                      mb="md"
-                      {...formHandler.getInputProps('email')}
+                    <PasswordInput
+                      id="pwd-input"
+                      label="Password"
+                      placeholder="Enter the password"
+                      {...formHandler.getInputProps('password')}
                       sx={{
-                        'input:focus': {
+                        'div:focus-within': {
                           borderColor: 'var(--p-color)',
                         },
                       }}
+                      mb="sm"
+                    />
+
+                    <PasswordInput
+                      id="confirm-pwd-input"
+                      label="Confirm Password"
+                      placeholder="Enter the password"
+                      {...formHandler.getInputProps('confirmPassword')}
+                      sx={{
+                        'div:focus-within': {
+                          borderColor: 'var(--p-color)',
+                        },
+                      }}
+                      mb='sm'
                     />
 
                     <Box mb="lg">
@@ -116,7 +131,7 @@ const ForgotPassword: NextPage = () => {
                         }}
                         loading={loading}
                       >
-                        <Text color="var(--q-color)">Send Reset Mail</Text>
+                        <Text color="var(--q-color)">Recover Password</Text>
                       </Button>
                     </Box>
                   </form>
@@ -131,23 +146,22 @@ const ForgotPassword: NextPage = () => {
                   backgroundColor: 'var(--fi-color)',
                   height: '100%',
                 }}
+                p="lg"
+                mb="xl"
               >
-                <Center sx={{ height: '90%' }}>
-                  <Box
-                    sx={{
-                      width: '60%',
-                    }}
-                    my="md"
-                  >
-                    <Image
-                      src="/assets/logo.png"
-                      width="100%"
-                      height="25%"
-                      layout="responsive"
-                      alt="logo"
-                    />
-                  </Box>
-                </Center>
+                <EaseInOutDiv>
+                  <Title order={3}>Seren-Up</Title>
+                  <Center>
+                    <Floating>
+                      <Box py="xl">
+                        <img
+                          src="/assets/recover-password.png"
+                          alt="illustration-image"
+                        />
+                      </Box>
+                    </Floating>
+                  </Center>
+                </EaseInOutDiv>
               </Box>
             </MediaQuery>
           </Grid.Col>
@@ -158,4 +172,26 @@ const ForgotPassword: NextPage = () => {
   );
 };
 
-export default ForgotPassword;
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+
+    const { recoverToken } = query;
+
+    if(!recoverToken) {
+        return {
+            props: {},
+            redirect: {
+                destination: '/'
+            }
+        }
+    }
+
+    return {
+        props: {
+            data: {
+                recoverToken: recoverToken
+            }
+        }
+    }
+}
+
+export default RecoverPassword;
