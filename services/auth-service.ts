@@ -5,7 +5,7 @@ import {
   LoginProps,
   LoginResult,
   ResetPasswordProps,
-  SignUpProps
+  SignUpProps,
 } from '../types/services/auth-service';
 import config from '../utils/config';
 
@@ -114,10 +114,11 @@ const AuthService = () => {
   ): Promise<ServiceReturnType<boolean>> => {
     try {
       await axios.post(
-        `${config.API_URL}/Users/change-password`, // FIXME
+        `${config.API_URL}/Users/confirm-password-reset`,
         {
           token: props.recoverToken,
-          password: props.password,
+          newPassword: props.password,
+          email: props.email,
         },
         {
           headers: {
@@ -131,6 +132,7 @@ const AuthService = () => {
         error: null,
       };
     } catch (error: any) {
+      console.log(error);
       return {
         data: false,
         error: error,

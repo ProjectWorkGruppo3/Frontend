@@ -25,8 +25,9 @@ interface FormProps {
   confirmPassword: string;
 }
 
-const RecoverPassword: NextPage<{ recoverToken: string }> = ({
+const RecoverPassword: NextPage<{ recoverToken: string; email: string }> = ({
   recoverToken,
+  email,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -49,10 +50,11 @@ const RecoverPassword: NextPage<{ recoverToken: string }> = ({
 
   const onSubmit = async (values: FormProps) => {
     setLoading(true);
-
+    console.log(recoverToken, email);
     const { error } = await authService.resetPassword({
       recoverToken: recoverToken,
       password: values.password,
+      email: email,
     });
 
     if (error) {
@@ -175,9 +177,11 @@ const RecoverPassword: NextPage<{ recoverToken: string }> = ({
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { recoverToken } = query;
+  const { recoverToken, email } = query;
 
-  if (!recoverToken) {
+  console.log(recoverToken, email);
+
+  if (!recoverToken || !email) {
     return {
       props: {},
       redirect: {
@@ -188,9 +192,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   return {
     props: {
-      data: {
-        recoverToken: recoverToken,
-      },
+      recoverToken: recoverToken,
+      email: email,
     },
   };
 };

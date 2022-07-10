@@ -34,4 +34,5 @@ export interface ForgotPasswordProps {
 export interface ResetPasswordProps {
   recoverToken: string;
   password: string;
+  email: string;
 }

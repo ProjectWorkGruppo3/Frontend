@@ -8,7 +8,7 @@ import {
   PasswordInput,
   Text,
   TextInput,
-  Title
+  Title,
 } from '@mantine/core';
 import type { NextPage } from 'next';
 

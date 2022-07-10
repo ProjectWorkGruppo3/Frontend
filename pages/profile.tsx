@@ -2,7 +2,7 @@ import {
   CircularLoading,
   EmergencyContactInput,
   Header,
-  NotificationToast
+  NotificationToast,
 } from '@components/common';
 import {
   Box,
@@ -14,7 +14,7 @@ import {
   NumberInput,
   Text,
   TextInput,
-  Title
+  Title,
 } from '@mantine/core';
 import { formList, FormList, useForm } from '@mantine/form';
 import { EaseInOutDiv, FadeInDiv, Floating, StaggerDiv } from 'animations';
@@ -93,7 +93,11 @@ export default function Profile() {
               moment().diff(moment(authContext.authState.user.birthday))
             )
             .asYears(),
-          contacts: formList(authContext.authState.user.emergencyContacts.map(el => ({ email: el })))
+          contacts: formList(
+            authContext.authState.user.emergencyContacts.map((el) => ({
+              email: el,
+            }))
+          ),
         });
 
         setLoading(false);
@@ -120,7 +124,7 @@ export default function Profile() {
           height: value.height,
           email: user.email,
           birthday: moment(user.birthday).subtract(value.age, 'years').toDate(),
-          emergencyContacts: value.contacts.map(el => el.email)
+          emergencyContacts: value.contacts.map((el) => el.email),
         },
       });
 
@@ -137,7 +141,7 @@ export default function Profile() {
             birthday: moment(user.birthday)
               .subtract(value.age, 'years')
               .toDate(),
-            emergencyContacts: value.contacts.map(el => el.email)
+            emergencyContacts: value.contacts.map((el) => el.email),
           },
         });
 
