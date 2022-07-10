@@ -5,7 +5,7 @@ import {
   LoginProps,
   LoginResult,
   ResetPasswordProps,
-  SignUpProps,
+  SignUpProps
 } from '../types/services/auth-service';
 import config from '../utils/config';
 
@@ -32,7 +32,6 @@ const AuthService = () => {
       if (result.status === 401) {
         throw new Error('Credentials are not correct');
       }
-
       const loginResult = result.data as LoginResult;
 
       return {

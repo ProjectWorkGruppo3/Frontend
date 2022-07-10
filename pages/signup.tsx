@@ -9,7 +9,7 @@ import {
   PasswordInput,
   Text,
   TextInput,
-  Title,
+  Title
 } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import type { NextPage } from 'next';
@@ -27,6 +27,7 @@ import { EmergencyContactInput } from '@components/common';
 import { FadeInDiv, StaggerDiv } from 'animations';
 import Link from 'next/link';
 import AuthService from 'services/auth-service';
+import { notifyError, notifySuccess } from 'utils/notify-toast';
 import { NotificationToast } from '../components/common';
 
 interface FormProps {
@@ -83,13 +84,11 @@ const SignUp: NextPage = () => {
           ? null
           : 'Passwords not coincide',
       height: (value) => {
-        console.log(parseInt(value));
         return !isNaN(parseInt(value)) && parseInt(value) !== 0
           ? null
           : 'Please, insert a valid height';
       },
       weight: (value) => {
-        console.log(parseInt(value));
         return !isNaN(parseInt(value)) && parseInt(value) !== 0
           ? null
           : 'Please, insert a valid weight';
@@ -98,15 +97,14 @@ const SignUp: NextPage = () => {
         return value.length !== 0 ? null : 'Please, insert a valid birthday';
       },
       contacts: {
-        email: (value) =>
-          validateEmail(value) ? null : 'Please, type a valid email',
+        email: (value) => validateEmail(value),
       },
     },
   });
 
   const fields = formHandler.values.contacts.map((item, index) => (
     <EmergencyContactInput
-      key={item.email}
+      key={index}
       index={index}
       inputProps={formHandler.getListInputProps('contacts', index, 'email')}
       onRemoveItem={() => formHandler.removeListItem('contacts', index)}
@@ -422,10 +420,3 @@ const SignUp: NextPage = () => {
 };
 
 export default SignUp;
-function notifyError(arg0: any) {
-  throw new Error('Function not implemented.');
-}
-
-function notifySuccess(arg0: string) {
-  throw new Error('Function not implemented.');
-}
