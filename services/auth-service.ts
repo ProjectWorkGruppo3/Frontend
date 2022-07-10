@@ -4,6 +4,7 @@ import {
   ForgotPasswordProps,
   LoginProps,
   LoginResult,
+  ResetPasswordProps,
   SignUpProps,
 } from '../types/services/auth-service';
 import config from '../utils/config';
@@ -31,7 +32,6 @@ const AuthService = () => {
       if (result.status === 401) {
         throw new Error('Credentials are not correct');
       }
-
       const loginResult = result.data as LoginResult;
 
       return {
@@ -60,6 +60,7 @@ const AuthService = () => {
           weight: props.weight,
           height: props.height,
           dayOfBirth: props.birthday,
+          emergencyContacts: props.contacts,
         },
         {
           headers: {
@@ -108,10 +109,42 @@ const AuthService = () => {
     }
   };
 
+  const resetPassword = async (
+    props: ResetPasswordProps
+  ): Promise<ServiceReturnType<boolean>> => {
+    try {
+      await axios.post(
+        `${config.API_URL}/Users/confirm-password-reset`,
+        {
+          token: props.recoverToken,
+          newPassword: props.password,
+          email: props.email,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      return {
+        data: true,
+        error: null,
+      };
+    } catch (error: any) {
+      console.log(error);
+      return {
+        data: false,
+        error: error,
+      };
+    }
+  };
+
   return {
     login,
     signup,
     forgotPassword,
+    resetPassword,
   };
 };
 

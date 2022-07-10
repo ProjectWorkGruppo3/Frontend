@@ -49,8 +49,6 @@ export const UserDetail = (props: UserDetailProps) => {
   });
 
   const onSubmit = async (values: FormProps) => {
-    console.log(values);
-
     setLoading(true);
 
     await props.onSave({

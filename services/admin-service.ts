@@ -67,7 +67,6 @@ const AdminService = () => {
   const addAdminUser = async (
     props: AddAdminUserProps
   ): Promise<ServiceReturnType<AdminUser | null>> => {
-    // FIXME add profilepic
     try {
       const response = await axios.post(
         `${config.API_URL}/Admins/`,

@@ -1,8 +1,14 @@
-import { CircularLoading, Header, NotificationToast } from '@components/common';
+import {
+  CircularLoading,
+  EmergencyContactInput,
+  Header,
+  NotificationToast,
+} from '@components/common';
 import {
   Box,
   Button,
   Center,
+  Divider,
   Grid,
   Group,
   NumberInput,
@@ -10,7 +16,7 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
-import { useForm } from '@mantine/form';
+import { formList, FormList, useForm } from '@mantine/form';
 import { EaseInOutDiv, FadeInDiv, Floating, StaggerDiv } from 'animations';
 import { useAuth } from 'context/auth-context';
 import moment from 'moment';
@@ -19,6 +25,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import userService from 'services/user-service';
 import { notifyError, notifySuccess } from 'utils/notify-toast';
+import { validateEmail } from 'utils/validations';
 
 interface FormProps {
   name: string;
@@ -27,6 +34,9 @@ interface FormProps {
   height: number;
   weight: number;
   age: number;
+  contacts: FormList<{
+    email: string;
+  }>;
 }
 
 export default function Profile() {
@@ -34,7 +44,6 @@ export default function Profile() {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
   const [saving, setSaving] = useState<boolean>(false);
-  // TODO: Add backend
 
   const formHandler = useForm<FormProps>({
     initialValues: {
@@ -44,6 +53,7 @@ export default function Profile() {
       height: 0,
       weight: 0,
       age: 0,
+      contacts: formList<{ email: string }>([]),
     },
 
     validate: {
@@ -53,6 +63,9 @@ export default function Profile() {
       height: (value) => (value !== 0 ? null : 'Height is required'),
       weight: (value) => (value !== 0 ? null : 'Height is required'),
       age: (value) => (value !== 0 ? null : 'Age is required'),
+      contacts: {
+        email: (value) => validateEmail(value),
+      },
     },
   });
 
@@ -80,6 +93,11 @@ export default function Profile() {
               moment().diff(moment(authContext.authState.user.birthday))
             )
             .asYears(),
+          contacts: formList(
+            authContext.authState.user.emergencyContacts.map((el) => ({
+              email: el,
+            }))
+          ),
         });
 
         setLoading(false);
@@ -106,6 +124,7 @@ export default function Profile() {
           height: value.height,
           email: user.email,
           birthday: moment(user.birthday).subtract(value.age, 'years').toDate(),
+          emergencyContacts: value.contacts.map((el) => el.email),
         },
       });
 
@@ -122,6 +141,7 @@ export default function Profile() {
             birthday: moment(user.birthday)
               .subtract(value.age, 'years')
               .toDate(),
+            emergencyContacts: value.contacts.map((el) => el.email),
           },
         });
 
@@ -133,13 +153,20 @@ export default function Profile() {
     }
   };
 
-  // TODO: Find an awesome library that offers some cute alert / dialogs
-
   const handleReset = async () => {
     if (window.confirm('Are you sure you want to discard your changes?')) {
       formHandler.reset();
     }
   };
+
+  const fields = formHandler.values.contacts.map((item, index) => (
+    <EmergencyContactInput
+      key={index}
+      index={index}
+      inputProps={formHandler.getListInputProps('contacts', index, 'email')}
+      onRemoveItem={() => formHandler.removeListItem('contacts', index)}
+    />
+  ));
 
   return (
     <StaggerDiv>
@@ -171,7 +198,7 @@ export default function Profile() {
                 </FadeInDiv>
                 <FadeInDiv>
                   <form onSubmit={formHandler.onSubmit(handleSubmit)}>
-                    <Grid mb="sm">
+                    <Grid mb="xl">
                       <Grid.Col span={12}>
                         <TextInput
                           id="name-input"
@@ -238,6 +265,43 @@ export default function Profile() {
                           }}
                           {...formHandler.getInputProps('height')}
                         />
+                      </Grid.Col>
+                      <Grid.Col span={12}>
+                        <Title order={5}>Emergency Contacts</Title>
+                        <Divider mb="xs" />
+                        <Text color="var(--p-color)" size="sm" mb="xs">
+                          Emergency contacts receive alarm notification,
+                          it&apos;s recommended to put almost one
+                        </Text>
+                        <Grid>
+                          {fields.map((el, index) => (
+                            <Grid.Col key={index}>{el}</Grid.Col>
+                          ))}
+
+                          <Grid.Col>
+                            <Center>
+                              <Button
+                                radius="sm"
+                                sx={{
+                                  backgroundColor: 'var(--p-color)',
+                                  ':hover': {
+                                    backgroundColor: 'var(--p-color)',
+                                    filter: 'brightness(85%)',
+                                  },
+                                }}
+                                onClick={() =>
+                                  formHandler.addListItem('contacts', {
+                                    email: '',
+                                  })
+                                }
+                              >
+                                <Text color="var(--q-color)">
+                                  Add Emergency Contact
+                                </Text>
+                              </Button>
+                            </Center>
+                          </Grid.Col>
+                        </Grid>
                       </Grid.Col>
                     </Grid>
 

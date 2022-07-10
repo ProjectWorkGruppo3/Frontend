@@ -36,6 +36,21 @@ const Dashboard: NextPage = () => {
     }
   }, [auth, router]);
 
+  const fetchNew = useCallback(async () => {
+    if (auth && auth.authState) {
+      const { id } = router.query;
+
+      const { data, error } = await DeviceService.getGeneralDeviceData({
+        token: auth.authState.token,
+        deviceId: id as string,
+      });
+
+      if (data) {
+        setData(data);
+      }
+    }
+  }, [auth, router.query]);
+
   useEffect(() => {
     const fetchDevices = async () => {
       if (auth && auth.authState) {
@@ -82,22 +97,7 @@ const Dashboard: NextPage = () => {
     return () => {
       clearInterval(intervalFetch);
     };
-  }, [loading, auth]);
-
-  const fetchNew = useCallback(async () => {
-    if (auth && auth.authState) {
-      const { id } = router.query;
-
-      const { data, error } = await DeviceService.getGeneralDeviceData({
-        token: auth.authState.token,
-        deviceId: id as string,
-      });
-
-      if (data) {
-        setData(data);
-      }
-    }
-  }, []);
+  }, [loading, auth, fetchNew, router]);
 
   return (
     <StaggerDiv>

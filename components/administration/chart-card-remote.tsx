@@ -44,7 +44,7 @@ export const ChartCardRemote = (props: ChartCardRemoteProps) => {
     };
 
     fetchData();
-  }, [props.dataKey]);
+  }, [props.dataKey, props.token]);
 
   const accessors = {
     xAccessor: (d: any) => d.x,

@@ -8,4 +8,5 @@ export type User = {
   weight: number;
   job: string;
   roles: string[];
+  emergencyContacts: string[];
 };

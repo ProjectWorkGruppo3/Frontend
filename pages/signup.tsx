@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Center,
+  Divider,
   Grid,
   MediaQuery,
   NumberInput,
@@ -13,20 +14,21 @@ import {
 import { DatePicker } from '@mantine/dates';
 import type { NextPage } from 'next';
 
-import { useForm } from '@mantine/form';
-import { validateEmail } from '../utils/validations';
+import { FormList, formList, useForm } from '@mantine/form';
+import { validateEmail, validatePassword } from '../utils/validations';
 
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/auth-context';
-import AuthService from '../services/auth-service';
 
+import { EmergencyContactInput } from '@components/common';
 import { FadeInDiv, StaggerDiv } from 'animations';
 import Link from 'next/link';
+import AuthService from 'services/auth-service';
+import { notifyError, notifySuccess } from 'utils/notify-toast';
 import { NotificationToast } from '../components/common';
-import { notifyError, notifySuccess } from '../utils/notify-toast';
 
 interface FormProps {
   name: string;
@@ -38,6 +40,9 @@ interface FormProps {
   weight: string;
   height: string;
   birthday: string;
+  contacts: FormList<{
+    email: string;
+  }>;
 }
 
 const SignUp: NextPage = () => {
@@ -64,15 +69,14 @@ const SignUp: NextPage = () => {
       birthday: '',
       height: '',
       weight: '',
+      contacts: formList<{ email: string }>([]),
     },
     validate: {
       name: (value) => (value.length !== 0 ? null : 'Please, type the name'),
       surname: (value) =>
         value.length !== 0 ? null : 'Please, type the surname',
-      email: (value) =>
-        validateEmail(value) ? null : 'Please, type a valid email',
-      password: (value) =>
-        value.length !== 0 ? null : 'Please, type the password',
+      email: (value) => validateEmail(value),
+      password: (value) => validatePassword(value),
       confirmPassword: (value, values) =>
         value.length === 0
           ? 'Please, type the password'
@@ -80,13 +84,11 @@ const SignUp: NextPage = () => {
           ? null
           : 'Passwords not coincide',
       height: (value) => {
-        console.log(parseInt(value));
         return !isNaN(parseInt(value)) && parseInt(value) !== 0
           ? null
           : 'Please, insert a valid height';
       },
       weight: (value) => {
-        console.log(parseInt(value));
         return !isNaN(parseInt(value)) && parseInt(value) !== 0
           ? null
           : 'Please, insert a valid weight';
@@ -94,11 +96,23 @@ const SignUp: NextPage = () => {
       birthday: (value) => {
         return value.length !== 0 ? null : 'Please, insert a valid birthday';
       },
+      contacts: {
+        email: (value) => validateEmail(value),
+      },
     },
   });
 
+  const fields = formHandler.values.contacts.map((item, index) => (
+    <EmergencyContactInput
+      key={index}
+      index={index}
+      inputProps={formHandler.getListInputProps('contacts', index, 'email')}
+      onRemoveItem={() => formHandler.removeListItem('contacts', index)}
+    />
+  ));
+
   const onSubmit = async (props: FormProps) => {
-    console.log(props);
+    const contacts = props.contacts.map((el) => el.email);
     setLoading(true);
 
     const { data: registered, error } = await AuthService.signup({
@@ -110,6 +124,7 @@ const SignUp: NextPage = () => {
       height: parseInt(props.height),
       weight: parseInt(props.weight),
       job: props.job,
+      contacts: contacts,
     });
 
     if (error) {
@@ -278,6 +293,43 @@ const SignUp: NextPage = () => {
                         }}
                       />
                     </Grid.Col>
+                    <Grid.Col>
+                      <Title order={5}>Emergency Contacts</Title>
+                      <Divider mb="xs" />
+                      <Text color="var(--p-color)" size="sm" mb="xs">
+                        Emergency contacts receive alarm notification, it&apos;s
+                        recommended to put almost one but you can add one after
+                      </Text>
+                      <Grid>
+                        {fields.map((el, index) => (
+                          <Grid.Col key={index}>{el}</Grid.Col>
+                        ))}
+
+                        <Grid.Col>
+                          <Center>
+                            <Button
+                              radius="sm"
+                              sx={{
+                                backgroundColor: 'var(--p-color)',
+                                ':hover': {
+                                  backgroundColor: 'var(--p-color)',
+                                  filter: 'brightness(85%)',
+                                },
+                              }}
+                              onClick={() =>
+                                formHandler.addListItem('contacts', {
+                                  email: '',
+                                })
+                              }
+                            >
+                              <Text color="var(--q-color)">
+                                Add Emergency Contact
+                              </Text>
+                            </Button>
+                          </Center>
+                        </Grid.Col>
+                      </Grid>
+                    </Grid.Col>
                   </Grid>
 
                   <Box mb="lg">
@@ -322,15 +374,7 @@ const SignUp: NextPage = () => {
               </Box>
             </FadeInDiv>
           </Grid.Col>
-          <Grid.Col
-            xs={0}
-            sm={0}
-            md={0}
-            lg={6}
-            xl={6}
-            p={0}
-            sx={{ height: '100%' }}
-          >
+          <Grid.Col xs={0} sm={0} md={0} lg={6} xl={6} p={0}>
             <MediaQuery query="(max-width: 1200px)" styles={{ width: 0 }}>
               <Box
                 sx={{
@@ -338,12 +382,12 @@ const SignUp: NextPage = () => {
                   height: '100%',
                 }}
               >
-                <Center sx={{ height: '90%' }}>
+                <Center>
                   <Box
                     sx={{
                       width: '60%',
                     }}
-                    my="md"
+                    mt="35%"
                   >
                     <Image
                       src="/assets/logo.png"
@@ -352,6 +396,17 @@ const SignUp: NextPage = () => {
                       layout="responsive"
                       alt="logo"
                     />
+                    <Text
+                      align="center"
+                      mt="sm"
+                      weight="500"
+                      size="xl"
+                      sx={{
+                        letterSpacing: '1px',
+                      }}
+                    >
+                      Seren Up, We Trust
+                    </Text>
                   </Box>
                 </Center>
               </Box>

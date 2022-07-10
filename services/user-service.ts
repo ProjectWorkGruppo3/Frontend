@@ -18,6 +18,7 @@ const UserService = () => {
           weight: props.user.weight,
           height: props.user.height,
           job: props.user.job,
+          emergencyContacts: props.user.emergencyContacts,
         },
         {
           headers: {

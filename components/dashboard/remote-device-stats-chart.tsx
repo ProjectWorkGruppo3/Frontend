@@ -23,6 +23,18 @@ export const RemoteDeviceStatsChart = (props: RemoteDeviceStatsChartProps) => {
   const [chartData, setChartData] = useState<ChartData[]>();
   const [fetchError, setFetchError] = useState<string>();
 
+  const fetchNew = useCallback(async () => {
+    const { data, error } = await deviceService.getDeviceStatisticChartData({
+      token: props.token,
+      statisticName: props.dataKey,
+      deviceId: props.deviceId,
+    });
+
+    if (data) {
+      setChartData(data!);
+    }
+  }, [props.dataKey, props.token, props.deviceId]);
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -53,19 +65,7 @@ export const RemoteDeviceStatsChart = (props: RemoteDeviceStatsChartProps) => {
     return () => {
       clearInterval(intervalFetch);
     };
-  }, [props.dataKey]);
-
-  const fetchNew = useCallback(async () => {
-    const { data, error } = await deviceService.getDeviceStatisticChartData({
-      token: props.token,
-      statisticName: props.dataKey,
-      deviceId: props.deviceId,
-    });
-
-    if (data) {
-      setChartData(data!);
-    }
-  }, []);
+  }, [props.dataKey, fetchNew, props.deviceId, props.token]);
 
   const accessors = {
     xAccessor: (d: any) => d.x,

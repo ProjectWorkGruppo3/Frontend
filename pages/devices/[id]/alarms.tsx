@@ -27,7 +27,7 @@ const BraceletAlarmsPage: NextPage = () => {
     if (!auth || !auth.isAuthenticated()) {
       router.push('/login');
     }
-  }, []);
+  }, [auth, router]);
 
   useEffect(() => {
     const fetchDevices = async () => {
@@ -60,7 +60,7 @@ const BraceletAlarmsPage: NextPage = () => {
     };
 
     fetchDevices();
-  }, [loading, auth]);
+  }, [loading, auth, router]);
 
   const fetchMore = async () => {
     const { id } = router.query;

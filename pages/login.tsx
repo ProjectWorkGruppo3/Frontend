@@ -53,8 +53,7 @@ const Login: NextPage = () => {
       password: '',
     },
     validate: {
-      email: (value) =>
-        validateEmail(value) ? null : 'Please, type a valid email',
+      email: (value) => validateEmail(value),
       password: (value) =>
         value.length !== 0 ? null : 'Please, type the password',
     },

@@ -36,8 +36,7 @@ const ForgotPassword: NextPage = () => {
       email: '',
     },
     validate: {
-      email: (value) =>
-        validateEmail(value) ? null : 'Please, type a valid email',
+      email: (value) => validateEmail(value),
     },
   });
 
