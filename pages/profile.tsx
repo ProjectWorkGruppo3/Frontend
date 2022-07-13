@@ -15,6 +15,7 @@ import {
   Text,
   TextInput,
   Title,
+  Modal,
 } from '@mantine/core';
 import { formList, FormList, useForm } from '@mantine/form';
 import { EaseInOutDiv, FadeInDiv, Floating, StaggerDiv } from 'animations';
@@ -154,9 +155,7 @@ export default function Profile() {
   };
 
   const handleReset = async () => {
-    if (window.confirm('Are you sure you want to discard your changes?')) {
-      formHandler.reset();
-    }
+    setOpened(true);
   };
 
   const fields = formHandler.values.contacts.map((item, index) => (
@@ -168,8 +167,36 @@ export default function Profile() {
     />
   ));
 
+  const [opened, setOpened] = useState(false);
+
   return (
     <StaggerDiv>
+      <Modal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        overlayOpacity={0.55}
+        overlayBlur={3}
+        title="Are you sure you want to discard changes?"
+      >
+        <Group position="center">
+          <Button
+            onClick={() => {
+              formHandler.reset();
+              setOpened(false);
+            }}
+            style={{ width: '80px' }}
+          >
+            Yes
+          </Button>
+          <Button
+            onClick={() => setOpened(false)}
+            style={{ width: '80px' }}
+            color={'red'}
+          >
+            No
+          </Button>
+        </Group>
+      </Modal>
       <Box sx={{ width: '100%', height: '100vh' }} p={0}>
         <Head>
           <title>SerenUp</title>
