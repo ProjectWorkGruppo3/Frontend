@@ -194,7 +194,7 @@ const Dashboard: NextPage = () => {
                   <Grid.Col span={4}>
                     <Box
                       sx={{
-                        height: '200px',
+                        height: '100%',
                       }}
                     >
                       <PositionComponent
