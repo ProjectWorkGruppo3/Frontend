@@ -34,7 +34,7 @@ const PositionCard = (props: PositionCardProps) => {
       sx={{
         transition: '0.2s',
         width: '100%',
-        height: '70%',
+        height: '100%',
       }}
     >
       <Title order={3} align="center" mb="xs">
@@ -44,13 +44,13 @@ const PositionCard = (props: PositionCardProps) => {
         <Divider sx={{ width: '40%' }} />
       </Center>
       <MapContainer
-        style={{ width: '100%', height: '100%', minHeight: '150px' }}
+        style={{ width: '100%', height: '10%', minHeight: '150px' }}
         zoom={10}
         center={position}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <Marker position={position}>
-          <Popup>Device last position.</Popup>
+          <Popup>{`Your position: ${position}`}</Popup>
         </Marker>
       </MapContainer>
     </Card>

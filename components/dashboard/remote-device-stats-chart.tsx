@@ -1,21 +1,32 @@
 import { CircularLoading } from '@components/common';
 import { Alert, Card, Center, Title } from '@mantine/core';
+import { TickLabelProps } from '@visx/axis';
 import {
   AnimatedGrid,
   AnimatedLineSeries,
+  Axis,
   Tooltip,
-  XYChart
+  XYChart,
 } from '@visx/xychart';
 import { useCallback, useEffect, useState } from 'react';
 import deviceService from 'services/device-service';
 import { ChartData } from 'types/services/stats-service';
-
 export interface RemoteDeviceStatsChartProps {
   title: string;
   dataKey: string;
   deviceId: string;
   token: string;
 }
+
+const tickLabelProps: TickLabelProps<any> = (tickValue, tickIndex) =>
+  ({
+    fill: 'black',
+    fontSize: 12,
+    fontFamily: 'sans-serif',
+    textAnchor: 'start',
+    angle: 45,
+    dy: tickIndex % 2 === 0 ? '-0.5em' : '0.5em',
+  } as const);
 
 export const RemoteDeviceStatsChart = (props: RemoteDeviceStatsChartProps) => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -56,8 +67,6 @@ export const RemoteDeviceStatsChart = (props: RemoteDeviceStatsChartProps) => {
     fetchData();
 
     const intervalFetch = setInterval(() => {
-      console.log('fetch');
-
       fetchNew();
     }, 5000);
 
@@ -99,7 +108,13 @@ export const RemoteDeviceStatsChart = (props: RemoteDeviceStatsChartProps) => {
             xScale={{ type: 'band' }}
             yScale={{ type: 'linear' }}
           >
-            <AnimatedGrid columns={true} numTicks={4} />
+            <Axis orientation="left" />
+            <Axis
+              orientation="bottom"
+              hideAxisLine
+              tickLabelProps={tickLabelProps}
+            />
+            <AnimatedGrid columns={false} numTicks={4} />
             <AnimatedLineSeries
               dataKey={props.dataKey}
               data={chartData.map((el) => ({

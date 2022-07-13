@@ -31,6 +31,9 @@ export const TotalAlarmCard = (props: TotalAlarmCardProps) => {
       }}
       onClick={props.onClick}
     >
+      <Title order={3} align="center" mb="xs">
+        Total Alarms
+      </Title>
       <Center mb="xs">
         <RiAlarmWarningFill size={80} />
       </Center>
@@ -40,9 +43,6 @@ export const TotalAlarmCard = (props: TotalAlarmCardProps) => {
       <Title order={3} align="center" mb="xs">
         {props.total}
       </Title>
-      <Text align="center" mb="xs" color="#92999b" size="xl">
-        Total Alarms
-      </Text>
     </Card>
   );
 };
