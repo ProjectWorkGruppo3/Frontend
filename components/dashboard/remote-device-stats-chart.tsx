@@ -4,12 +4,11 @@ import {
   AnimatedGrid,
   AnimatedLineSeries,
   Tooltip,
-  XYChart,
+  XYChart
 } from '@visx/xychart';
 import { useCallback, useEffect, useState } from 'react';
 import deviceService from 'services/device-service';
 import { ChartData } from 'types/services/stats-service';
-import { normalFullTime } from 'utils/date-format';
 
 export interface RemoteDeviceStatsChartProps {
   title: string;
@@ -104,7 +103,7 @@ export const RemoteDeviceStatsChart = (props: RemoteDeviceStatsChartProps) => {
             <AnimatedLineSeries
               dataKey={props.dataKey}
               data={chartData.map((el) => ({
-                x: normalFullTime(el.date),
+                x: el.date,
                 y: el.value,
               }))}
               {...accessors}
