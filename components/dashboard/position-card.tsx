@@ -2,7 +2,16 @@ import { Card, Center, Divider, Title } from '@mantine/core';
 import 'leaflet/dist/leaflet.css';
 import { useState } from 'react';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import L, { LatLngExpression } from 'leaflet';
 
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+
+let DefaultIcon = L.icon({
+  iconUrl: icon.src,
+  shadowUrl: iconShadow.src,
+});
+L.Marker.prototype.options.icon = DefaultIcon;
 export interface PositionCardProps {
   latitude: number;
   longitude: number;
@@ -14,8 +23,7 @@ const PositionCard = (props: PositionCardProps) => {
   const onMouseOver = () => setIsHover(true);
   const onMouseOut = () => setIsHover(false);
 
-  const position = [props.latitude, props.longitude];
-
+  const position: LatLngExpression = [props.latitude, props.longitude];
   return (
     <Card
       shadow={isHover ? 'xl' : 'sm'}
@@ -37,7 +45,6 @@ const PositionCard = (props: PositionCardProps) => {
       </Center>
       <MapContainer
         style={{ width: '100%', height: '100%', minHeight: '150px' }}
-        /* @ts-ignore */
         zoom={10}
         center={position}
       >
