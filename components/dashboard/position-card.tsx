@@ -26,7 +26,7 @@ const PositionCard = (props: PositionCardProps) => {
       sx={{
         transition: '0.2s',
         width: '100%',
-        height: '100%',
+        height: '70%',
       }}
     >
       <Title order={3} align="center" mb="xs">
